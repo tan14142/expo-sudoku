@@ -1,16 +1,14 @@
 import { Animated, Pressable, StyleSheet } from "react-native"
-import { Octicons } from "@expo/vector-icons"
-import { useAppSelector } from "~/Store"
-import animate from "~/Animations"
 import { NavigationContainerRefWithCurrent } from "@react-navigation/native"
-
-export type GearButtonProps = {
-  navRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>
-}
+import { useAppSelector } from "~/Store"
+import { Octicons } from "@expo/vector-icons"
+import animate from "~/Animations"
 
 export default function GearButton({
-  navRef: { goBack, navigate, getCurrentRoute },
-}: GearButtonProps) {
+  getCurrentRoute,
+  goBack,
+  navigate,
+}: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>) {
   const { buttonSymbolColor: color } = useAppSelector(
     state => state.settings.theme,
   )
