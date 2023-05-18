@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux"
 import { combineReducers } from "redux"
-import settings from "./Store/Settings"
+import board from "~/Store/Board"
+import settings from "~/Store/Settings"
 
 const RootReducer = combineReducers({
+  board,
   settings,
 })
 

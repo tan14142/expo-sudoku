@@ -32,8 +32,8 @@ export default () => {
           animation: "fade",
           header: () => <Header {...navRef} />,
         }}>
-        <Stack.Screen component={Game} name="Game" />
         <Stack.Screen component={Menu} name="Menu" />
+        <Stack.Screen component={Game} name="Game" />
         <Stack.Screen component={Settings} name="Settings" />
       </Stack.Navigator>
     </NavigationContainer>

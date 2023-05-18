@@ -1,25 +1,23 @@
 import { Dimensions, StyleSheet, View } from "react-native"
+import { useAppSelector } from "~/Store"
+import SelectionProvider from "~/Contexts/Selection"
 import Board from "~/Components/Board"
 import FeaturePad from "~/Components/FeaturePad"
 import NumberPad from "~/Components/NumberPad"
 
 export default function Game() {
+  const { cells } = useAppSelector(state => state.board)
+
   return (
-    <View style={styles.container}>
-      <Board board={board} />
-      <FeaturePad />
-      <NumberPad />
-    </View>
+    <SelectionProvider>
+      <View style={styles.container}>
+        <Board cells={cells} />
+        <FeaturePad />
+        <NumberPad />
+      </View>
+    </SelectionProvider>
   )
 }
-
-// Todo remove this
-const board = [
-  5, 3, 0, 0, 7, 0, 0, 0, 0, 6, 0, 0, 1, 9, 5, 0, 0, 0, 0, 9, 8, 0, 0, 0, 0, 6,
-  0, 8, 0, 0, 0, 6, 0, 0, 0, 3, 4, 0, 0, 8, 0, 3, 0, 0, 1, 7, 0, 0, 0, 2, 0, 0,
-  0, 6, 0, 6, 0, 0, 0, 0, 2, 8, 0, 0, 0, 0, 4, 1, 9, 0, 0, 5, 0, 0, 0, 0, 8, 0,
-  0, 7, 9,
-]
 
 const width = Dimensions.get("window").width * 0.9 + 8
 

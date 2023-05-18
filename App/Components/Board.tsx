@@ -1,21 +1,16 @@
-import { createContext, useContext, useState } from "react"
 import { StyleSheet, View } from "react-native"
+import { CellType } from "~/Types"
 import Cell from "./Cell"
 
 interface BoardProps {
-  board: number[]
+  cells: CellType[]
 }
 
-export default function Board({ board }: BoardProps) {
-  const [selectedIndex, setSelectedIndex] = useState(-1)
-
+export default function Board({ cells }: BoardProps) {
   return (
     <View style={styles.board}>
-      {board.map((value, index) => (
-        <Cell
-          key={index}
-          {...{ index, selectedIndex, value, onPress: setSelectedIndex }}
-        />
+      {cells.map((value, index) => (
+        <Cell key={index} {...{ index, value }} />
       ))}
     </View>
   )

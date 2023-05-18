@@ -1,11 +1,10 @@
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
+import { CellType } from "~/Types"
 import CellButton from "./CellButton"
 
 export interface CellProps {
   index: number
-  selectedIndex: number
-  value: number | number[]
-  onPress: (index: number) => void
+  value: CellType
 }
 
 export default function Cell(props: CellProps) {

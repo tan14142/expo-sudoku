@@ -1,6 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
+import { useAppSelector } from "~/Store"
+import solve from "~/Utils/solve"
 
 export default function FeaturePad() {
+  const { cells } = useAppSelector(state => state.board)
+  
   return (
     <View style={styles.row}>
       <Pressable style={styles.button} onPress={() => {}}>
@@ -11,6 +15,9 @@ export default function FeaturePad() {
       </Pressable>
       <Pressable style={styles.button} onPress={() => {}}>
         <Text style={styles.text}>Reset</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => solve(cells as number[])}>
+        <Text style={styles.text}>Solve</Text>
       </Pressable>
       <Pressable style={styles.button} onPress={() => {}}>
         <Text style={styles.text}>Hint</Text>
