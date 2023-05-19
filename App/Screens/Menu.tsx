@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { useAppDispatch } from "~/Store"
-import { setBoard } from "~/Store/Board"
+import { setBoard } from "~/Store/Game"
 import MenuButton from "~/Components/MenuButton"
 import generate from "~/Utils/generate"
 
@@ -9,19 +9,38 @@ export default () => {
   const { navigate } = useNavigation()
   const dispatch = useAppDispatch()
 
-  function handleNewGame(clues: number) {
-    dispatch(setBoard(generate(clues)))
+  function handleNewGame(clues: number, difficulty: string) {
+    dispatch(
+      setBoard({
+        difficulty,
+        ...generate(clues),
+      }),
+    )
     navigate("Game")
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>MENU</Text>
+      <Text selectable={false} style={styles.title}>
+        MENU
+      </Text>
       <View>
-        <MenuButton handler={() => handleNewGame(40)} label="New Game Easy 40" />
-        <MenuButton handler={() => handleNewGame(35)} label="New Game Medium 35" />
-        <MenuButton handler={() => handleNewGame(30)} label="New Game Hard 30" />
-        <MenuButton handler={() => handleNewGame(25)} label="New Game Expert 25" />
+        <MenuButton
+          handler={() => handleNewGame(40, "Easy")}
+          label="New Game Easy 40"
+        />
+        <MenuButton
+          handler={() => handleNewGame(35, "Medium")}
+          label="New Game Medium 35"
+        />
+        <MenuButton
+          handler={() => handleNewGame(30, "Hard")}
+          label="New Game Hard 30"
+        />
+        <MenuButton
+          handler={() => handleNewGame(25, "Expert")}
+          label="New Game Expert 25"
+        />
         <MenuButton handler={() => console.log(123)} label="Custom Game" />
         <MenuButton handler={() => console.log(123)} label="Favorites" />
         <MenuButton handler={() => console.log(123)} label="Today's Puzzle" />

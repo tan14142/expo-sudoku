@@ -6,9 +6,9 @@ const settingsSlice = createSlice({
   initialState: {
     displaySolver: true,
     displayTimer: true,
-    highlightCurrentTrack: true,
-    highlightIdenticalNumbers: true,
-    highlightMistakenInput: true,
+    highlightLinkedCells: true,
+    highlightMatchingCells: true,
+    highlightMistake: true,
     lowlightInvalidInput: true,
     lowlightSolvedNumbers: true,
     removeNotesAutomatically: true,
@@ -23,14 +23,14 @@ const settingsSlice = createSlice({
     toggleDisplayTimer(slice) {
       slice.displayTimer = !slice.displayTimer
     },
-    toggleHighlightCurrentTrack(slice) {
-      slice.highlightCurrentTrack = !slice.highlightCurrentTrack
+    toggleHighlightLinkedCells(slice) {
+      slice.highlightLinkedCells = !slice.highlightLinkedCells
     },
-    toggleHighlightIdenticalNumbers(slice) {
-      slice.highlightIdenticalNumbers = !slice.highlightIdenticalNumbers
+    toggleHighlightMatchingNumbers(slice) {
+      slice.highlightMatchingCells = !slice.highlightMatchingCells
     },
-    toggleHighlightMistakenInput(slice) {
-      slice.highlightMistakenInput = !slice.highlightMistakenInput
+    toggleHighlightMistake(slice) {
+      slice.highlightMistake = !slice.highlightMistake
     },
     toggleLowlightInvalidInput(slice) {
       slice.lowlightInvalidInput = !slice.lowlightInvalidInput
@@ -48,7 +48,7 @@ const settingsSlice = createSlice({
       slice.sound = !slice.sound
     },
     toggleTheme(slice) {
-      slice.theme = themes.light
+      slice.theme = themes.light // Todo
     },
   },
 })
@@ -56,9 +56,9 @@ const settingsSlice = createSlice({
 export const {
   toggleDisplayTimer,
   toggleDisplaySolver,
-  toggleHighlightCurrentTrack,
-  toggleHighlightIdenticalNumbers,
-  toggleHighlightMistakenInput,
+  toggleHighlightLinkedCells,
+  toggleHighlightMatchingNumbers,
+  toggleHighlightMistake,
   toggleLowlightInvalidInput,
   toggleLowlightSolvedNumbers,
   toggleRemoveNotesAutomatically,

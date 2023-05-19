@@ -12,7 +12,9 @@ export default function MenuButton({ handler, label }: MenuButtonProps) {
 
   return (
     <Pressable style={[styles.button, { backgroundColor }]} onPress={handler}>
-      <Text style={[styles.text, { color }]}>{label}</Text>
+      <Text selectable={false} style={[styles.text, { color }]}>
+        {label}
+      </Text>
     </Pressable>
   )
 }

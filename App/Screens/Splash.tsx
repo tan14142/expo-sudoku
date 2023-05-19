@@ -3,9 +3,15 @@ import { StyleSheet, Text, View } from "react-native"
 export default function () {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>SU</Text>
-      <Text style={styles.text}>DO</Text>
-      <Text style={styles.text}>KU</Text>
+      <Text selectable={false} style={styles.text}>
+        SU
+      </Text>
+      <Text selectable={false} style={styles.text}>
+        DO
+      </Text>
+      <Text selectable={false} style={styles.text}>
+        KU
+      </Text>
     </View>
   )
 }

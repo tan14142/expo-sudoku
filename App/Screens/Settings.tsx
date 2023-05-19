@@ -3,9 +3,9 @@ import { useAppDispatch, useAppSelector } from "~/Store"
 import {
   toggleDisplaySolver,
   toggleDisplayTimer,
-  toggleHighlightCurrentTrack,
-  toggleHighlightIdenticalNumbers,
-  toggleHighlightMistakenInput,
+  toggleHighlightLinkedCells,
+  toggleHighlightMatchingNumbers,
+  toggleHighlightMistake,
   toggleLowlightInvalidInput,
   toggleLowlightSolvedNumbers,
   toggleRemoveNotesAutomatically,
@@ -13,26 +13,32 @@ import {
 } from "~/Store/Settings"
 
 export default function Settings() {
+  const dispatch = useAppDispatch()
   const {
     displaySolver,
     displayTimer,
-    highlightCurrentTrack,
-    highlightIdenticalNumbers,
-    highlightMistakenInput,
+    highlightLinkedCells,
+    highlightMatchingCells,
+    highlightMistake,
     lowlightInvalidInput,
     lowlightSolvedNumbers,
     removeNotesAutomatically,
     screenAlwaysOn,
   } = useAppSelector(state => state.settings)
-  const dispatch = useAppDispatch()
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Game</Text>
+      <Text selectable={false} style={styles.header}>
+        Game
+      </Text>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Display solver</Text>
-          <Text style={styles.description}>Lorem Ipsum</Text>
+          <Text selectable={false} style={styles.label}>
+            Display solver
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Lorem Ipsum
+          </Text>
         </View>
         <Switch
           value={displaySolver}
@@ -43,8 +49,12 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Display Timer</Text>
-          <Text style={styles.description}>Lorem Ipsum</Text>
+          <Text selectable={false} style={styles.label}>
+            Display Timer
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Lorem Ipsum
+          </Text>
         </View>
         <Switch
           value={displayTimer}
@@ -55,46 +65,60 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Highlight current track</Text>
-          <Text style={styles.description}>row and column</Text>
+          <Text selectable={false} style={styles.label}>
+            Highlight linked cells
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Highlight all cells in the same column, row and region
+          </Text>
         </View>
         <Switch
-          value={highlightCurrentTrack}
+          value={highlightLinkedCells}
           onValueChange={() => {
-            dispatch(toggleHighlightCurrentTrack())
+            dispatch(toggleHighlightLinkedCells())
           }}
         />
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Highlight identical numbers</Text>
-          <Text style={styles.description}>Lorem Ipsum</Text>
+          <Text selectable={false} style={styles.label}>
+            Highlight matching numbers
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Lorem Ipsum
+          </Text>
         </View>
         <Switch
-          value={highlightIdenticalNumbers}
+          value={highlightMatchingCells}
           onValueChange={() => {
-            dispatch(toggleHighlightIdenticalNumbers())
+            dispatch(toggleHighlightMatchingNumbers())
           }}
         />
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Highlight mistaken input</Text>
-          <Text style={styles.description}>
+          <Text selectable={false} style={styles.label}>
+            Highlight mistake
+          </Text>
+          <Text selectable={false} style={styles.description}>
             Generated to be unique solution, ...
           </Text>
         </View>
         <Switch
-          value={highlightMistakenInput}
+          value={highlightMistake}
           onValueChange={() => {
-            dispatch(toggleHighlightMistakenInput())
+            dispatch(toggleHighlightMistake())
           }}
         />
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Lowlight invalid input</Text>
-          <Text style={styles.description}>prevent</Text>
+          <Text selectable={false} style={styles.label}>
+            Lowlight invalid input
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            prevent
+          </Text>
         </View>
         <Switch
           value={lowlightInvalidInput}
@@ -105,8 +129,12 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Lowlight solved numbers</Text>
-          <Text style={styles.description}>Lorem Ipsum</Text>
+          <Text selectable={false} style={styles.label}>
+            Lowlight solved numbers
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Lorem Ipsum
+          </Text>
         </View>
         <Switch
           value={lowlightSolvedNumbers}
@@ -117,8 +145,12 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Remove Notes Automatically</Text>
-          <Text style={styles.description}>Lorem Ipsum</Text>
+          <Text selectable={false} style={styles.label}>
+            Remove Notes Automatically
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Lorem Ipsum
+          </Text>
         </View>
         <Switch
           value={removeNotesAutomatically}
@@ -129,8 +161,12 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text style={styles.label}>Screen Always On</Text>
-          <Text style={styles.description}>Lorem Ipsum</Text>
+          <Text selectable={false} style={styles.label}>
+            Screen Always On
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Lorem Ipsum
+          </Text>
         </View>
         <Switch
           value={screenAlwaysOn}
@@ -139,32 +175,58 @@ export default function Settings() {
           }}
         />
       </View>
-      <Text style={styles.header}>More</Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text selectable={false} style={styles.header}>
+        More
+      </Text>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         About
       </Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         Privacy Policy
       </Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         Terms of Service
       </Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         Contact Us
       </Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         Reset All
       </Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         How to Play
       </Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         Rate App
       </Text>
-      <Text onPress={() => console.log(123)} style={styles.label}>
+      <Text
+        onPress={() => console.log(123)}
+        selectable={false}
+        style={styles.label}>
         Share App
       </Text>
-      <Text>Version</Text>
+      <Text selectable={false}>Version</Text>
     </ScrollView>
   )
 }

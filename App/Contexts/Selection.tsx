@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from "react"
-import { getRow, getColumn, getRegion, getLinks } from "~/Utils/check"
+import { getRow, getColumn, getRegion, getLinks } from "~/Utils"
 
 interface SelectionProviderProps {
   children: ReactNode

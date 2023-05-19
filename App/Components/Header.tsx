@@ -4,7 +4,6 @@ import GearButton from "./GearButton"
 import PaletteButton from "./PaletteButton"
 import MuteButton from "./MuteButton"
 import { useAppSelector } from "~/Store"
-import { useEffect } from "react"
 
 export default function Header(
   navRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>,
@@ -22,7 +21,7 @@ export default function Header(
     <View style={[styles.container, { backgroundColor }]}>
       <GearButton {...navRef} />
       <View style={{ flex: 1, marginLeft: 24 }}>
-        <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
+        <Text selectable={false} style={styles.text}>
           {title}
         </Text>
       </View>
@@ -40,6 +39,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 15,
     paddingHorizontal: 17,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 })
 

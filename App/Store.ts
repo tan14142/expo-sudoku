@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux"
 import { combineReducers } from "redux"
-import board from "~/Store/Board"
+import game from "~/Store/Game"
 import settings from "~/Store/Settings"
 
 const RootReducer = combineReducers({
-  board,
+  game,
   settings,
 })
 

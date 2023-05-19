@@ -1,4 +1,4 @@
-import { getWhitelist } from "./check"
+import { getWhitelist } from "~/Utils"
 import solve from "./solve"
 
 function pickRandom(solution: number[], whitelist: number[][], index: number) {

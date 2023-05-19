@@ -1,4 +1,4 @@
-import { getMissing, getWhitelist } from "./check"
+import { getMissing, getWhitelist } from "~/Utils"
 
 export default function solve(puzzle: number[]) {
   const missing = getMissing(puzzle)
