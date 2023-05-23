@@ -55,6 +55,21 @@ function setMistakes(board: typeof initialState) {
   }
 }
 
+function setWhitelist(board: typeof initialState) {
+  if (board[board.selection.index].init) {
+    board.selection.whitelist = Array(10).fill(false)
+    return
+  }
+
+  const cell = board[board.selection.index].cell
+  console.log(cell)
+  board.selection.whitelist = Array(10).fill(true)
+  board.selection.whitelist[cell] = false
+  links[board.selection.index].forEach(
+    i => (board.selection.whitelist[board[i].cell] = false),
+  )
+}
+
 const gameSlice = createSlice({
   name: "board",
   initialState,
@@ -74,6 +89,7 @@ const gameSlice = createSlice({
       if (board.selection.index >= 0) {
         board[board.selection.index].cell = payload
         setMistakes(board)
+        setWhitelist(board)
       }
     },
     setSelection(board, { payload }: PayloadAction<number>) {
@@ -89,11 +105,7 @@ const gameSlice = createSlice({
 
       board[payload].selection = "selected"
       board.selection.index = payload
-      board.selection.whitelist = Array(10).fill(true)
-      board.selection.whitelist[board[payload].cell] = false
-      links[payload].forEach(
-        i => (board.selection.whitelist[board[i].cell] = false),
-      )
+      setWhitelist(board)
     },
     reset(board) {
       for (let i = 0; i < 81; i++) {
