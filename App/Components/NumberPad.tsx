@@ -1,9 +1,10 @@
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native"
-import { useAppDispatch } from "~/Store"
+import { useAppDispatch, useAppSelector } from "~/Store"
 import { setCell } from "~/Store/Board"
 
 export default function NumberPad() {
   const dispatch = useAppDispatch()
+  const whitelist = useAppSelector(state => state.board.selection.whitelist)
 
   function handlePress(value: number) {
     dispatch(setCell(value))
@@ -12,53 +13,32 @@ export default function NumberPad() {
   return (
     <>
       <View style={styles.row1}>
-        <Pressable style={styles.button} onPress={() => handlePress(1)}>
-          <Text selectable={false} style={styles.text}>
-            1
-          </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => handlePress(2)}>
-          <Text selectable={false} style={styles.text}>
-            2
-          </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => handlePress(3)}>
-          <Text selectable={false} style={styles.text}>
-            3
-          </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => handlePress(4)}>
-          <Text selectable={false} style={styles.text}>
-            4
-          </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => handlePress(5)}>
-          <Text selectable={false} style={styles.text}>
-            5
-          </Text>
-        </Pressable>
+        {Array(5)
+          .fill(true)
+          .map((_, i) => (
+            <Pressable
+              key={i}
+              style={[styles.button, !whitelist[i + 1] && styles.faded]}
+              onPress={() => handlePress(i + 1)}>
+              <Text selectable={false} style={styles.text}>
+                {i + 1}
+              </Text>
+            </Pressable>
+          ))}
       </View>
       <View style={styles.row2}>
-        <Pressable style={styles.button} onPress={() => handlePress(6)}>
-          <Text selectable={false} style={styles.text}>
-            6
-          </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => handlePress(7)}>
-          <Text selectable={false} style={styles.text}>
-            7
-          </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => handlePress(8)}>
-          <Text selectable={false} style={styles.text}>
-            8
-          </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => handlePress(9)}>
-          <Text selectable={false} style={styles.text}>
-            9
-          </Text>
-        </Pressable>
+        {Array(4)
+          .fill(true)
+          .map((_, i) => (
+            <Pressable
+              key={i}
+              style={[styles.button, !whitelist[i + 6] && styles.faded]}
+              onPress={() => handlePress(i + 6)}>
+              <Text selectable={false} style={styles.text}>
+                {i + 6}
+              </Text>
+            </Pressable>
+          ))}
       </View>
     </>
   )
@@ -83,6 +63,9 @@ const styles = StyleSheet.create({
       height: 8,
     },
     shadowRadius: 16,
+  },
+  faded: {
+    opacity: 0.5,
   },
   row1: {
     flexDirection: "row",

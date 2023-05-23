@@ -6,7 +6,7 @@ interface BoardPayload {
   solution: number[]
 }
 
-const initialState = Array.from({ length: 81 }, (_, i) => ({
+const cells = Array.from({ length: 81 }, (_, i) => ({
   [i]: {
     cell: 0,
     init: false,
@@ -16,7 +16,15 @@ const initialState = Array.from({ length: 81 }, (_, i) => ({
   },
 })).reduce((acc, cur) => ({ ...acc, ...cur }), {})
 
-let selectedIndex = -1
+const selection = {
+  index: -1,
+  whitelist: Array(10).fill(false),
+}
+
+const initialState: typeof cells & { selection: typeof selection } = {
+  ...cells,
+  selection: selection,
+}
 
 function setMistakes(board: typeof initialState) {
   for (let i = 0; i < 81; i++) {
@@ -63,28 +71,29 @@ const gameSlice = createSlice({
       }
     },
     setCell(board, { payload }: PayloadAction<number>) {
-      if (selectedIndex >= 0) {
-        board[selectedIndex].cell = payload
+      if (board.selection.index >= 0) {
+        board[board.selection.index].cell = payload
         setMistakes(board)
       }
     },
     setSelection(board, { payload }: PayloadAction<number>) {
-      selectedIndex = payload
-
       for (let i = 0; i < 81; i++) {
-        if (links[selectedIndex].has(i)) {
+        if (links[payload].has(i)) {
           board[i].selection = "linked"
-        } else if (
-          board[i].cell &&
-          board[i].cell === board[selectedIndex].cell
-        ) {
+        } else if (board[i].cell && board[i].cell === board[payload].cell) {
           board[i].selection = "matching"
         } else if (board[i].selection) {
           board[i].selection = ""
         }
       }
 
-      board[selectedIndex].selection = "selected"
+      board[payload].selection = "selected"
+      board.selection.index = payload
+      board.selection.whitelist = Array(10).fill(true)
+      board.selection.whitelist[board[payload].cell] = false
+      links[payload].forEach(
+        i => (board.selection.whitelist[board[i].cell] = false),
+      )
     },
     reset(board) {
       for (let i = 0; i < 81; i++) {

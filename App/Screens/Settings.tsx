@@ -114,10 +114,10 @@ export default function Settings() {
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
-            Lowlight invalid input
+            Lowlight invalid number inputs
           </Text>
           <Text selectable={false} style={styles.description}>
-            prevent
+            Fade out input if there is a match in linked cells
           </Text>
         </View>
         <Switch
@@ -133,7 +133,7 @@ export default function Settings() {
             Lowlight solved numbers
           </Text>
           <Text selectable={false} style={styles.description}>
-            Lorem Ipsum
+            Fade out input if the number is solved
           </Text>
         </View>
         <Switch
@@ -146,10 +146,10 @@ export default function Settings() {
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
-            Remove Notes Automatically
+            Remove notes automatically
           </Text>
           <Text selectable={false} style={styles.description}>
-            Lorem Ipsum
+            Remove notes from linked cells on number input
           </Text>
         </View>
         <Switch
@@ -162,10 +162,10 @@ export default function Settings() {
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
-            Screen Always On
+            Screen always on
           </Text>
           <Text selectable={false} style={styles.description}>
-            Lorem Ipsum
+            Keep the screen always on
           </Text>
         </View>
         <Switch

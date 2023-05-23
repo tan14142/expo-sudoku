@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a13ee5fa-fffc-475d-86cc-be87e2b19736" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Components/FeaturePad.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/FeaturePad.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Screens/Game.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Screens/Game.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Screens/Menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Screens/Menu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Store/Board.ts" beforeDir="false" afterPath="$PROJECT_DIR$/App/Store/Board.ts" afterDir="false" />
-    </list>
+    <list default="true" id="a13ee5fa-fffc-475d-86cc-be87e2b19736" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
