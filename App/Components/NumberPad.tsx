@@ -1,18 +1,12 @@
-import { useContext } from "react"
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native"
-import { useAppDispatch, useAppSelector } from "~/Store"
-import { setCell } from "~/Store/Game"
-import { SelectionContext } from "~/Contexts/Selection"
+import { useAppDispatch } from "~/Store"
+import { setCell } from "~/Store/Board"
 
 export default function NumberPad() {
   const dispatch = useAppDispatch()
-  const { inits } = useAppSelector(state => state.game)
-  const { selection } = useContext(SelectionContext)
 
   function handlePress(value: number) {
-    if (!inits[selection]) {
-      dispatch(setCell({ index: selection, value }))
-    }
+    dispatch(setCell(value))
   }
 
   return (

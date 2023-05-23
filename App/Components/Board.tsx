@@ -1,16 +1,13 @@
 import { StyleSheet, View } from "react-native"
-import { CellType } from "~/Types"
 import Cell from "./Cell"
 
-interface BoardProps {
-  cells: CellType[]
-}
-
-export default function Board({ cells }: BoardProps) {
+export default function Board() {
   return (
     <View style={styles.board}>
-      {cells.map((value, index) => (
-        <Cell key={index} {...{ index, value }} />
+      {Array(81)
+        .fill(true)
+        .map((_, i) => (
+          <Cell key={i} index={i} />
       ))}
     </View>
   )

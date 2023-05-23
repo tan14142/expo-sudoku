@@ -1,28 +1,25 @@
-import { useContext } from "react"
 import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native"
-import { useAppSelector } from "~/Store"
-import { SelectionContext } from "~/Contexts/Selection"
+import { useAppDispatch, useAppSelector } from "~/Store"
+import { setSelection } from "~/Store/Board"
 import { CellProps } from "./Cell"
 
-export default function Cell({ index, value }: CellProps) {
-  const { cells, inits, solution } = useAppSelector(state => state.game)
-  const {
-    highlightLinkedCells,
-    highlightMatchingCells,
-    highlightMistake
-  } = useAppSelector(state => state.settings)
-  const { selection, setSelection, links } = useContext(SelectionContext)
+export default function Cell({ index }: CellProps) {
+  const dispatch = useAppDispatch()
+  const { cell, init, mistake, selection, solution } = useAppSelector(state => state.board[index])
+  const highlightLinkedCells = useAppSelector(state => state.settings.highlightLinkedCells)
+  const highlightMatchingCells = useAppSelector(state => state.settings.highlightMatchingCells)
+  const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
 
   function getPressableStyle() {
     const pressableStyles: ViewStyle[] = [styles.pressable]
 
-    if (index === selection) {
+    if (selection === "selected") {
       pressableStyles.push(styles.pressableSelected)
-    } else if (highlightMistake && value && value !== solution[index]) {
-      // Todo: make impacted rows / columns / region red
-    } else if (highlightMatchingCells && value && value === cells[selection]) {
+    } else if (mistake) {
+      pressableStyles.push(styles.pressableHighlightMistake)
+    } else if (highlightMatchingCells && selection === "matching") {
       pressableStyles.push(styles.pressableHighlightMatching)
-    } else if (highlightLinkedCells && links.has(index)) {
+    } else if (highlightLinkedCells && selection === "linked") {
       pressableStyles.push(styles.pressableHighlightLinked)
     }
 
@@ -32,21 +29,25 @@ export default function Cell({ index, value }: CellProps) {
   function getTextStyle() {
     const textStyles: TextStyle[] = [styles.text]
 
-    if (inits[index]) {
+    if (init) {
       textStyles.push(styles.textInit)
-    } else if (value === solution[index]) {
-      textStyles.push(styles.textCorrect)
-    } else {
+    } else if (cell && cell !== solution && (highlightMistake || mistake)) {
       textStyles.push(styles.textMistake)
+    } else {
+      textStyles.push(styles.textCorrect)
     }
 
     return textStyles
   }
 
+  function handlePress() {
+    dispatch(setSelection(index))
+  }
+
   return (
-    <Pressable onPress={() => setSelection(index)} style={getPressableStyle()}>
+    <Pressable onPress={handlePress} style={getPressableStyle()}>
       <Text selectable={false} style={getTextStyle()}>
-        {value ? value : ""}
+        {cell ? cell : ""}
       </Text>
     </Pressable>
   )
@@ -70,7 +71,9 @@ const styles = StyleSheet.create({
   pressableHighlightMatching: {
     backgroundColor: "rgba(48, 125, 246, 0.2)",
   },
-  pressableHighlightMistake: {},
+  pressableHighlightMistake: {
+    backgroundColor: "red",
+  },
   text: {
     fontSize: 24,
   },

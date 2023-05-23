@@ -1,16 +1,14 @@
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
-import { CellType } from "~/Types"
 import CellButton from "./CellButton"
 
 export interface CellProps {
   index: number
-  value: CellType
 }
 
-export default function Cell(props: CellProps) {
+export default function Cell({ index }: CellProps) {
   return (
-    <View style={getCellStyles(props.index)}>
-      <CellButton {...props} />
+    <View style={getCellStyles(index)}>
+      <CellButton index={index} />
     </View>
   )
 }

@@ -5,10 +5,8 @@ import { toggleSound } from "~/Store/Settings"
 import animate from "~/Animations"
 
 export default function SoundButton() {
-  const {
-    theme: { buttonSymbolColor: color },
-    sound,
-  } = useAppSelector(state => state.settings)
+  const { buttonSymbolColor: color } = useAppSelector(state => state.settings.theme)
+  const sound = useAppSelector(state => state.settings.sound)
   const dispatch = useAppDispatch()
   const [opacity, rotate, trigger] = animate(500, () => dispatch(toggleSound()))
 

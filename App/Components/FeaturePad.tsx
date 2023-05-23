@@ -1,10 +1,25 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
-import { useAppSelector } from "~/Store"
-import solve from "~/Utils/solve"
+import { useAppDispatch, useAppSelector } from "~/Store"
+import { setCell, reset, solve } from "~/Store/Board"
+import { reset as resetGame, setRunning } from "~/Store/Game"
 
 export default function FeaturePad() {
-  const { cells } = useAppSelector(state => state.game)
-  const { displaySolver } = useAppSelector(state => state.settings)
+  const dispatch = useAppDispatch()
+  const displaySolver = useAppSelector(state => state.settings.displaySolver)
+
+  function handleClear() {
+    dispatch(setCell(0))
+  }
+
+  function handleReset() {
+    dispatch(reset())
+    dispatch(resetGame())
+  }
+
+  function handleSolve() {
+    dispatch(solve())
+    dispatch(setRunning(false))
+  }
 
   return (
     <View style={styles.row}>
@@ -13,19 +28,19 @@ export default function FeaturePad() {
           Undo
         </Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={() => {}}>
+      <Pressable style={styles.button} onPress={handleClear}>
         <Text selectable={false} style={styles.text}>
           Clear
         </Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={() => {}}>
+      <Pressable style={styles.button} onPress={handleReset}>
         <Text selectable={false} style={styles.text}>
           Reset
         </Text>
       </Pressable>
       <Pressable
         style={[styles.button, { display: displaySolver ? "flex" : "none" }]}
-        onPress={() => solve(cells as number[])}>
+        onPress={handleSolve}>
         <Text selectable={false} style={styles.text}>
           Solve
         </Text>

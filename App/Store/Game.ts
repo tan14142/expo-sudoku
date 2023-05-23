@@ -1,47 +1,28 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { CellType } from "~/Types"
 
-interface BoardPayload {
-  difficulty: string
-  puzzle: number[]
-  solution: number[]
-}
-
-interface CellPayload {
-  index: number
-  value: number
+const initialState = {
+  difficulty: "",
+  running: true,
+  time: 0,
 }
 
 const gameSlice = createSlice({
-  name: "settings",
-  initialState: {
-    cells: Array(81) as CellType[],
-    inits: Array(81) as boolean[],
-    solution: Array(81) as number[],
-    difficulty: "",
-    running: true,
-    time: 0,
-  },
+  name: "game",
+  initialState,
   reducers: {
-    setBoard(slice, { payload }: PayloadAction<BoardPayload>) {
-      slice.cells = payload.puzzle
-      slice.inits = payload.puzzle.map(v => !!v)
-      slice.solution = payload.solution
-      slice.difficulty = payload.difficulty
-      slice.running = true
-      slice.time = 0
+    reset(game, { payload }: PayloadAction<string | undefined>) {
+      if (payload) game.difficulty = payload
+      game.running = true
+      game.time = 0
     },
-    setCell(slice, { payload }: PayloadAction<CellPayload>) {
-      slice.cells[payload.index] = payload.value
+    setRunning(game, { payload }: PayloadAction<boolean>) {
+      game.running = payload
     },
-    setRunning(slice, { payload }: PayloadAction<boolean>) {
-      slice.running = payload
-    },
-    setTime(slice, { payload }: PayloadAction<number>) {
-      slice.time = payload
+    setTime(game, { payload }: PayloadAction<number>) {
+      game.time = payload
     },
   },
 })
 
-export const { setBoard, setCell, setTime, setRunning } = gameSlice.actions
+export const { setRunning, setTime, reset } = gameSlice.actions
 export default gameSlice.reducer

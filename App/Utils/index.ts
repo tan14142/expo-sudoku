@@ -1,10 +1,10 @@
-const rows = Array.from({ length: 9 }, (_, r) =>
+export const rows = Array.from({ length: 9 }, (_, r) =>
   Array.from({ length: 9 }, (_, c) => r * 9 + c),
 )
-const columns = Array.from({ length: 9 }, (_, r) =>
+export const columns = Array.from({ length: 9 }, (_, r) =>
   Array.from({ length: 9 }, (_, c) => r + c * 9),
 )
-const regions = Array.from({ length: 9 }, (_, r) =>
+export const regions = Array.from({ length: 9 }, (_, r) =>
   Array.from(
     { length: 9 },
     (_, c) =>
@@ -12,27 +12,14 @@ const regions = Array.from({ length: 9 }, (_, r) =>
   ),
 )
 
-export function getRow(index: number) {
-  return rows[Math.floor(index / 9)]
-}
-
-export function getColumn(index: number) {
-  return columns[index % 9]
-}
-
-export function getRegion(index: number) {
-  return regions[Math.floor(index / 27) * 3 + Math.floor((index % 9) / 3)]
-}
-
-export function getLinks(index: number) {
-  const set = new Set([
-    ...getRow(index),
-    ...getColumn(index),
-    ...getRegion(index),
-  ])
-  set.delete(index)
+export const links = Array.from({ length: 81 }, (_, i) => {
+  const row = rows[Math.floor(i / 9)]
+  const column = columns[i % 9]
+  const region = regions[Math.floor(i / 27) * 3 + Math.floor((i % 9) / 3)]
+  const set = new Set([...row, ...column, ...region])
+  set.delete(i)
   return set
-}
+})
 
 export function getMissing(puzzle: number[]) {
   return puzzle.reduce((acc, cur, i) => {
@@ -54,9 +41,27 @@ export function getWhitelist(puzzle: number[], index: number) {
     true,
     true,
   ]
-  getLinks(index).forEach(links => (whitelist[puzzle[links]] = false))
+  links[index].forEach(link => (whitelist[puzzle[link]] = false))
   return whitelist.reduce((acc, cur, i) => {
     if (cur) acc.push(i)
     return acc
   }, [] as number[])
+}
+
+export function hasDuplicateInTriplet(nums: number[]) {
+  const triplets = nums.reduce(
+    (acc, cur, i) => {
+      cur && acc[(i / 3) | 0].add(cur)
+      return acc
+    },
+    [new Set(), new Set(), new Set()] as Set<number>[],
+  )
+
+  const lengthBefore = triplets.reduce((acc, cur) => acc + cur.size, 0)
+  const lengthAfter = triplets.reduce((acc, cur) => {
+    cur.forEach(v => acc.add(v))
+    return acc
+  }, new Set()).size
+
+  return lengthBefore > lengthAfter
 }

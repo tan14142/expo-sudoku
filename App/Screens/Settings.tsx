@@ -37,7 +37,7 @@ export default function Settings() {
             Display solver
           </Text>
           <Text selectable={false} style={styles.description}>
-            Lorem Ipsum
+            Display the solve button
           </Text>
         </View>
         <Switch
@@ -53,7 +53,7 @@ export default function Settings() {
             Display Timer
           </Text>
           <Text selectable={false} style={styles.description}>
-            Lorem Ipsum
+            Display the pause button and elapsed time
           </Text>
         </View>
         <Switch
@@ -85,7 +85,7 @@ export default function Settings() {
             Highlight matching numbers
           </Text>
           <Text selectable={false} style={styles.description}>
-            Lorem Ipsum
+            Highlight matching numbers in the other regions
           </Text>
         </View>
         <Switch
@@ -98,10 +98,10 @@ export default function Settings() {
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
-            Highlight mistake
+            Highlight mistakes
           </Text>
           <Text selectable={false} style={styles.description}>
-            Generated to be unique solution, ...
+            Highlight mistakes immediately
           </Text>
         </View>
         <Switch

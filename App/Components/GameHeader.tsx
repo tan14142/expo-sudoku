@@ -1,17 +1,14 @@
 import { StyleSheet, View, Text } from "react-native"
 import { useAppSelector } from "~/Store"
-import Timer from "./Timer"
 
 export default function GameHeader() {
-  const { difficulty } = useAppSelector(state => state.game)
-  const { displayTimer } = useAppSelector(state => state.settings)
+  const difficulty = useAppSelector(state => state.game.difficulty)
 
   return (
     <View style={styles.container}>
       <Text selectable={false} style={styles.text}>
         {difficulty}
       </Text>
-      {displayTimer && <Timer />}
     </View>
   )
 }

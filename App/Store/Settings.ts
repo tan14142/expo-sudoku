@@ -17,38 +17,38 @@ const settingsSlice = createSlice({
     theme: themes.light,
   },
   reducers: {
-    toggleDisplaySolver(slice) {
-      slice.displaySolver = !slice.displaySolver
+    toggleDisplaySolver(settings) {
+      settings.displaySolver = !settings.displaySolver
     },
-    toggleDisplayTimer(slice) {
-      slice.displayTimer = !slice.displayTimer
+    toggleDisplayTimer(settings) {
+      settings.displayTimer = !settings.displayTimer
     },
-    toggleHighlightLinkedCells(slice) {
-      slice.highlightLinkedCells = !slice.highlightLinkedCells
+    toggleHighlightLinkedCells(settings) {
+      settings.highlightLinkedCells = !settings.highlightLinkedCells
     },
-    toggleHighlightMatchingNumbers(slice) {
-      slice.highlightMatchingCells = !slice.highlightMatchingCells
+    toggleHighlightMatchingNumbers(settings) {
+      settings.highlightMatchingCells = !settings.highlightMatchingCells
     },
-    toggleHighlightMistake(slice) {
-      slice.highlightMistake = !slice.highlightMistake
+    toggleHighlightMistake(settings) {
+      settings.highlightMistake = !settings.highlightMistake
     },
-    toggleLowlightInvalidInput(slice) {
-      slice.lowlightInvalidInput = !slice.lowlightInvalidInput
+    toggleLowlightInvalidInput(settings) {
+      settings.lowlightInvalidInput = !settings.lowlightInvalidInput
     },
-    toggleLowlightSolvedNumbers(slice) {
-      slice.lowlightSolvedNumbers = !slice.lowlightSolvedNumbers
+    toggleLowlightSolvedNumbers(settings) {
+      settings.lowlightSolvedNumbers = !settings.lowlightSolvedNumbers
     },
-    toggleRemoveNotesAutomatically(slice) {
-      slice.removeNotesAutomatically = !slice.removeNotesAutomatically
+    toggleRemoveNotesAutomatically(settings) {
+      settings.removeNotesAutomatically = !settings.removeNotesAutomatically
     },
-    toggleScreenAlwaysOn(slice) {
-      slice.screenAlwaysOn = !slice.screenAlwaysOn
+    toggleScreenAlwaysOn(settings) {
+      settings.screenAlwaysOn = !settings.screenAlwaysOn
     },
-    toggleSound(slice) {
-      slice.sound = !slice.sound
+    toggleSound(settings) {
+      settings.sound = !settings.sound
     },
-    toggleTheme(slice) {
-      slice.theme = themes.light // Todo
+    toggleTheme(settings) {
+      settings.theme = themes.light // Todo
     },
   },
 })

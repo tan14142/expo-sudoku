@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { useAppDispatch } from "~/Store"
-import { setBoard } from "~/Store/Game"
+import { setBoard } from "~/Store/Board"
+import { reset } from "~/Store/Game"
 import MenuButton from "~/Components/MenuButton"
 import generate from "~/Utils/generate"
 
@@ -10,12 +11,8 @@ export default () => {
   const dispatch = useAppDispatch()
 
   function handleNewGame(clues: number, difficulty: string) {
-    dispatch(
-      setBoard({
-        difficulty,
-        ...generate(clues),
-      }),
-    )
+    dispatch(setBoard(generate(clues)))
+    dispatch(reset(difficulty))
     navigate("Game")
   }
 

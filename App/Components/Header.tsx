@@ -4,6 +4,7 @@ import GearButton from "./GearButton"
 import PaletteButton from "./PaletteButton"
 import MuteButton from "./MuteButton"
 import { useAppSelector } from "~/Store"
+import Timer from "./Timer"
 
 export default function Header(
   navRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>,
@@ -12,17 +13,27 @@ export default function Header(
     state => state.settings.theme,
   )
 
-  const title =
-    navRef.isReady() && navRef.getCurrentRoute()?.name === "Settings"
-      ? "Settings"
-      : ""
+  function getTitle() {
+    if (!navRef.isReady()) {
+      return ""
+    }
+
+    const name = navRef.getCurrentRoute()?.name
+
+    if (name === "Settings") {
+      return "Settings"
+    }
+    if (name === "Game") {
+      return <Timer />
+    }
+  }
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
       <GearButton {...navRef} />
       <View style={{ flex: 1, marginLeft: 24 }}>
         <Text selectable={false} style={styles.text}>
-          {title}
+          {getTitle()}
         </Text>
       </View>
       <PaletteButton />
