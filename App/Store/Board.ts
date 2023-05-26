@@ -69,6 +69,27 @@ function setWhitelist(board: typeof initialState) {
   )
 }
 
+function getMatchedCountAndSetLinked(board: typeof initialState) {
+  let count = 0
+
+  for (let i = 0; i < 81; i++) {
+    if (links[board.selection.index].has(i)) {
+      board.cells[i].selection = "linked"
+    } else if (
+      board.cells[i].cell &&
+      board.cells[i].cell === board.cells[board.selection.index].cell
+    ) {
+      board.cells[i].selection = "matching"
+      count++
+    } else if (board.cells[i].selection) {
+      board.cells[i].selection = ""
+    }
+  }
+
+  board.cells[board.selection.index].selection = "selected"
+  return count
+}
+
 const gameSlice = createSlice({
   name: "board",
   initialState,
@@ -98,33 +119,14 @@ const gameSlice = createSlice({
         setWhitelist(board)
       }
 
-      if (!payload) return
-
-      let count = 0
-
-      for (let i = 0; i < 81; i++) {
-        if (board.cells[i].cell === payload) {
-          count++
-        }
+      if (payload) {
+        board.solved[payload] = getMatchedCountAndSetLinked(board) === 9
       }
-
-      board.solved[payload] = count === 9
     },
     setSelection(board, { payload }: PayloadAction<number>) {
       if (board.selection.index !== payload) {
-        for (let i = 0; i < 81; i++) {
-          if (links[payload].has(i)) {
-            board.cells[i].selection = "linked"
-          } else if (board.cells[i].cell && board.cells[i].cell === board.cells[payload].cell) {
-            board.cells[i].selection = "matching"
-          } else if (board.cells[i].selection) {
-            board.cells[i].selection = ""
-          }
-        }
-  
-        board.cells[payload].selection = "selected"
         board.selection.index = payload
-        board.selection.cell = board.cells[payload].cell
+        getMatchedCountAndSetLinked(board)
         setWhitelist(board)
       }
     },
@@ -141,7 +143,7 @@ const gameSlice = createSlice({
     },
   },
 })
-
+// TODO: use board.cells to write array functions
 export const { setBoard, setCell, setSelection, reset, solve } = gameSlice.actions
 export default gameSlice.reducer
 export type BoardType = typeof initialState

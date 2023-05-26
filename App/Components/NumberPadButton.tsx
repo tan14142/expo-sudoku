@@ -10,28 +10,28 @@ export default function NumberPadButton({ num }: NumberPadButtonProps) {
   const dispatch = useAppDispatch()
   const index = useAppSelector(state => state.board.selection.index)
   const cell = useAppSelector(state => state.board.cells[index]?.cell)
+  const init = useAppSelector(state => state.board.cells[index]?.init)
   const solution = useAppSelector(state => state.board.cells[index]?.solution)
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
   const lowlightInvalidInput = useAppSelector(state => state.settings.lowlightInvalidInput)
   const lowlightSolvedNumbers = useAppSelector(state => state.settings.lowlightSolvedNumbers)
-  let isWhitelisted = false
-
-  if (lowlightInvalidInput) {
-    isWhitelisted = useAppSelector(state => state.board.selection.whitelist[num])
-  }
-  else if (lowlightSolvedNumbers) {
-    isWhitelisted = useAppSelector(state => !state.board.solved[num])
-  }
+  const isWhitelisted = useAppSelector(state => lowlightInvalidInput
+    ? state.board.selection.whitelist[num]
+    : !state.board.solved[num]
+  )
 
   function isBlacklisted() {
-    if (!lowlightInvalidInput || !lowlightSolvedNumbers) {
+    if (init) {
+      return true
+    }
+    if (!(lowlightInvalidInput || lowlightSolvedNumbers)) {
       return false
     }
     return !isWhitelisted || (highlightMistake && cell === solution)
-  } // TODO: gotta manual test lowlightSolvedNumbers at some point
+  }
 
   function handlePress(isAvailableOrForced?: boolean) {
-    if (cell !== num) {
+    if (!init && cell !== num) {
       (isAvailableOrForced || !isBlacklisted()) && dispatch(setCell(num))
     }
   }

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(48, 125, 246, 0.2)",
   },
   pressableHighlightMistake: {
-    backgroundColor: "red",
+    backgroundColor: "lightpink",
   },
   text: {
     fontSize: 24,
