@@ -7,10 +7,7 @@ type Return = [
   () => void,
 ]
 
-export default function animateHeader(
-  duration: number,
-  callback: () => void,
-): Return {
+export default function animateHeader(duration: number, callback: () => void): Return {
   const val1 = useRef(new Animated.Value(0)).current
   const val2 = useRef(new Animated.Value(0)).current
 

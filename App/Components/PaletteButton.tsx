@@ -4,9 +4,7 @@ import { useAppSelector } from "~/Store"
 import animate from "~/Animations"
 
 export default function ThemeButton() {
-  const { buttonSymbolColor: color } = useAppSelector(
-    state => state.settings.theme,
-  )
+  const { buttonSymbolColor: color } = useAppSelector(state => state.settings.theme)
   const [opacity, rotate, trigger] = animate(500, () => {})
 
   return (

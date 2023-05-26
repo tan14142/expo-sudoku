@@ -137,7 +137,8 @@ export default function Settings() {
           </Text>
         </View>
         <Switch
-          value={lowlightSolvedNumbers}
+          disabled={lowlightInvalidInput}
+          value={lowlightInvalidInput || lowlightSolvedNumbers}
           onValueChange={() => {
             dispatch(toggleLowlightSolvedNumbers())
           }}
@@ -178,52 +179,28 @@ export default function Settings() {
       <Text selectable={false} style={styles.header}>
         More
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         About
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         Privacy Policy
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         Terms of Service
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         Contact Us
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         Reset All
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         How to Play
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         Rate App
       </Text>
-      <Text
-        onPress={() => console.log(123)}
-        selectable={false}
-        style={styles.label}>
+      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
         Share App
       </Text>
       <Text selectable={false}>Version</Text>

@@ -7,8 +7,9 @@ interface MenuButtonProps {
 }
 
 export default function MenuButton({ handler, label }: MenuButtonProps) {
-  const { buttonBackgroundColor: backgroundColor, buttonTextColor: color } =
-    useAppSelector(state => state.settings.theme)
+  const { buttonBackgroundColor: backgroundColor, buttonTextColor: color } = useAppSelector(
+    state => state.settings.theme,
+  )
 
   return (
     <Pressable style={[styles.button, { backgroundColor }]} onPress={handler}>

@@ -22,22 +22,10 @@ export default () => {
         MENU
       </Text>
       <View>
-        <MenuButton
-          handler={() => handleNewGame(40, "Easy")}
-          label="New Game Easy 40"
-        />
-        <MenuButton
-          handler={() => handleNewGame(35, "Medium")}
-          label="New Game Medium 35"
-        />
-        <MenuButton
-          handler={() => handleNewGame(30, "Hard")}
-          label="New Game Hard 30"
-        />
-        <MenuButton
-          handler={() => handleNewGame(25, "Expert")}
-          label="New Game Expert 25"
-        />
+        <MenuButton handler={() => handleNewGame(40, "Easy")} label="New Game Easy 40" />
+        <MenuButton handler={() => handleNewGame(35, "Medium")} label="New Game Medium 35" />
+        <MenuButton handler={() => handleNewGame(30, "Hard")} label="New Game Hard 30" />
+        <MenuButton handler={() => handleNewGame(25, "Expert")} label="New Game Expert 25" />
         <MenuButton handler={() => console.log(123)} label="Custom Game" />
         <MenuButton handler={() => console.log(123)} label="Favorites" />
         <MenuButton handler={() => console.log(123)} label="Today's Puzzle" />

@@ -7,10 +7,7 @@ function pickRandom(solution: number[], whitelist: number[][], index: number) {
   }
 
   if (whitelist[index].length) {
-    return whitelist[index].splice(
-      Math.floor(Math.random() * whitelist[index].length),
-      1,
-    )[0]
+    return whitelist[index].splice(Math.floor(Math.random() * whitelist[index].length), 1)[0]
   }
 
   return 0

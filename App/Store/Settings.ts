@@ -34,6 +34,10 @@ const settingsSlice = createSlice({
     },
     toggleLowlightInvalidInput(settings) {
       settings.lowlightInvalidInput = !settings.lowlightInvalidInput
+
+      if (settings.lowlightInvalidInput) {
+        settings.lowlightSolvedNumbers = true
+      }
     },
     toggleLowlightSolvedNumbers(settings) {
       settings.lowlightSolvedNumbers = !settings.lowlightSolvedNumbers

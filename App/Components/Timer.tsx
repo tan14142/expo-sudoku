@@ -8,7 +8,7 @@ export default function Timer() {
   const dispatch = useAppDispatch()
   const displayTimer = useAppSelector(state => state.settings.displayTimer)
   const { running, time } = useAppSelector(state => state.game)
-  
+
   function convertTime(time: number) {
     const minutes = Math.floor(time / 60)
     const seconds = time % 60

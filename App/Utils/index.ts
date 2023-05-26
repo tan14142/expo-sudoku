@@ -7,8 +7,7 @@ export const columns = Array.from({ length: 9 }, (_, r) =>
 export const regions = Array.from({ length: 9 }, (_, r) =>
   Array.from(
     { length: 9 },
-    (_, c) =>
-      Math.floor(r / 3) * 27 + (r % 3) * 3 + Math.floor(c / 3) * 9 + (c % 3),
+    (_, c) => Math.floor(r / 3) * 27 + (r % 3) * 3 + Math.floor(c / 3) * 9 + (c % 3),
   ),
 )
 
@@ -29,18 +28,7 @@ export function getMissing(puzzle: number[]) {
 }
 
 export function getWhitelist(puzzle: number[], index: number) {
-  const whitelist = [
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-  ]
+  const whitelist = [false, true, true, true, true, true, true, true, true, true]
   links[index].forEach(link => (whitelist[puzzle[link]] = false))
   return whitelist.reduce((acc, cur, i) => {
     if (cur) acc.push(i)

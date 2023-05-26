@@ -8,7 +8,8 @@ export default function Board() {
         .fill(true)
         .map((_, i) => (
           <Cell key={i} index={i} />
-      ))}
+        )
+      )}
     </View>
   )
 }
@@ -23,7 +24,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 4,
 
-    // drop shadow
     elevation: 16,
     shadowColor: "#D7E1F4",
     shadowOffset: {

@@ -9,9 +9,7 @@ import Timer from "./Timer"
 export default function Header(
   navRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>,
 ) {
-  const { buttonBackgroundColor: backgroundColor } = useAppSelector(
-    state => state.settings.theme,
-  )
+  const { buttonBackgroundColor: backgroundColor } = useAppSelector(state => state.settings.theme)
 
   function getTitle() {
     if (!navRef.isReady()) {

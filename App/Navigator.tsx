@@ -1,7 +1,4 @@
-import {
-  NavigationContainer,
-  useNavigationContainerRef,
-} from "@react-navigation/native"
+import { NavigationContainer, useNavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Game from "~/Screens/Game"
 import Menu from "~/Screens/Menu"

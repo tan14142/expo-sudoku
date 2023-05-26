@@ -9,9 +9,7 @@ export default function GearButton({
   goBack,
   navigate,
 }: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>) {
-  const { buttonSymbolColor: color } = useAppSelector(
-    state => state.settings.theme,
-  )
+  const { buttonSymbolColor: color } = useAppSelector(state => state.settings.theme)
 
   const [opacity, rotate, trigger] = animate(1000, () => {
     getCurrentRoute()!.name === "Settings" ? goBack() : navigate("Settings")
