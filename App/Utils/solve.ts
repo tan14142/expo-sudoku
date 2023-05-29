@@ -8,7 +8,10 @@ export default function solve(puzzle: number[]) {
 
   while (i < missing.length) {
     if (!whitelist[i]) {
-      whitelist[i] = getWhitelist(stack, missing[i])
+      whitelist[i] = getWhitelist(stack, missing[i]).reduce<number[]>((acc, cur, i) => {
+        if (cur) acc.push(i)
+        return acc
+      }, [])
     }
     if (whitelist[i].length) {
       stack[missing[i]] = whitelist[i].pop() as number

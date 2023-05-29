@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { setCell, reset, solve } from "~/Store/Board"
+import { clear, reset, solve } from "~/Store/Board"
 import { reset as resetGame, setRunning } from "~/Store/Game"
 
 export default function FeaturePad() {
@@ -8,7 +8,7 @@ export default function FeaturePad() {
   const displaySolver = useAppSelector(state => state.settings.displaySolver)
 
   function handleClear() {
-    dispatch(setCell(0))
+    dispatch(clear())
   }
 
   function handleReset() {

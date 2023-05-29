@@ -1,6 +1,6 @@
 import { Dimensions, Pressable, StyleSheet, Text } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { setCell } from "~/Store/Board"
+import { removeNotes, setNum } from "~/Store/Board"
 
 interface NumberPadButtonProps {
   num: number
@@ -15,9 +15,9 @@ export default function NumberPadButton({ num }: NumberPadButtonProps) {
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
   const lowlightInvalidInput = useAppSelector(state => state.settings.lowlightInvalidInput)
   const lowlightSolvedNumbers = useAppSelector(state => state.settings.lowlightSolvedNumbers)
-  const isWhitelisted = useAppSelector(state => lowlightInvalidInput
-    ? state.board.selection.whitelist[num]
-    : !state.board.solved[num]
+  const removeNotesAutomatically = useAppSelector(state => state.settings.removeNotesAutomatically)
+  const isWhitelisted = useAppSelector(state =>
+    lowlightInvalidInput ? state.board.selection.whitelist[num] : !state.board.solved[num],
   )
 
   function isBlacklisted() {
@@ -31,8 +31,16 @@ export default function NumberPadButton({ num }: NumberPadButtonProps) {
   }
 
   function handlePress(isAvailableOrForced?: boolean) {
-    if (!init && cell !== num) {
-      (isAvailableOrForced || !isBlacklisted()) && dispatch(setCell(num))
+    if (!init && cell !== num && (isAvailableOrForced || !isBlacklisted())) {
+      dispatch(setNum(num))
+
+      if (highlightMistake && num !== solution) {
+        return
+      }
+
+      if (removeNotesAutomatically) {
+        dispatch(removeNotes())
+      }
     }
   }
 

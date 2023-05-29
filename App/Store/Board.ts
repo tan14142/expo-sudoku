@@ -1,123 +1,102 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { rows, columns, regions, links, hasDuplicateInTriplet } from "~/Utils"
+import {
+  getMatchedCountAndSetLinked,
+  getWhitelist,
+  links,
+  setMistakes,
+  setWhitelist,
+} from "~/Utils"
 
 interface BoardPayload {
   puzzle: number[]
   solution: number[]
 }
 
-const cells = Array.from({ length: 81 }, (_, i) => ({
-  [i]: {
-    cell: 0,
-    init: false,
-    mistake: false,
-    selection: "",
-    solution: 0,
-  },
-})).reduce((acc, cur) => ({ ...acc, ...cur }), {})
+const cells = Array.from({ length: 81 }, () => ({
+  cell: 0,
+  init: false,
+  mistake: false,
+  notes: Array(10).fill(false),
+  selection: "",
+  solution: 0,
+}))
 
 const initialState = {
   cells: cells,
+  noteStart: true,
   selection: {
     index: -1,
-    cell: 0,
     whitelist: Array(10).fill(false) as boolean[],
   },
   solved: Array(10).fill(false) as boolean[],
 }
 
-function setMistakes(board: typeof initialState) {
-  for (let i = 0; i < 81; i++) {
-    board.cells[i].mistake = false
-  }
-
-  for (const row of rows) {
-    if (hasDuplicateInTriplet(row.map(i => board.cells[i].cell))) {
-      row.forEach(i => (board.cells[i].mistake = true))
-    }
-  }
-
-  for (const column of columns) {
-    if (hasDuplicateInTriplet(column.map(i => board.cells[i].cell))) {
-      column.forEach(i => (board.cells[i].mistake = true))
-    }
-  }
-
-  for (const region of regions) {
-    const cells = region.reduce((acc, i) => {
-      board.cells[i].cell && acc.push(board.cells[i].cell)
-      return acc
-    }, [] as number[])
-
-    if (cells.length > new Set(cells).size) {
-      region.forEach(i => (board.cells[i].mistake = true))
-    }
-  }
-}
-
-function setWhitelist(board: typeof initialState) {
-  if (board.cells[board.selection.index].init) {
-    board.selection.whitelist = Array(10).fill(false)
-    return
-  }
-
-  const cell = board.cells[board.selection.index].cell
-  board.selection.whitelist = Array(10).fill(true)
-  board.selection.whitelist[cell] = false
-  links[board.selection.index].forEach(
-    i => (board.selection.whitelist[board.cells[i].cell] = false),
-  )
-}
-
-function getMatchedCountAndSetLinked(board: typeof initialState) {
-  let count = 0
-
-  for (let i = 0; i < 81; i++) {
-    if (links[board.selection.index].has(i)) {
-      board.cells[i].selection = "linked"
-    } else if (
-      board.cells[i].cell &&
-      board.cells[i].cell === board.cells[board.selection.index].cell
-    ) {
-      board.cells[i].selection = "matching"
-      count++
-    } else if (board.cells[i].selection) {
-      board.cells[i].selection = ""
-    }
-  }
-
-  board.cells[board.selection.index].selection = "selected"
-  return count
-}
-
-const gameSlice = createSlice({
+const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
     setBoard(board, { payload }: PayloadAction<BoardPayload>) {
       const solved = Array(10).fill(0)
 
-      for (let i = 0; i < 81; i++) {
-        board.cells[i] = {
+      board.cells = board.cells.map((_, i) => {
+        solved[payload.puzzle[i]]++
+
+        return {
           cell: payload.puzzle[i],
           init: !!payload.puzzle[i],
           mistake: false,
+          notes: Array(10).fill(false),
           selection: "",
           solution: payload.solution[i],
         }
-        solved[payload.puzzle[i]]++
-      }
+      })
 
       board.solved = solved.map(v => v === 9)
     },
-    setCell(board, { payload }: PayloadAction<number>) {
-      board.solved[board.cells[board.selection.index].cell] = false
-
-      if (board.selection.index >= 0) {
-        board.cells[board.selection.index].cell = payload
-        setMistakes(board)
-        setWhitelist(board)
+    setNote(board, { payload }: PayloadAction<number>) {
+      if (board.selection.index === -1) {
+        return
       }
+
+      const num = board.cells[board.selection.index].cell
+
+      if (num < 1 || board.cells[payload].init) {
+        return
+      }
+
+      if (
+        !getWhitelist(
+          board.cells.map(({ cell }) => cell),
+          payload,
+        )[num]
+      ) {
+        return
+      }
+
+      board.cells[payload].cell = 0
+      board.cells[payload].notes[num] = board.noteStart
+    },
+    setNoteStart(board, { payload }: PayloadAction<number>) {
+      if (board.selection.index === -1) {
+        return
+      }
+
+      const num = board.cells[board.selection.index].cell
+      board.noteStart = !board.cells[payload].notes[num]
+    },
+    removeNotes(board) {
+      const num = board.cells[board.selection.index].cell
+      links[board.selection.index].forEach(link => (board.cells[link].notes[num] = false))
+    },
+    setNum(board, { payload }: PayloadAction<number>) {
+      if (board.selection.index === -1) {
+        return
+      }
+
+      board.solved[board.cells[board.selection.index].cell] = false
+      board.cells[board.selection.index].cell = payload
+      setMistakes(board)
+      setWhitelist(board)
 
       if (payload) {
         board.solved[payload] = getMatchedCountAndSetLinked(board) === 9
@@ -130,20 +109,42 @@ const gameSlice = createSlice({
         setWhitelist(board)
       }
     },
-    reset(board) {
-      for (let i = 0; i < 81; i++) {
-        if (!board.cells[i].init) board.cells[i].cell = 0
-        board.cells[i].mistake = false
+    clear(board) {
+      if (board.selection.index === -1) {
+        return
       }
+
+      boardSlice.caseReducers.setNum(board, {
+        payload: 0,
+        type: "board/setNum",
+      })
+      board.cells[board.selection.index].notes = Array(10).fill(false)
+    },
+    reset(board) {
+      board.cells.forEach(({ init }, i) => {
+        if (!init) board.cells[i].cell = 0
+        board.cells[i].mistake = false
+        board.cells[i].notes = Array(10).fill(false)
+      })
     },
     solve(board) {
-      for (let i = 0; i < 81; i++) {
-        board.cells[i].cell = board.cells[i].solution
-      }
+      board.cells.forEach(({ solution }, i) => {
+        board.cells[i].cell = solution
+      })
     },
   },
 })
-// TODO: use board.cells to write array functions
-export const { setBoard, setCell, setSelection, reset, solve } = gameSlice.actions
-export default gameSlice.reducer
+
+export const {
+  setBoard,
+  setNote,
+  setNoteStart,
+  removeNotes,
+  setNum,
+  setSelection,
+  clear,
+  reset,
+  solve,
+} = boardSlice.actions
+export default boardSlice.reducer
 export type BoardType = typeof initialState

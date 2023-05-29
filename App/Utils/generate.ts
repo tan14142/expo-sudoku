@@ -3,7 +3,10 @@ import solve from "./solve"
 
 function pickRandom(solution: number[], whitelist: number[][], index: number) {
   if (!whitelist[index]) {
-    whitelist[index] = getWhitelist(solution, index)
+    whitelist[index] = getWhitelist(solution, index).reduce<number[]>((acc, cur, i) => {
+      if (cur) acc.push(i)
+      return acc
+    }, [])
   }
 
   if (whitelist[index].length) {
@@ -25,12 +28,13 @@ function getPuzzle(solution: number[], clues: number) {
   while (clues < total && picks.length) {
     const pick = picks.pop() as number
     const backup = solution[pick]
+    const whitelist = getWhitelist(solution, pick)
     let isUnique = true
 
-    for (const num of getWhitelist(solution, pick)) {
-      if (num !== backup) {
+    for (let k = 1; k < 10; k++) {
+      if (whitelist[k] && k !== backup) {
         try {
-          solution[pick] = num
+          solution[pick] = k
           solve(solution.slice())
           solution[pick] = backup
           isUnique = false

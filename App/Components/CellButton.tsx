@@ -1,13 +1,16 @@
 import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { setSelection } from "~/Store/Board"
+import Notes from "~/Components/Notes"
 import { CellProps } from "./Cell"
 
 export default function Cell({ index }: CellProps) {
   const dispatch = useAppDispatch()
-  const { cell, init, mistake, selection, solution } = useAppSelector(
-    state => state.board.cells[index],
-  )
+  const cell = useAppSelector(state => state.board.cells[index].cell)
+  const init = useAppSelector(state => state.board.cells[index].init)
+  const mistake = useAppSelector(state => state.board.cells[index].mistake)
+  const selection = useAppSelector(state => state.board.cells[index].selection)
+  const solution = useAppSelector(state => state.board.cells[index].solution)
   const highlightLinkedCells = useAppSelector(state => state.settings.highlightLinkedCells)
   const highlightMatchingCells = useAppSelector(state => state.settings.highlightMatchingCells)
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
@@ -17,14 +20,11 @@ export default function Cell({ index }: CellProps) {
 
     if (selection === "selected") {
       pressableStyles.push(styles.pressableSelected)
-    }
-    else if (mistake) {
+    } else if (mistake) {
       pressableStyles.push(styles.pressableHighlightMistake)
-    }
-    else if (highlightMatchingCells && selection === "matching") {
+    } else if (highlightMatchingCells && selection === "matching") {
       pressableStyles.push(styles.pressableHighlightMatching)
-    }
-    else if (highlightLinkedCells && selection === "linked") {
+    } else if (highlightLinkedCells && selection === "linked") {
       pressableStyles.push(styles.pressableHighlightLinked)
     }
 
@@ -36,11 +36,12 @@ export default function Cell({ index }: CellProps) {
 
     if (init) {
       textStyles.push(styles.textInit)
-    }
-    else if (cell && ((highlightMistake && cell !== solution) || (!highlightMistake && mistake))) {
+    } else if (
+      cell &&
+      ((highlightMistake && cell !== solution) || (!highlightMistake && mistake))
+    ) {
       textStyles.push(styles.textMistake)
-    }
-    else {
+    } else {
       textStyles.push(styles.textCorrect)
     }
 
@@ -53,9 +54,13 @@ export default function Cell({ index }: CellProps) {
 
   return (
     <Pressable onPress={handlePress} style={getPressableStyle()}>
-      <Text selectable={false} style={getTextStyle()}>
-        {cell ? cell : ""}
-      </Text>
+      {cell ? (
+        <Text selectable={false} style={getTextStyle()}>
+          {cell}
+        </Text>
+      ) : (
+        <Notes index={index} />
+      )}
     </Pressable>
   )
 }
