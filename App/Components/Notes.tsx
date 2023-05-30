@@ -8,7 +8,7 @@ export default function Notes({ index }: CellProps) {
   return (
     <View style={styles.container}>
       {notes.slice(1).map((v, i) => (
-        <Text key={i} selectable={false} style={[styles.text, !v && styles.opaque]}>
+        <Text selectable={false} key={i} style={[styles.text, !v && styles.opaque]}>
           {i + 1}
         </Text>
       ))}
@@ -18,6 +18,7 @@ export default function Notes({ index }: CellProps) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
   },

@@ -1,6 +1,7 @@
-import { ScrollView, Switch, StyleSheet, Text, View } from "react-native"
+import { ScrollView, StyleSheet, Switch, Text, View } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import {
+  toggledisplayHinter,
   toggleDisplaySolver,
   toggleDisplayTimer,
   toggleHighlightLinkedCells,
@@ -15,6 +16,7 @@ import {
 export default function Settings() {
   const dispatch = useAppDispatch()
   const {
+    displayHinter,
     displaySolver,
     displayTimer,
     highlightLinkedCells,
@@ -34,6 +36,22 @@ export default function Settings() {
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
+            Display hinter
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Display the hint button
+          </Text>
+        </View>
+        <Switch
+          value={displayHinter}
+          onValueChange={() => {
+            dispatch(toggledisplayHinter())
+          }}
+        />
+      </View>
+      <View style={styles.row}>
+        <View>
+          <Text selectable={false} style={styles.label}>
             Display solver
           </Text>
           <Text selectable={false} style={styles.description}>
@@ -50,7 +68,7 @@ export default function Settings() {
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
-            Display Timer
+            Display timer
           </Text>
           <Text selectable={false} style={styles.description}>
             Display the pause button and elapsed time
@@ -63,6 +81,25 @@ export default function Settings() {
           }}
         />
       </View>
+      <View style={styles.row}>
+        <View>
+          <Text selectable={false} style={styles.label}>
+            Screen always on
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Keep the screen always on
+          </Text>
+        </View>
+        <Switch
+          value={screenAlwaysOn}
+          onValueChange={() => {
+            dispatch(toggleScreenAlwaysOn())
+          }}
+        />
+      </View>
+      <Text selectable={false} style={styles.header}>
+        Board
+      </Text>
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
@@ -160,47 +197,31 @@ export default function Settings() {
           }}
         />
       </View>
-      <View style={styles.row}>
-        <View>
-          <Text selectable={false} style={styles.label}>
-            Screen always on
-          </Text>
-          <Text selectable={false} style={styles.description}>
-            Keep the screen always on
-          </Text>
-        </View>
-        <Switch
-          value={screenAlwaysOn}
-          onValueChange={() => {
-            dispatch(toggleScreenAlwaysOn())
-          }}
-        />
-      </View>
       <Text selectable={false} style={styles.header}>
         More
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         About
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         Privacy Policy
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         Terms of Service
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         Contact Us
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         Reset All
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         How to Play
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         Rate App
       </Text>
-      <Text onPress={() => console.log(123)} selectable={false} style={styles.label}>
+      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
         Share App
       </Text>
       <Text selectable={false}>Version</Text>

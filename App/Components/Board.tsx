@@ -1,6 +1,6 @@
 import { GestureResponderEvent, LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { useAppDispatch } from "~/Store"
-import { setNote, setNoteStart } from "~/Store/Board"
+import { setNoteSwipe, setNoteSwipeStart } from "~/Store/Board"
 import Cell from "./Cell"
 
 export default function Board() {
@@ -19,7 +19,7 @@ export default function Board() {
   function handleStart(event: GestureResponderEvent) {
     startX = event.nativeEvent.locationX
     startY = event.nativeEvent.locationY
-    dispatch(setNoteStart(calculateCell(startX, startY)))
+    dispatch(setNoteSwipeStart(calculateCell(startX, startY)))
     return true
   }
 
@@ -35,7 +35,7 @@ export default function Board() {
     const tapThreshold = 10
 
     if (dx > tapThreshold || dy > tapThreshold) {
-      dispatch(setNote(calculateCell(x, y)))
+      dispatch(setNoteSwipe(calculateCell(x, y)))
     }
   }
 
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     borderColor: "#D7E1F4",
     borderRadius: 10,
     borderWidth: 4,
+    overflow: "hidden",
 
     elevation: 16,
     shadowColor: "#D7E1F4",

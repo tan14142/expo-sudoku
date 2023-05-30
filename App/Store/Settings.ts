@@ -1,9 +1,11 @@
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
 import { createSlice } from "@reduxjs/toolkit"
 import themes from "../Themes"
 
 const settingsSlice = createSlice({
   name: "settings",
   initialState: {
+    displayHinter: true,
     displaySolver: true,
     displayTimer: true,
     highlightLinkedCells: true,
@@ -17,6 +19,9 @@ const settingsSlice = createSlice({
     theme: themes.light,
   },
   reducers: {
+    toggledisplayHinter(settings) {
+      settings.displayHinter = !settings.displayHinter
+    },
     toggleDisplaySolver(settings) {
       settings.displaySolver = !settings.displaySolver
     },
@@ -45,7 +50,12 @@ const settingsSlice = createSlice({
     toggleRemoveNotesAutomatically(settings) {
       settings.removeNotesAutomatically = !settings.removeNotesAutomatically
     },
-    toggleScreenAlwaysOn(settings) {
+    toggleScreenAlwaysOn(settings) { // TODO: check
+      if (settings.screenAlwaysOn) {
+        deactivateKeepAwake()
+      } else {
+        activateKeepAwake()
+      }
       settings.screenAlwaysOn = !settings.screenAlwaysOn
     },
     toggleSound(settings) {
@@ -58,6 +68,7 @@ const settingsSlice = createSlice({
 })
 
 export const {
+  toggledisplayHinter,
   toggleDisplayTimer,
   toggleDisplaySolver,
   toggleHighlightLinkedCells,

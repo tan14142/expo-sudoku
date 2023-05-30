@@ -8,14 +8,14 @@ export default function NumberPad() {
         {Array(5)
           .fill(true)
           .map((_, i) => (
-            <NumberPadButton key={i} num={i + 1} />
+            <NumberPadButton key={i} value={i + 1} />
           ))}
       </View>
       <View style={styles.row2}>
         {Array(4)
           .fill(true)
           .map((_, i) => (
-            <NumberPadButton key={i} num={i + 6} />
+            <NumberPadButton key={i} value={i + 6} />
           ))}
       </View>
     </>

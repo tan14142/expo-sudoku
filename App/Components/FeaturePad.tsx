@@ -1,14 +1,20 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { clear, reset, solve } from "~/Store/Board"
-import { reset as resetGame, setRunning } from "~/Store/Game"
+import { clear, hint, reset, solve, undo } from "~/Store/Board"
+import { reset as resetGame, setNotes, setRunning } from "~/Store/Game"
 
 export default function FeaturePad() {
   const dispatch = useAppDispatch()
+  const displayHinter = useAppSelector(state => state.settings.displayHinter)
   const displaySolver = useAppSelector(state => state.settings.displaySolver)
+  const notesEnabled = useAppSelector(state => state.game.notesEnabled)
 
   function handleClear() {
     dispatch(clear())
+  }
+
+  function handleHint() {
+    dispatch(hint())
   }
 
   function handleReset() {
@@ -21,9 +27,17 @@ export default function FeaturePad() {
     dispatch(setRunning(false))
   }
 
+  function handleNotes() {
+    dispatch(setNotes(!notesEnabled))
+  }
+
+  function handleUndo() {
+    dispatch(undo())
+  }
+
   return (
     <View style={styles.row}>
-      <Pressable style={styles.button} onPress={() => {}}>
+      <Pressable style={styles.button} onPress={handleUndo}>
         <Text selectable={false} style={styles.text}>
           Undo
         </Text>
@@ -45,14 +59,16 @@ export default function FeaturePad() {
           Solve
         </Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={() => {}}>
+      <Pressable
+        style={[styles.button, { display: displayHinter ? "flex" : "none" }]}
+        onPress={handleHint}>
         <Text selectable={false} style={styles.text}>
           Hint
         </Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={() => {}}>
+      <Pressable style={styles.button} onPress={handleNotes}>
         <Text selectable={false} style={styles.text}>
-          Notes
+          {notesEnabled ? "Notes ✓" : "Notes"}
         </Text>
       </Pressable>
     </View>

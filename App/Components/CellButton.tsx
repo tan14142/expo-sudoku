@@ -6,7 +6,7 @@ import { CellProps } from "./Cell"
 
 export default function Cell({ index }: CellProps) {
   const dispatch = useAppDispatch()
-  const cell = useAppSelector(state => state.board.cells[index].cell)
+  const num = useAppSelector(state => state.board.cells[index].num)
   const init = useAppSelector(state => state.board.cells[index].init)
   const mistake = useAppSelector(state => state.board.cells[index].mistake)
   const selection = useAppSelector(state => state.board.cells[index].selection)
@@ -36,10 +36,7 @@ export default function Cell({ index }: CellProps) {
 
     if (init) {
       textStyles.push(styles.textInit)
-    } else if (
-      cell &&
-      ((highlightMistake && cell !== solution) || (!highlightMistake && mistake))
-    ) {
+    } else if (num && ((highlightMistake && num !== solution) || (!highlightMistake && mistake))) {
       textStyles.push(styles.textMistake)
     } else {
       textStyles.push(styles.textCorrect)
@@ -54,9 +51,9 @@ export default function Cell({ index }: CellProps) {
 
   return (
     <Pressable onPress={handlePress} style={getPressableStyle()}>
-      {cell ? (
+      {num ? (
         <Text selectable={false} style={getTextStyle()}>
-          {cell}
+          {num}
         </Text>
       ) : (
         <Notes index={index} />

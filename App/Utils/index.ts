@@ -52,10 +52,10 @@ function hasDuplicateInTriplet(nums: number[]) {
 export function getMatchedCountAndSetLinked(board: BoardType) {
   let count = 0
 
-  board.cells.forEach(({ cell, selection }, i) => {
+  board.cells.forEach(({ num, selection }, i) => {
     if (links[board.selection.index].has(i)) {
       board.cells[i].selection = "linked"
-    } else if (cell && cell === board.cells[board.selection.index].cell) {
+    } else if (num && num === board.cells[board.selection.index].num) {
       board.cells[i].selection = "matching"
       count++
     } else if (selection) {
@@ -73,20 +73,20 @@ export function setMistakes(board: BoardType) {
   })
 
   for (const row of rows) {
-    if (hasDuplicateInTriplet(row.map(i => board.cells[i].cell))) {
+    if (hasDuplicateInTriplet(row.map(i => board.cells[i].num))) {
       row.forEach(i => (board.cells[i].mistake = true))
     }
   }
 
   for (const column of columns) {
-    if (hasDuplicateInTriplet(column.map(i => board.cells[i].cell))) {
+    if (hasDuplicateInTriplet(column.map(i => board.cells[i].num))) {
       column.forEach(i => (board.cells[i].mistake = true))
     }
   }
 
   for (const region of regions) {
     const cells = region.reduce((acc, i) => {
-      board.cells[i].cell && acc.push(board.cells[i].cell)
+      board.cells[i].num && acc.push(board.cells[i].num)
       return acc
     }, [] as number[])
 
@@ -104,9 +104,9 @@ export function setWhitelist(board: BoardType) {
   }
 
   board.selection.whitelist = getWhitelist(
-    board.cells.map(({ cell }) => cell),
+    board.cells.map(({ num }) => num),
     index,
   )
-  const cell = board.cells[index].cell
-  board.selection.whitelist[cell] = false
+  const num = board.cells[index].num
+  board.selection.whitelist[num] = false
 }
