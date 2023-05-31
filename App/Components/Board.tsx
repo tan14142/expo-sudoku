@@ -1,32 +1,39 @@
+import { useRef } from "react"
 import { GestureResponderEvent, LayoutChangeEvent, StyleSheet, View } from "react-native"
-import { useAppDispatch } from "~/Store"
-import { setNoteSwipe, setNoteSwipeStart } from "~/Store/Board"
+import { useAppDispatch, useAppSelector } from "~/Store"
+import { pushBoard, setNotesSwipe, setNotesSwipeStart } from "~/Store/Game"
+import { checkSelection } from "~/Utils"
 import Cell from "./Cell"
 
 export default function Board() {
   const dispatch = useAppDispatch()
+  const selection = useAppSelector(state => state.game.selection, checkSelection)
   let startX = 0
   let startY = 0
-  let cellSize = 0
-  let viewSize = 0
+  let cellSize = useRef(0)
+  let viewSize = useRef(0)
 
   const calculateCell = (x: number, y: number): number => {
-    const row = Math.floor(y / cellSize)
-    const col = Math.floor(x / cellSize)
+    const row = Math.floor(y / cellSize.current)
+    const col = Math.floor(x / cellSize.current)
     return row * 9 + col
   }
 
   function handleStart(event: GestureResponderEvent) {
+    if (isNaN(selection)) {
+      return false
+    }
     startX = event.nativeEvent.locationX
     startY = event.nativeEvent.locationY
-    dispatch(setNoteSwipeStart(calculateCell(startX, startY)))
+    dispatch(pushBoard())
+    dispatch(setNotesSwipeStart(calculateCell(startX, startY)))
     return true
   }
 
   function handleMove(event: GestureResponderEvent) {
     const { locationX: x, locationY: y } = event.nativeEvent
 
-    if (x <= 0 || x >= viewSize || y <= 0 || y >= viewSize) {
+    if (x <= 0 || x >= viewSize.current || y <= 0 || y >= viewSize.current) {
       return
     }
 
@@ -35,13 +42,13 @@ export default function Board() {
     const tapThreshold = 10
 
     if (dx > tapThreshold || dy > tapThreshold) {
-      dispatch(setNoteSwipe(calculateCell(x, y)))
+      dispatch(setNotesSwipe(calculateCell(x, y)))
     }
   }
 
   function setDimensions(event: LayoutChangeEvent) {
-    cellSize = event.nativeEvent.layout.width / 9
-    viewSize = event.nativeEvent.layout.width
+    cellSize.current = event.nativeEvent.layout.width / 9
+    viewSize.current = event.nativeEvent.layout.width
   }
 
   return (

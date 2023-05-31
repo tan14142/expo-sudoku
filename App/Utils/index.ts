@@ -1,4 +1,4 @@
-import { BoardType } from "~/Store/Board"
+import { GameType } from "~/Store/Game"
 
 const rows = Array.from({ length: 9 }, (_, r) => Array.from({ length: 9 }, (_, c) => r * 9 + c))
 const columns = Array.from({ length: 9 }, (_, r) => Array.from({ length: 9 }, (_, c) => r + c * 9))
@@ -8,6 +8,18 @@ const regions = Array.from({ length: 9 }, (_, r) =>
     (_, c) => Math.floor(r / 3) * 27 + (r % 3) * 3 + Math.floor(c / 3) * 9 + (c % 3),
   ),
 )
+
+export function checkWon(game: GameType) {
+  return game.board.every(({ num, solution }) => num === solution)
+}
+
+export function checkLostOrWon<EqualityFn>(_: string, nextState: string) {
+  return !(nextState === "lost" || nextState === "won")
+}
+
+export function checkSelection<EqualityFn>(prevState: number, nextState: number) {
+  return !(isNaN(prevState) && !isNaN(nextState))
+}
 
 export const links = Array.from({ length: 81 }, (_, i) => {
   const row = rows[Math.floor(i / 9)]
@@ -31,6 +43,24 @@ export function getWhitelist(puzzle: number[], index: number) {
   return whitelist
 }
 
+export function getMatchedCountAndSetLinked(game: GameType) {
+  let count = 0
+
+  game.board.forEach(({ num, status }, i) => {
+    if (links[game.selection].has(i)) {
+      game.board[i].status = "linked"
+    } else if (num && num === game.board[game.selection].num) {
+      game.board[i].status = "matching"
+      count++
+    } else if (status) {
+      game.board[i].status = ""
+    }
+  })
+
+  game.board[game.selection].status = "selected"
+  return count
+}
+
 function hasDuplicateInTriplet(nums: number[]) {
   const triplets = nums.reduce(
     (acc, cur, i) => {
@@ -49,64 +79,46 @@ function hasDuplicateInTriplet(nums: number[]) {
   return lengthBefore > lengthAfter
 }
 
-export function getMatchedCountAndSetLinked(board: BoardType) {
-  let count = 0
-
-  board.cells.forEach(({ num, selection }, i) => {
-    if (links[board.selection.index].has(i)) {
-      board.cells[i].selection = "linked"
-    } else if (num && num === board.cells[board.selection.index].num) {
-      board.cells[i].selection = "matching"
-      count++
-    } else if (selection) {
-      board.cells[i].selection = ""
-    }
-  })
-
-  board.cells[board.selection.index].selection = "selected"
-  return count
-}
-
-export function setMistakes(board: BoardType) {
-  board.cells.forEach((_, i) => {
-    board.cells[i].mistake = false
+export function setMistakes(game: GameType) {
+  game.board.forEach((_, i) => {
+    game.board[i].mistake = false
   })
 
   for (const row of rows) {
-    if (hasDuplicateInTriplet(row.map(i => board.cells[i].num))) {
-      row.forEach(i => (board.cells[i].mistake = true))
+    if (hasDuplicateInTriplet(row.map(i => game.board[i].num))) {
+      row.forEach(i => (game.board[i].mistake = true))
     }
   }
 
   for (const column of columns) {
-    if (hasDuplicateInTriplet(column.map(i => board.cells[i].num))) {
-      column.forEach(i => (board.cells[i].mistake = true))
+    if (hasDuplicateInTriplet(column.map(i => game.board[i].num))) {
+      column.forEach(i => (game.board[i].mistake = true))
     }
   }
 
   for (const region of regions) {
     const cells = region.reduce((acc, i) => {
-      board.cells[i].num && acc.push(board.cells[i].num)
+      game.board[i].num && acc.push(game.board[i].num)
       return acc
     }, [] as number[])
 
     if (cells.length > new Set(cells).size) {
-      region.forEach(i => (board.cells[i].mistake = true))
+      region.forEach(i => (game.board[i].mistake = true))
     }
   }
 }
 
-export function setWhitelist(board: BoardType) {
-  const index = board.selection.index
+export function setWhitelist(game: GameType) {
+  const index = game.selection
 
-  if (board.cells[index].init) {
+  if (game.board[index].init) {
     return
   }
 
-  board.selection.whitelist = getWhitelist(
-    board.cells.map(({ num }) => num),
+  game.whitelist = getWhitelist(
+    game.board.map(({ num }) => num),
     index,
   )
-  const num = board.cells[index].num
-  board.selection.whitelist[num] = false
+  const num = game.board[index].num
+  game.whitelist[num] = false
 }

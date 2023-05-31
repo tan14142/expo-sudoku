@@ -1,16 +1,16 @@
 import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { setSelection } from "~/Store/Board"
+import { setSelection } from "~/Store/Game"
 import Notes from "~/Components/Notes"
 import { CellProps } from "./Cell"
 
 export default function Cell({ index }: CellProps) {
   const dispatch = useAppDispatch()
-  const num = useAppSelector(state => state.board.cells[index].num)
-  const init = useAppSelector(state => state.board.cells[index].init)
-  const mistake = useAppSelector(state => state.board.cells[index].mistake)
-  const selection = useAppSelector(state => state.board.cells[index].selection)
-  const solution = useAppSelector(state => state.board.cells[index].solution)
+  const num = useAppSelector(state => state.game.board[index].num)
+  const init = useAppSelector(state => state.game.board[index].init)
+  const mistake = useAppSelector(state => state.game.board[index].mistake)
+  const status = useAppSelector(state => state.game.board[index].status)
+  const solution = useAppSelector(state => state.game.board[index].solution)
   const highlightLinkedCells = useAppSelector(state => state.settings.highlightLinkedCells)
   const highlightMatchingCells = useAppSelector(state => state.settings.highlightMatchingCells)
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
@@ -18,13 +18,13 @@ export default function Cell({ index }: CellProps) {
   function getPressableStyle() {
     const pressableStyles: ViewStyle[] = [styles.pressable]
 
-    if (selection === "selected") {
+    if (status === "selected") {
       pressableStyles.push(styles.pressableSelected)
     } else if (mistake) {
       pressableStyles.push(styles.pressableHighlightMistake)
-    } else if (highlightMatchingCells && selection === "matching") {
+    } else if (highlightMatchingCells && status === "matching") {
       pressableStyles.push(styles.pressableHighlightMatching)
-    } else if (highlightLinkedCells && selection === "linked") {
+    } else if (highlightLinkedCells && status === "linked") {
       pressableStyles.push(styles.pressableHighlightLinked)
     }
 

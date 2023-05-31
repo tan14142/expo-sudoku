@@ -1,10 +1,14 @@
 import { Dimensions, StyleSheet, View } from "react-native"
+import { useAppSelector } from "~/Store"
 import GameHeader from "~/Components/GameHeader"
 import Board from "~/Components/Board"
 import FeaturePad from "~/Components/FeaturePad"
 import NumberPad from "~/Components/NumberPad"
+import { checkLostOrWon } from "~/Utils"
 
 export default function Game() {
+  const status = useAppSelector(state => state.game.status, checkLostOrWon)
+
   return (
     <View style={styles.container}>
       <GameHeader />

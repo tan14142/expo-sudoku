@@ -1,6 +1,6 @@
 import { Dimensions, Pressable, StyleSheet, Text } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { removeNotes, setNote, setNum } from "~/Store/Board"
+import { pushLinks, pushSelection, removeLinkedNotes, setNote, setNum } from "~/Store/Game"
 
 interface NumberPadButtonProps {
   value: number
@@ -8,17 +8,17 @@ interface NumberPadButtonProps {
 
 export default function NumberPadButton({ value }: NumberPadButtonProps) {
   const dispatch = useAppDispatch()
-  const index = useAppSelector(state => state.board.selection.index)
-  const num = useAppSelector(state => state.board.cells[index]?.num)
-  const init = useAppSelector(state => state.board.cells[index]?.init)
-  const solution = useAppSelector(state => state.board.cells[index]?.solution)
+  const selection = useAppSelector(state => state.game.selection)
+  const num = useAppSelector(state => state.game.board[selection]?.num)
+  const init = useAppSelector(state => state.game.board[selection]?.init)
+  const solution = useAppSelector(state => state.game.board[selection]?.solution)
   const notesEnabled = useAppSelector(state => state.game.notesEnabled)
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
   const lowlightInvalidInput = useAppSelector(state => state.settings.lowlightInvalidInput)
   const lowlightSolvedNumbers = useAppSelector(state => state.settings.lowlightSolvedNumbers)
   const removeNotesAutomatically = useAppSelector(state => state.settings.removeNotesAutomatically)
   const isWhitelisted = useAppSelector(state =>
-    lowlightInvalidInput ? state.board.selection.whitelist[value] : !state.board.solved[value],
+    lowlightInvalidInput ? state.game.whitelist[value] : !state.game.solved[value],
   )
 
   function isBlacklisted() {
@@ -32,10 +32,12 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
   }
 
   function handlePress(isLongPress = false) {
-    if (!init && (isLongPress || !isBlacklisted())) {
+    if (!isNaN(selection) && !init && (isLongPress || !isBlacklisted())) {
       if (notesEnabled) {
+        dispatch(pushSelection())
         dispatch(setNote(value))
       } else if (num !== value) {
+        dispatch(pushSelection())
         dispatch(setNum(value))
 
         if (highlightMistake && value !== solution) {
@@ -43,7 +45,8 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
         }
 
         if (removeNotesAutomatically) {
-          dispatch(removeNotes())
+          dispatch(pushLinks())
+          dispatch(removeLinkedNotes())
         }
       }
     }
@@ -51,7 +54,7 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
 
   return (
     <Pressable
-      style={[styles.button, isBlacklisted() && styles.faded]}
+      style={[styles.button, isBlacklisted() && styles.faded, notesEnabled && styles.greyed]}
       onPress={() => handlePress()}
       onLongPress={() => handlePress(true)}>
       <Text selectable={false} style={styles.text}>
@@ -82,6 +85,9 @@ const styles = StyleSheet.create({
   },
   faded: {
     opacity: 0.5,
+  },
+  greyed: {
+    backgroundColor: "#888888",
   },
   text: {
     color: "white",

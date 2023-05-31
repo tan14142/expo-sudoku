@@ -1,34 +1,48 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { clear, hint, reset, solve, undo } from "~/Store/Board"
-import { reset as resetGame, setNotes, setRunning } from "~/Store/Game"
+import {
+  pushSelection,
+  setNotesEnabled,
+  setStatus,
+  clear,
+  hint,
+  reset,
+  solve,
+  undo,
+} from "~/Store/Game"
+import { checkSelection } from "~/Utils"
 
 export default function FeaturePad() {
   const dispatch = useAppDispatch()
+  const selection = useAppSelector(state => state.game.selection, checkSelection)
   const displayHinter = useAppSelector(state => state.settings.displayHinter)
   const displaySolver = useAppSelector(state => state.settings.displaySolver)
   const notesEnabled = useAppSelector(state => state.game.notesEnabled)
 
   function handleClear() {
-    dispatch(clear())
+    if (!isNaN(selection)) {
+      dispatch(pushSelection())
+      dispatch(clear())
+    }
   }
 
   function handleHint() {
-    dispatch(hint())
+    if (!isNaN(selection)) {
+      dispatch(hint())
+    }
   }
 
   function handleReset() {
     dispatch(reset())
-    dispatch(resetGame())
   }
 
   function handleSolve() {
+    dispatch(setStatus("paused"))
     dispatch(solve())
-    dispatch(setRunning(false))
   }
 
   function handleNotes() {
-    dispatch(setNotes(!notesEnabled))
+    dispatch(setNotesEnabled(!notesEnabled))
   }
 
   function handleUndo() {

@@ -3,7 +3,7 @@ import { useAppSelector } from "~/Store"
 import { CellProps } from "./Cell"
 
 export default function Notes({ index }: CellProps) {
-  const { notes } = useAppSelector(state => state.board.cells[index])
+  const notes = useAppSelector(state => state.game.board[index].notes)
 
   return (
     <View style={styles.container}>
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
+    width: "100%",
   },
   opaque: {
     opacity: 0,

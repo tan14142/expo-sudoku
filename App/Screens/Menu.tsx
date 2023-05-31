@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { useAppDispatch } from "~/Store"
-import { setBoard } from "~/Store/Board"
-import { reset } from "~/Store/Game"
+import { reset, setBoard } from "~/Store/Game"
 import MenuButton from "~/Components/MenuButton"
 import generate from "~/Utils/generate"
 
@@ -11,8 +10,13 @@ export default () => {
   const dispatch = useAppDispatch()
 
   function handleNewGame(clues: number, difficulty: string) {
-    dispatch(setBoard(generate(clues)))
-    dispatch(reset(difficulty))
+    dispatch(
+      setBoard({
+        difficulty,
+        ...generate(clues),
+      }),
+    )
+    dispatch(reset())
     navigate("Game")
   }
 
@@ -22,7 +26,7 @@ export default () => {
         MENU
       </Text>
       <View>
-        <MenuButton handler={() => handleNewGame(40, "Easy")} label="New Game Easy 40" />
+        <MenuButton handler={() => handleNewGame(80, "Easy")} label="New Game Easy 80" />
         <MenuButton handler={() => handleNewGame(35, "Medium")} label="New Game Medium 35" />
         <MenuButton handler={() => handleNewGame(30, "Hard")} label="New Game Hard 30" />
         <MenuButton handler={() => handleNewGame(25, "Expert")} label="New Game Expert 25" />

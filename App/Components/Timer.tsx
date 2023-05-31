@@ -1,13 +1,14 @@
 import { useEffect } from "react"
 import { Pressable, StyleSheet, View, Text } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { setRunning, setTime } from "~/Store/Game"
+import { setStatus, setTimer } from "~/Store/Game"
 import { Feather } from "@expo/vector-icons"
 
 export default function Timer() {
   const dispatch = useAppDispatch()
+  const status = useAppSelector(state => state.game.status)
+  const time = useAppSelector(state => state.game.time)
   const displayTimer = useAppSelector(state => state.settings.displayTimer)
-  const { running, time } = useAppSelector(state => state.game)
 
   function convertTime(time: number) {
     const minutes = Math.floor(time / 60)
@@ -17,17 +18,17 @@ export default function Timer() {
   }
 
   function toggle() {
-    dispatch(setRunning(!running))
+    dispatch(setStatus(status === "running" ? "paused" : "running"))
   }
 
   useEffect(() => {
-    if (running) {
-      const timeout = setTimeout(() => {
-        dispatch(setTime(time + 1))
-      }, 1000)
-      return () => clearTimeout(timeout)
-    }
-  }, [running, time])
+    // if (status = "running") {
+    //   const timeout = setTimeout(() => {
+    //     dispatch(setTimer(time + 1))
+    //   }, 1000)
+    //   return () => clearTimeout(timeout)
+    // }
+  }, [status, time])
 
   if (!displayTimer) {
     return null
@@ -36,7 +37,7 @@ export default function Timer() {
   return (
     <Pressable style={styles.container} onPress={toggle}>
       <View style={styles.iconWrapper}>
-        <Feather name={running ? "pause" : "play"} size={26} />
+        <Feather name={status === "running" ? "pause" : "play"} size={26} />
       </View>
       <Text selectable={false} style={styles.text}>
         {convertTime(time)}
