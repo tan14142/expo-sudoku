@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
+    fontWeight: "bold",
   },
   textCorrect: {
     color: "#307DF6",

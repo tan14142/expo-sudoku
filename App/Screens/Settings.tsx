@@ -1,7 +1,8 @@
 import { ScrollView, StyleSheet, Switch, Text, View } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import {
-  toggledisplayHinter,
+  toggleDisplayAnimations,
+  toggleDisplayHinter,
   toggleDisplaySolver,
   toggleDisplayTimer,
   toggleHighlightLinkedCells,
@@ -11,11 +12,13 @@ import {
   toggleLowlightSolvedNumbers,
   toggleRemoveNotesAutomatically,
   toggleScreenAlwaysOn,
+  toggleVibrations,
 } from "~/Store/Settings"
 
 export default function Settings() {
   const dispatch = useAppDispatch()
   const {
+    displayAnimations,
     displayHinter,
     displaySolver,
     displayTimer,
@@ -26,6 +29,7 @@ export default function Settings() {
     lowlightSolvedNumbers,
     removeNotesAutomatically,
     screenAlwaysOn,
+    vibrations,
   } = useAppSelector(state => state.settings)
 
   return (
@@ -33,6 +37,22 @@ export default function Settings() {
       <Text selectable={false} style={styles.header}>
         Game
       </Text>
+      <View style={styles.row}>
+        <View>
+          <Text selectable={false} style={styles.label}>
+            Display animations
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Display animations on the board
+          </Text>
+        </View>
+        <Switch
+          value={displayAnimations}
+          onValueChange={() => {
+            dispatch(toggleDisplayAnimations())
+          }}
+        />
+      </View>
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
@@ -45,7 +65,7 @@ export default function Settings() {
         <Switch
           value={displayHinter}
           onValueChange={() => {
-            dispatch(toggledisplayHinter())
+            dispatch(toggleDisplayHinter())
           }}
         />
       </View>
@@ -94,6 +114,22 @@ export default function Settings() {
           value={screenAlwaysOn}
           onValueChange={() => {
             dispatch(toggleScreenAlwaysOn())
+          }}
+        />
+      </View>
+      <View style={styles.row}>
+        <View>
+          <Text selectable={false} style={styles.label}>
+            Vibrations
+          </Text>
+          <Text selectable={false} style={styles.description}>
+            Vibrate feedback TODO
+          </Text>
+        </View>
+        <Switch
+          value={vibrations}
+          onValueChange={() => {
+            dispatch(toggleVibrations())
           }}
         />
       </View>

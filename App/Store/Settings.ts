@@ -5,6 +5,7 @@ import themes from "../Themes"
 const settingsSlice = createSlice({
   name: "settings",
   initialState: {
+    displayAnimations: true,
     displayHinter: true,
     displaySolver: true,
     displayTimer: true,
@@ -17,9 +18,13 @@ const settingsSlice = createSlice({
     screenAlwaysOn: true,
     sound: true,
     theme: themes.light,
+    vibrations: true,
   },
   reducers: {
-    toggledisplayHinter(settings) {
+    toggleDisplayAnimations(settings) {
+      settings.displayAnimations = !settings.displayAnimations
+    },    
+    toggleDisplayHinter(settings) {
       settings.displayHinter = !settings.displayHinter
     },
     toggleDisplaySolver(settings) {
@@ -64,11 +69,15 @@ const settingsSlice = createSlice({
     toggleTheme(settings) {
       settings.theme = themes.light // Todo
     },
+    toggleVibrations(settings) {
+      settings.vibrations = !settings.vibrations
+    }
   },
 })
 
 export const {
-  toggledisplayHinter,
+  toggleDisplayAnimations,
+  toggleDisplayHinter,
   toggleDisplayTimer,
   toggleDisplaySolver,
   toggleHighlightLinkedCells,
@@ -80,5 +89,6 @@ export const {
   toggleScreenAlwaysOn,
   toggleSound,
   toggleTheme,
+  toggleVibrations,
 } = settingsSlice.actions
 export default settingsSlice.reducer
