@@ -1,4 +1,4 @@
-import { Dimensions, Pressable, StyleSheet, Text } from "react-native"
+import { Dimensions, Pressable, StyleSheet, Text, Vibration } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { pushLinks, pushSelection, removeLinkedNotes, setNote, setNum } from "~/Store/Game"
 
@@ -13,13 +13,14 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
   const init = useAppSelector(state => state.game.board[selection]?.init)
   const solution = useAppSelector(state => state.game.board[selection]?.solution)
   const notesEnabled = useAppSelector(state => state.game.notesEnabled)
+  const solved = useAppSelector(state => state.game.solved[value])
+  const whitelist = useAppSelector(state => state.game.whitelist[value])
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
   const lowlightInvalidInput = useAppSelector(state => state.settings.lowlightInvalidInput)
   const lowlightSolvedNumbers = useAppSelector(state => state.settings.lowlightSolvedNumbers)
   const removeNotesAutomatically = useAppSelector(state => state.settings.removeNotesAutomatically)
-  const isWhitelisted = useAppSelector(state =>
-    lowlightInvalidInput ? state.game.whitelist[value] : !state.game.solved[value],
-  )
+  const vibration = useAppSelector(state => state.settings.vibration)
+  const isWhitelisted = lowlightInvalidInput ? whitelist : !solved
 
   function isBlacklisted() {
     if (init) {
@@ -40,8 +41,13 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
         dispatch(pushSelection())
         dispatch(setNum(value))
 
-        if (highlightMistake && value !== solution) {
-          return
+        if (value !== solution) {
+          if (vibration && isBlacklisted()) {
+            Vibration.vibrate()
+          }
+          if (highlightMistake) {
+            return
+          }
         }
 
         if (removeNotesAutomatically) {

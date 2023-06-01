@@ -12,7 +12,7 @@ import {
   toggleLowlightSolvedNumbers,
   toggleRemoveNotesAutomatically,
   toggleScreenAlwaysOn,
-  toggleVibrations,
+  toggleVibration,
 } from "~/Store/Settings"
 
 export default function Settings() {
@@ -29,7 +29,7 @@ export default function Settings() {
     lowlightSolvedNumbers,
     removeNotesAutomatically,
     screenAlwaysOn,
-    vibrations,
+    vibration,
   } = useAppSelector(state => state.settings)
 
   return (
@@ -120,16 +120,16 @@ export default function Settings() {
       <View style={styles.row}>
         <View>
           <Text selectable={false} style={styles.label}>
-            Vibrations
+            Vibration
           </Text>
           <Text selectable={false} style={styles.description}>
             Vibrate feedback TODO
           </Text>
         </View>
         <Switch
-          value={vibrations}
+          value={vibration}
           onValueChange={() => {
-            dispatch(toggleVibrations())
+            dispatch(toggleVibration())
           }}
         />
       </View>

@@ -18,7 +18,7 @@ const settingsSlice = createSlice({
     screenAlwaysOn: true,
     sound: true,
     theme: themes.light,
-    vibrations: true,
+    vibration: true,
   },
   reducers: {
     toggleDisplayAnimations(settings) {
@@ -69,8 +69,8 @@ const settingsSlice = createSlice({
     toggleTheme(settings) {
       settings.theme = themes.light // Todo
     },
-    toggleVibrations(settings) {
-      settings.vibrations = !settings.vibrations
+    toggleVibration(settings) {
+      settings.vibration = !settings.vibration
     }
   },
 })
@@ -89,6 +89,6 @@ export const {
   toggleScreenAlwaysOn,
   toggleSound,
   toggleTheme,
-  toggleVibrations,
+  toggleVibration,
 } = settingsSlice.actions
 export default settingsSlice.reducer
