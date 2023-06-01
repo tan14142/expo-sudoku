@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Animated, StyleSheet } from "react-native"
 import { useAppSelector } from "~/Store"
 import { CellProps } from "./Cell"
@@ -22,7 +23,10 @@ export default function CellAnimated({ index }: CellProps) {
     if (rowMistake || columnMistake || regionMistake) {
       triggerShakeX()
     }
-    if (rowFilled || columnFilled || regionFilled) {
+  }
+
+  useEffect(() => {
+    if (displayAnimations && (rowFilled || columnFilled || regionFilled)) {
       Animated.parallel([rotateYTiming, scaleXTiming]).start(({ finished }) => {
         if (finished) {
           rotateYTiming.reset()
@@ -30,7 +34,7 @@ export default function CellAnimated({ index }: CellProps) {
         }
       })
     }
-  }
+  }, [rowFilled, columnFilled, regionFilled])
 
   return (
     <Animated.View
