@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
-import CellButton from "./CellButton"
+import CellAnimated from "./CellAnimated"
 
 export interface CellProps {
   index: number
@@ -8,7 +8,7 @@ export interface CellProps {
 export default function Cell({ index }: CellProps) {
   return (
     <View style={getCellStyles(index)}>
-      <CellButton index={index} />
+      <CellAnimated index={index} />
     </View>
   )
 }

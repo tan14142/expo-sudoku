@@ -1,7 +1,7 @@
 import { Animated, Pressable, StyleSheet } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { useAppSelector } from "~/Store"
-import animate from "~/Animations"
+import animate from "~/Animations/fadeRotate"
 
 export default function ThemeButton() {
   const { buttonSymbolColor: color } = useAppSelector(state => state.settings.theme)

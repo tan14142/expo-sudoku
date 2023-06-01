@@ -9,26 +9,50 @@ const regions = Array.from({ length: 9 }, (_, r) =>
   ),
 )
 
-export function checkWon(game: GameType) {
-  return game.board.every(({ num, solution }) => num === solution)
+export const links = Array.from({ length: 81 }, (_, i) => {
+  const row = rows[getRow(i)]
+  const column = columns[getColumn(i)]
+  const region = regions[getRegion(i)]
+  const set = new Set([...row, ...column, ...region])
+  set.delete(i)
+  return set
+})
+
+export function checkRowFilled(game: GameType, row: number) {
+  return rows[row].every(i => game.board[i].num === game.board[i].solution)
+}
+
+export function checkColumnFilled(game: GameType, column: number) {
+  return columns[column].every(i => game.board[i].num === game.board[i].solution)
+}
+
+export function checkRegionFilled(game: GameType, region: number) {
+  return regions[region].every(i => game.board[i].num === game.board[i].solution)
 }
 
 export function checkLostOrWon<EqualityFn>(_: string, nextState: string) {
   return !(nextState === "lost" || nextState === "won")
 }
 
-export function checkSelection<EqualityFn>(prevState: number, nextState: number) {
-  return !(isNaN(prevState) && !isNaN(nextState))
+export function checkWon(game: GameType) {
+  return game.board.every(({ num, solution }) => num === solution)
 }
 
-export const links = Array.from({ length: 81 }, (_, i) => {
-  const row = rows[Math.floor(i / 9)]
-  const column = columns[i % 9]
-  const region = regions[Math.floor(i / 27) * 3 + Math.floor((i % 9) / 3)]
-  const set = new Set([...row, ...column, ...region])
-  set.delete(i)
-  return set
-})
+export function checkSelection<EqualityFn>(prevState: number, nextState: number) {
+  return !(isNaN(prevState) || isNaN(nextState))
+}
+
+export function getRow(index: number) {
+  return Math.floor(index / 9)
+}
+
+export function getColumn(index: number) {
+  return index % 9
+}
+
+export function getRegion(index: number) {
+  return Math.floor(index / 27) * 3 + Math.floor((index % 9) / 3)
+}
 
 export function getMissing(puzzle: number[]) {
   return puzzle.reduce((acc, cur, i) => {
@@ -41,24 +65,6 @@ export function getWhitelist(puzzle: number[], index: number) {
   const whitelist = [false, true, true, true, true, true, true, true, true, true]
   links[index].forEach(link => (whitelist[puzzle[link]] = false))
   return whitelist
-}
-
-export function getMatchedCountAndSetLinked(game: GameType) {
-  let count = 0
-
-  game.board.forEach(({ num, status }, i) => {
-    if (links[game.selection].has(i)) {
-      game.board[i].status = "linked"
-    } else if (num && num === game.board[game.selection].num) {
-      game.board[i].status = "matching"
-      count++
-    } else if (status) {
-      game.board[i].status = ""
-    }
-  })
-
-  game.board[game.selection].status = "selected"
-  return count
 }
 
 function hasDuplicateInTriplet(nums: number[]) {
@@ -79,31 +85,55 @@ function hasDuplicateInTriplet(nums: number[]) {
   return lengthBefore > lengthAfter
 }
 
-export function setMistakes(game: GameType) {
-  game.board.forEach((_, i) => {
-    game.board[i].mistake = false
+export function setSolved(game: GameType, value: number) {
+  if (!value) return
+  game.solved[value] = game.board.reduce((acc, { num }) => acc + +(num === value), 0) === 9
+}
+
+export function setCellStatus(game: GameType, setMistakes = true) {
+  game.board.forEach(({ num }, i) => {
+    if (links[game.selection].has(i)) {
+      game.board[i].status = "linked"
+    } else if (num && num === game.board[game.selection].num) {
+      game.board[i].status = "matching"
+    } else {
+      game.board[i].status = ""
+    }
   })
+  setMistakes && setStatusMistakes(game)
+  game.board[game.selection].status = "selected"
+}
 
-  for (const row of rows) {
-    if (hasDuplicateInTriplet(row.map(i => game.board[i].num))) {
-      row.forEach(i => (game.board[i].mistake = true))
+function setStatusMistakes(game: GameType) {
+  for (const i in rows) {
+    if (hasDuplicateInTriplet(rows[i].map(index => game.board[index].num))) {
+      rows[i].forEach(index => (game.board[index].status = "mistake"))
+      game.mistakes.rows[i]++
+    } else {
+      game.mistakes.rows[i] = 0
     }
   }
 
-  for (const column of columns) {
-    if (hasDuplicateInTriplet(column.map(i => game.board[i].num))) {
-      column.forEach(i => (game.board[i].mistake = true))
+  for (const i in columns) {
+    if (hasDuplicateInTriplet(columns[i].map(index => game.board[index].num))) {
+      columns[i].forEach(index => (game.board[index].status = "mistake"))
+      game.mistakes.columns[i]++
+    } else {
+      game.mistakes.columns[i] = 0
     }
   }
 
-  for (const region of regions) {
-    const cells = region.reduce((acc, i) => {
-      game.board[i].num && acc.push(game.board[i].num)
+  for (const i in regions) {
+    const cells = regions[i].reduce((acc, index) => {
+      game.board[index].num && acc.push(game.board[index].num)
       return acc
     }, [] as number[])
 
     if (cells.length > new Set(cells).size) {
-      region.forEach(i => (game.board[i].mistake = true))
+      regions[i].forEach(index => (game.board[index].status = "mistake"))
+      game.mistakes.regions[i]++
+    } else {
+      game.mistakes.regions[i] = 0
     }
   }
 }

@@ -26,7 +26,7 @@ export default () => {
         MENU
       </Text>
       <View>
-        <MenuButton handler={() => handleNewGame(80, "Easy")} label="New Game Easy 80" />
+        <MenuButton handler={() => handleNewGame(60, "Easy")} label="New Game Easy 80" />
         <MenuButton handler={() => handleNewGame(35, "Medium")} label="New Game Medium 35" />
         <MenuButton handler={() => handleNewGame(30, "Hard")} label="New Game Hard 30" />
         <MenuButton handler={() => handleNewGame(25, "Expert")} label="New Game Expert 25" />

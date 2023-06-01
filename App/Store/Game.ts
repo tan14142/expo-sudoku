@@ -1,10 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import {
-  getMatchedCountAndSetLinked,
-  getWhitelist,
-  checkWon,
   links,
-  setMistakes,
+  checkRowFilled,
+  checkColumnFilled,
+  checkRegionFilled,
+  checkWon,
+  getRow,
+  getColumn,
+  getRegion,
+  getWhitelist,
+  setSolved,
+  setCellStatus,
   setWhitelist,
 } from "~/Utils"
 
@@ -22,7 +28,6 @@ export type EventType = {
 
 const board = Array.from({ length: 81 }, () => ({
   init: false,
-  mistake: false,
   notes: Array<boolean>(10).fill(false),
   num: 0,
   status: "",
@@ -33,12 +38,22 @@ const initialState = {
   board,
   events: [] as EventType[][],
   difficulty: "",
+  filled: {
+    rows: Array<boolean>(9).fill(false),
+    columns: Array<boolean>(9).fill(false),
+    regions: Array<boolean>(9).fill(false),
+  },
+  mistakes: {
+    rows: Array<number>(9).fill(0),
+    columns: Array<number>(9).fill(0),
+    regions: Array<number>(9).fill(0),
+  },
   notesEnabled: false,
   selection: NaN,
-  whitelist: Array<boolean>(10).fill(false),
   solved: Array<boolean>(10).fill(false),
   status: "running",
   time: 0,
+  whitelist: Array<boolean>(10).fill(false),
 }
 
 const gameSlice = createSlice({
@@ -60,7 +75,6 @@ const gameSlice = createSlice({
       game.board = game.board.map((_, i) => {
         return {
           init: !!payload.puzzle[i],
-          mistake: false,
           notes: Array(10).fill(false),
           num: payload.puzzle[i],
           status: "",
@@ -109,6 +123,22 @@ const gameSlice = createSlice({
       game.board[game.selection].notes = Array(10).fill(false)
       game.board[game.selection].num = payload
 
+      const row = getRow(game.selection)
+      const column = getColumn(game.selection)
+      const region = getRegion(game.selection)
+
+      if (checkRowFilled(game, row)) {
+        game.filled.rows[row] = true
+      }
+
+      if (checkColumnFilled(game, column)) {
+        game.filled.columns[column] = true
+      }
+
+      if (checkRegionFilled(game, region)) {
+        game.filled.regions[region] = true
+      }
+
       if (checkWon(game)) {
         game.events = []
         game.solved = Array(10).fill(true)
@@ -116,18 +146,15 @@ const gameSlice = createSlice({
         return
       }
 
-      setMistakes(game)
+      setSolved(game, payload)
+      setCellStatus(game)
       setWhitelist(game)
-
-      if (payload) {
-        game.solved[payload] = getMatchedCountAndSetLinked(game) === 9
-      }
     },
     setSelection(game, { payload }: PayloadAction<number>) {
       game.events.pop()
       if (game.selection !== payload) {
         game.selection = payload
-        getMatchedCountAndSetLinked(game)
+        setCellStatus(game, false)
         setWhitelist(game)
       }
     },
@@ -159,23 +186,27 @@ const gameSlice = createSlice({
       game.board[game.selection].init = true
     },
     reset(game) {
-      game = {
-        ...initialState,
-        board: game.board.map(({ init, num, solution }) => ({
-          init,
-          mistake: false,
-          notes: Array(10).fill(false),
-          num: init ? num : 0,
-          status: "",
-          solution,
-        })),
-        solved: game.board
-          .reduce((acc, { num }) => {
-            acc[num]++
-            return acc
-          }, Array(10).fill(0))
-          .map((count, i) => (i ? count === 9 : false)),
-      }
+      game.board = game.board.map(({ init, num, solution }) => ({
+        init,
+        notes: Array(10).fill(false),
+        num: init ? num : 0,
+        status: "",
+        solution,
+      }))
+      game.events = initialState.events
+      game.filled = initialState.filled
+      game.mistakes = initialState.mistakes
+      game.notesEnabled = initialState.notesEnabled
+      game.selection = initialState.selection
+      game.solved = game.board
+        .reduce((acc, { num }) => {
+          acc[num]++
+          return acc
+        }, Array(10).fill(0))
+        .map((count, i) => (i ? count === 9 : false))
+      game.status = initialState.status
+      game.time = initialState.time
+      game.whitelist = initialState.whitelist
     },
     solve(game) {
       game.board.forEach(({ solution }, i) => {
@@ -190,7 +221,7 @@ const gameSlice = createSlice({
           game.board[index].num = num
         })
 
-        setMistakes(game)
+        setCellStatus(game)
         setWhitelist(game)
       }
     },

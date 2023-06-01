@@ -1,14 +1,13 @@
 import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { setSelection } from "~/Store/Game"
-import Notes from "~/Components/Notes"
 import { CellProps } from "./Cell"
+import Notes from "~/Components/Notes"
 
 export default function Cell({ index }: CellProps) {
   const dispatch = useAppDispatch()
   const num = useAppSelector(state => state.game.board[index].num)
   const init = useAppSelector(state => state.game.board[index].init)
-  const mistake = useAppSelector(state => state.game.board[index].mistake)
   const status = useAppSelector(state => state.game.board[index].status)
   const solution = useAppSelector(state => state.game.board[index].solution)
   const highlightLinkedCells = useAppSelector(state => state.settings.highlightLinkedCells)
@@ -20,7 +19,7 @@ export default function Cell({ index }: CellProps) {
 
     if (status === "selected") {
       pressableStyles.push(styles.pressableSelected)
-    } else if (mistake) {
+    } else if (status === "mistake") {
       pressableStyles.push(styles.pressableHighlightMistake)
     } else if (highlightMatchingCells && status === "matching") {
       pressableStyles.push(styles.pressableHighlightMatching)
@@ -36,7 +35,10 @@ export default function Cell({ index }: CellProps) {
 
     if (init) {
       textStyles.push(styles.textInit)
-    } else if (num && ((highlightMistake && num !== solution) || (!highlightMistake && mistake))) {
+    } else if (
+      num &&
+      ((highlightMistake && num !== solution) || (!highlightMistake && status === "mistake"))
+    ) {
       textStyles.push(styles.textMistake)
     } else {
       textStyles.push(styles.textCorrect)

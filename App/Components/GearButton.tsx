@@ -2,7 +2,7 @@ import { Animated, Pressable, StyleSheet } from "react-native"
 import { NavigationContainerRefWithCurrent } from "@react-navigation/native"
 import { useAppSelector } from "~/Store"
 import { Octicons } from "@expo/vector-icons"
-import animate from "~/Animations"
+import animate from "~/Animations/fadeRotate"
 
 export default function GearButton({
   getCurrentRoute,

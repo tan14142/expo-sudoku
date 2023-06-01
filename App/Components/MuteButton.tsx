@@ -2,7 +2,7 @@ import { Animated, Pressable, StyleSheet } from "react-native"
 import { Octicons } from "@expo/vector-icons"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { toggleSound } from "~/Store/Settings"
-import animate from "~/Animations"
+import animate from "~/Animations/fadeRotate"
 
 export default function SoundButton() {
   const { buttonSymbolColor: color } = useAppSelector(state => state.settings.theme)
