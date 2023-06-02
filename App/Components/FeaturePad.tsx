@@ -11,6 +11,7 @@ import {
   undo,
 } from "~/Store/Game"
 import { checkSelection } from "~/Utils"
+import useSound from "~/Hooks/useSound"
 
 export default function FeaturePad() {
   const dispatch = useAppDispatch()
@@ -18,35 +19,42 @@ export default function FeaturePad() {
   const displayHinter = useAppSelector(state => state.settings.displayHinter)
   const displaySolver = useAppSelector(state => state.settings.displaySolver)
   const notesEnabled = useAppSelector(state => state.game.notesEnabled)
+  const playSound = useSound()
 
   function handleClear() {
     if (!isNaN(selection)) {
       dispatch(pushSelection())
       dispatch(clear())
     }
+    playSound("eraser")
   }
 
   function handleHint() {
     if (!isNaN(selection)) {
       dispatch(hint())
+      playSound("pen2")
     }
   }
 
   function handleReset() {
     dispatch(reset())
+    playSound("penClick")
   }
 
   function handleSolve() {
     dispatch(setStatus("paused"))
     dispatch(solve())
+    playSound("solve")
   }
 
   function handleNotes() {
     dispatch(setNotesEnabled(!notesEnabled))
+    playSound(notesEnabled ? "penCheck" : "pencilCheck")
   }
 
   function handleUndo() {
     dispatch(undo())
+    playSound("undo")
   }
 
   return (

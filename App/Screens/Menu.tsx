@@ -1,13 +1,16 @@
 import { StyleSheet, Text, View } from "react-native"
-import { useNavigation } from "@react-navigation/native"
+import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { useAppDispatch } from "~/Store"
 import { reset, setBoard } from "~/Store/Game"
 import MenuButton from "~/Components/MenuButton"
 import generate from "~/Utils/generate"
+import useSound from "~/Hooks/useSound"
 
 export default () => {
+  const isFocused = useIsFocused()
   const { navigate } = useNavigation()
   const dispatch = useAppDispatch()
+  const playSound = useSound()
 
   function handleNewGame(clues: number, difficulty: string) {
     dispatch(
@@ -18,6 +21,10 @@ export default () => {
     )
     dispatch(reset())
     navigate("Game")
+  }
+
+  if (isFocused) {
+    playSound("navigate")
   }
 
   return (

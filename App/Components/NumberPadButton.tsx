@@ -1,6 +1,7 @@
 import { Dimensions, Pressable, StyleSheet, Text, Vibration } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { pushLinks, pushSelection, removeLinkedNotes, setNote, setNum } from "~/Store/Game"
+import useSound from "~/Hooks/useSound"
 
 interface NumberPadButtonProps {
   value: number
@@ -21,8 +22,9 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
   const removeNotesAutomatically = useAppSelector(state => state.settings.removeNotesAutomatically)
   const vibration = useAppSelector(state => state.settings.vibration)
   const isWhitelisted = lowlightInvalidInput ? whitelist : !solved
+  const playSound = useSound()
 
-  function isBlacklisted() {
+  const isBlacklisted = (() => {
     if (init) {
       return true
     }
@@ -30,25 +32,25 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
       return false
     }
     return !isWhitelisted || (highlightMistake && num === solution)
-  }
+  })()
 
   function handlePress(isLongPress = false) {
-    if (!isNaN(selection) && !init && (isLongPress || !isBlacklisted())) {
+    if (!isNaN(selection) && !init && (isLongPress || !isBlacklisted)) {
       if (notesEnabled) {
         dispatch(pushSelection())
         dispatch(setNote(value))
+        playSound("pencil2")
       } else if (num !== value) {
         dispatch(pushSelection())
         dispatch(setNum(value))
 
-        if (value !== solution) {
-          if (vibration && isBlacklisted()) {
-            Vibration.vibrate()
-          }
-          if (highlightMistake) {
-            return
-          }
+        if (value !== solution && (highlightMistake || isBlacklisted)) {
+          playSound("mistake")
+          vibration && Vibration.vibrate()
+          return
         }
+
+        playSound("pen2")
 
         if (removeNotesAutomatically) {
           dispatch(pushLinks())
@@ -60,7 +62,7 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
 
   return (
     <Pressable
-      style={[styles.button, isBlacklisted() && styles.faded, notesEnabled && styles.greyed]}
+      style={[styles.button, isBlacklisted && styles.faded, notesEnabled && styles.greyed]}
       onPress={() => handlePress()}
       onLongPress={() => handlePress(true)}>
       <Text selectable={false} style={styles.text}>

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "~/Store"
 import { setSelection } from "~/Store/Game"
 import { CellProps } from "./Cell"
 import Notes from "~/Components/Notes"
+import useSound from "~/Hooks/useSound"
 
 export default function Cell({ index }: CellProps) {
   const dispatch = useAppDispatch()
@@ -10,9 +11,11 @@ export default function Cell({ index }: CellProps) {
   const init = useAppSelector(state => state.game.board[index].init)
   const status = useAppSelector(state => state.game.board[index].status)
   const solution = useAppSelector(state => state.game.board[index].solution)
+  const notesEnabled = useAppSelector(state => state.game.notesEnabled)
   const highlightLinkedCells = useAppSelector(state => state.settings.highlightLinkedCells)
   const highlightMatchingCells = useAppSelector(state => state.settings.highlightMatchingCells)
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
+  const playSound = useSound()
 
   function getPressableStyle() {
     const pressableStyles: ViewStyle[] = [styles.pressable]
@@ -48,6 +51,7 @@ export default function Cell({ index }: CellProps) {
   }
 
   function handlePress() {
+    playSound(notesEnabled ? "pencil1" : "pen1")
     dispatch(setSelection(index))
   }
 

@@ -1,4 +1,6 @@
 import { ScrollView, StyleSheet, Switch, Text, View } from "react-native"
+import { useIsFocused } from "@react-navigation/native"
+import { AnyAction } from "redux"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import {
   toggleDisplayAnimations,
@@ -14,8 +16,10 @@ import {
   toggleScreenAlwaysOn,
   toggleVibration,
 } from "~/Store/Settings"
+import useSound from "~/Hooks/useSound"
 
 export default function Settings() {
+  const isFocused = useIsFocused()
   const dispatch = useAppDispatch()
   const {
     displayAnimations,
@@ -31,6 +35,16 @@ export default function Settings() {
     screenAlwaysOn,
     vibration,
   } = useAppSelector(state => state.settings)
+  const playSound = useSound()
+
+  function handleClick(state: boolean, toggler: () => AnyAction) {
+    playSound(state ? "tick" : "tock")
+    dispatch(toggler())
+  }
+
+  if (isFocused) {
+    playSound("navigate")
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -48,9 +62,7 @@ export default function Settings() {
         </View>
         <Switch
           value={displayAnimations}
-          onValueChange={() => {
-            dispatch(toggleDisplayAnimations())
-          }}
+          onValueChange={() => handleClick(displayAnimations, toggleDisplayAnimations)}
         />
       </View>
       <View style={styles.row}>
@@ -64,9 +76,7 @@ export default function Settings() {
         </View>
         <Switch
           value={displayHinter}
-          onValueChange={() => {
-            dispatch(toggleDisplayHinter())
-          }}
+          onValueChange={() => handleClick(displayHinter, toggleDisplayHinter)}
         />
       </View>
       <View style={styles.row}>
@@ -80,9 +90,7 @@ export default function Settings() {
         </View>
         <Switch
           value={displaySolver}
-          onValueChange={() => {
-            dispatch(toggleDisplaySolver())
-          }}
+          onValueChange={() => handleClick(displaySolver, toggleDisplaySolver)}
         />
       </View>
       <View style={styles.row}>
@@ -96,9 +104,7 @@ export default function Settings() {
         </View>
         <Switch
           value={displayTimer}
-          onValueChange={() => {
-            dispatch(toggleDisplayTimer())
-          }}
+          onValueChange={() => handleClick(displayTimer, toggleDisplayTimer)}
         />
       </View>
       <View style={styles.row}>
@@ -112,9 +118,7 @@ export default function Settings() {
         </View>
         <Switch
           value={screenAlwaysOn}
-          onValueChange={() => {
-            dispatch(toggleScreenAlwaysOn())
-          }}
+          onValueChange={() => handleClick(screenAlwaysOn, toggleScreenAlwaysOn)}
         />
       </View>
       <View style={styles.row}>
@@ -126,12 +130,7 @@ export default function Settings() {
             Vibrate feedback TODO
           </Text>
         </View>
-        <Switch
-          value={vibration}
-          onValueChange={() => {
-            dispatch(toggleVibration())
-          }}
-        />
+        <Switch value={vibration} onValueChange={() => handleClick(vibration, toggleVibration)} />
       </View>
       <Text selectable={false} style={styles.header}>
         Board
@@ -147,9 +146,7 @@ export default function Settings() {
         </View>
         <Switch
           value={highlightLinkedCells}
-          onValueChange={() => {
-            dispatch(toggleHighlightLinkedCells())
-          }}
+          onValueChange={() => handleClick(highlightLinkedCells, toggleHighlightLinkedCells)}
         />
       </View>
       <View style={styles.row}>
@@ -163,9 +160,7 @@ export default function Settings() {
         </View>
         <Switch
           value={highlightMatchingCells}
-          onValueChange={() => {
-            dispatch(toggleHighlightMatchingNumbers())
-          }}
+          onValueChange={() => handleClick(highlightMatchingCells, toggleHighlightMatchingNumbers)}
         />
       </View>
       <View style={styles.row}>
@@ -179,9 +174,7 @@ export default function Settings() {
         </View>
         <Switch
           value={highlightMistake}
-          onValueChange={() => {
-            dispatch(toggleHighlightMistake())
-          }}
+          onValueChange={() => handleClick(highlightMistake, toggleHighlightMistake)}
         />
       </View>
       <View style={styles.row}>
@@ -195,9 +188,7 @@ export default function Settings() {
         </View>
         <Switch
           value={lowlightInvalidInput}
-          onValueChange={() => {
-            dispatch(toggleLowlightInvalidInput())
-          }}
+          onValueChange={() => handleClick(lowlightInvalidInput, toggleLowlightInvalidInput)}
         />
       </View>
       <View style={styles.row}>
@@ -212,9 +203,7 @@ export default function Settings() {
         <Switch
           disabled={lowlightInvalidInput}
           value={lowlightInvalidInput || lowlightSolvedNumbers}
-          onValueChange={() => {
-            dispatch(toggleLowlightSolvedNumbers())
-          }}
+          onValueChange={() => handleClick(lowlightSolvedNumbers, toggleLowlightSolvedNumbers)}
         />
       </View>
       <View style={styles.row}>
@@ -228,9 +217,9 @@ export default function Settings() {
         </View>
         <Switch
           value={removeNotesAutomatically}
-          onValueChange={() => {
-            dispatch(toggleRemoveNotesAutomatically())
-          }}
+          onValueChange={() =>
+            handleClick(removeNotesAutomatically, toggleRemoveNotesAutomatically)
+          }
         />
       </View>
       <Text selectable={false} style={styles.header}>
