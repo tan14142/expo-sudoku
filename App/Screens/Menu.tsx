@@ -12,11 +12,11 @@ export default () => {
   const dispatch = useAppDispatch()
   const playSound = useSound()
 
-  function handleNewGame(clues: number, difficulty: string) {
+  async function handleNewGame(clues: number, difficulty: string, seeded = false) {
     dispatch(
       setBoard({
         difficulty,
-        ...generate(clues),
+        ...(await generate(clues, seeded ? (new Date()).toISOString().slice(0, 10) : undefined)),
       }),
     )
     dispatch(reset())
@@ -38,8 +38,7 @@ export default () => {
         <MenuButton handler={() => handleNewGame(30, "Hard")} label="New Game Hard 30" />
         <MenuButton handler={() => handleNewGame(25, "Expert")} label="New Game Expert 25" />
         <MenuButton handler={() => console.log(123)} label="Custom Game" />
-        <MenuButton handler={() => console.log(123)} label="Favorites" />
-        <MenuButton handler={() => console.log(123)} label="Today's Puzzle" />
+        <MenuButton handler={() => handleNewGame(25, "Today's Puzzle", true)} label="Today's Puzzle" />
       </View>
     </View>
   )

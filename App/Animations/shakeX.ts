@@ -7,7 +7,7 @@ export default function shakeX(): Return {
   const translation = useRef(new Animated.Value(0)).current
 
   const trigger = () => {
-    const duration = 300
+    const duration = 250
     const keyframes = [
       { translateX: -1, duration: duration * 0.1 },
       { translateX: 2, duration: duration * 0.15 },

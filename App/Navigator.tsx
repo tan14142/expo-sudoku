@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { NavigationContainer, useNavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Game from "~/Screens/Game"
@@ -20,14 +21,15 @@ declare global {
 export const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default () => {
+  const [isReady, setIsReady] = useState(false)
   const navRef = useNavigationContainerRef()
 
   return (
-    <NavigationContainer ref={navRef}>
+    <NavigationContainer ref={navRef} onReady={() => setIsReady(true)}>
       <Stack.Navigator
         screenOptions={{
           animation: "fade",
-          header: () => <Header {...navRef} />,
+          header: () => isReady && <Header {...navRef} />,
         }}>
         <Stack.Screen component={Menu} name="Menu" />
         <Stack.Screen component={Game} name="Game" />

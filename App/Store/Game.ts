@@ -183,7 +183,6 @@ const gameSlice = createSlice({
       })
 
       game.events = []
-      game.board[game.selection].init = true
     },
     reset(game) {
       game.board = game.board.map(({ init, num, solution }) => ({
