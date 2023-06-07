@@ -1,26 +1,31 @@
-import { useEffect, useState } from "react"
-import { StatusBar } from "react-native"
 import { Provider } from "react-redux"
-import { store } from "~/Store"
+import { persistor, store } from "~/Store"
+import { PersistGate } from "redux-persist/integration/react"
+import { useFonts } from "expo-font"
 import Navigator from "~/Navigator"
-import Splash from "~/Screens/Splash"
 
 export default function App() {
-  const [showSplash, setShowSplash] = useState(false)
+  const [loaded] = useFonts({
+    Poppins100: require("./assets/fonts/poppins/100.ttf"),
+    Poppins200: require("./assets/fonts/poppins/200.ttf"),
+    Poppins300: require("./assets/fonts/poppins/300.ttf"),
+    Poppins400: require("./assets/fonts/poppins/400.ttf"),
+    Poppins500: require("./assets/fonts/poppins/500.ttf"),
+    Poppins600: require("./assets/fonts/poppins/600.ttf"),
+    Poppins700: require("./assets/fonts/poppins/700.ttf"),
+    Poppins800: require("./assets/fonts/poppins/800.ttf"),
+    Poppins900: require("./assets/fonts/poppins/900.ttf"),
+  })
 
-  useEffect(() => {
-    StatusBar.setHidden(true)
-  }, [])
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setShowSplash(false)
-  //   }, 1000)
-
-  //   return () => clearTimeout(timer)
-  // }, [])
+  if (!loaded) {
+    return null
+  }
 
   return (
-    <Provider store={store}>{showSplash ? <Splash /> : <Navigator />}</Provider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
+        <Navigator />
+      </PersistGate>
+    </Provider>
   )
 }

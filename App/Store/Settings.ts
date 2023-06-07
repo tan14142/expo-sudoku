@@ -17,13 +17,13 @@ const settingsSlice = createSlice({
     removeNotesAutomatically: true,
     screenAlwaysOn: true,
     sound: true,
-    theme: themes.light,
+    theme: "green" as keyof typeof themes,
     vibration: true,
   },
   reducers: {
     toggleDisplayAnimations(settings) {
       settings.displayAnimations = !settings.displayAnimations
-    },    
+    },
     toggleDisplayHinter(settings) {
       settings.displayHinter = !settings.displayHinter
     },
@@ -55,7 +55,8 @@ const settingsSlice = createSlice({
     toggleRemoveNotesAutomatically(settings) {
       settings.removeNotesAutomatically = !settings.removeNotesAutomatically
     },
-    toggleScreenAlwaysOn(settings) { // TODO: check
+    toggleScreenAlwaysOn(settings) {
+      // TODO: check
       if (settings.screenAlwaysOn) {
         deactivateKeepAwake()
       } else {
@@ -71,7 +72,7 @@ const settingsSlice = createSlice({
     },
     toggleVibration(settings) {
       settings.vibration = !settings.vibration
-    }
+    },
   },
 })
 

@@ -51,7 +51,7 @@ const initialState = {
   notesEnabled: false,
   selection: NaN,
   solved: Array<boolean>(10).fill(false),
-  status: "running",
+  status: "init",
   time: 0,
   whitelist: Array<boolean>(10).fill(false),
 }

@@ -1,28 +1,24 @@
 import { StyleSheet, Text, View } from "react-native"
 import { NavigationContainerRefWithCurrent } from "@react-navigation/native"
 import { useAppSelector } from "~/Store"
-import BackButton from "./BackButton"
-import GearButton from "./GearButton"
-import PaletteButton from "./PaletteButton"
-import ShareButton from "./ExportButton"
-import MuteButton from "./MuteButton"
+import BackButton from "./Buttons/Back"
+import GearButton from "./Buttons/Gear"
+import PaletteButton from "./Buttons/Palette"
+import ShareButton from "./Buttons/Export"
+import MuteButton from "./Buttons/Mute"
+import themes from "~/Themes"
 
 export default function Header(
   navRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>,
 ) {
-  const { buttonBackgroundColor: backgroundColor } = useAppSelector(state => state.settings.theme)
+  const theme = useAppSelector(state => state.settings.theme)
   const routeName = navRef.getCurrentRoute()!.name
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
+    <View style={[styles.container, { backgroundColor: themes[theme].c0 }]}>
       <View style={styles.column}>
-        {routeName !== "Splash" && <BackButton {...navRef} />}
+        {routeName !== "Menu" && <BackButton {...navRef} />}
         {routeName !== "Settings" && <GearButton {...navRef} />}
-      </View>
-      <View style={[styles.column, { justifyContent: "center" }]}>
-        <Text selectable={false} style={styles.text}>
-          {routeName}
-        </Text>
       </View>
       <View style={[styles.column, { justifyContent: "flex-end" }]}>
         {routeName === "Game" && <ShareButton />}
@@ -35,21 +31,13 @@ export default function Header(
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     flexDirection: "row",
-    paddingVertical: 15,
-    paddingHorizontal: 17,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
   },
   column: {
-    display: "flex",
     flex: 1,
     flexDirection: "row",
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 16,
-    width: 24,
   },
   text: {
     fontSize: 20,
@@ -57,7 +45,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 })
-
-export const buttonStyle = styles.button
-
-// TODO: make background look better

@@ -1,18 +1,20 @@
-const light = {
-  backgroundColor: "white",
-  buttonBackgroundColor: "#F65446",
-  buttonTextColor: "white",
-  buttonSymbolColor: "black",
-  cellSelectedColor: "#307DF6",
-  gridBorderColor: "#D7E1F4",
-  numberBackgroundColor: "#306D75",
-  textColor: "black",
+const blue = {
+  c0: "#476A6F",
+  c1: "#519E8A",
+  c2: "#7EB09B",
+  c3: "#C5C9A4",
+  c4: "#E5D4A3",
 }
 
-// boxShadow: "drop-shadow(0px 8px 16px rgba(5, 74, 183, 0.2))",
+const green = {
+  c0: "#476A6F",
+  c1: "#519E8A",
+  c2: "#7EB09B",
+  c3: "#C5C9A4",
+  c4: "#E5D4A3",
+}
 
 export default {
-  light,
+  blue,
+  green,
 }
-
-// TODO: themes

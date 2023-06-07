@@ -1,8 +1,8 @@
 import { Animated, Pressable } from "react-native"
 import { NavigationContainerRefWithCurrent } from "@react-navigation/native"
-import { Octicons } from "@expo/vector-icons"
-import { buttonStyle } from "./Header"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import animate from "~/Animations"
+import styles from "~/Styles"
 
 export default function BackButton({
   goBack,
@@ -15,9 +15,9 @@ export default function BackButton({
   }
 
   return (
-    <Pressable onPress={handlePress} style={buttonStyle}>
+    <Pressable onPress={handlePress} style={styles.headerButton}>
       <Animated.View style={{ opacity: interpolation }}>
-        <Octicons name="chevron-left" size={24} />
+        <MaterialCommunityIcons color="white" name="chevron-left" size={24} />
       </Animated.View>
     </Pressable>
   )

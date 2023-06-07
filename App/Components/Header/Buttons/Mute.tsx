@@ -1,15 +1,16 @@
 import { Animated, Pressable } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { toggleSound } from "~/Store/Settings"
-import { Octicons } from "@expo/vector-icons"
-import { buttonStyle } from "./Header"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import animate from "~/Animations"
+import styles from "~/Styles"
 
 export default function SoundButton() {
-  const { buttonSymbolColor: color } = useAppSelector(state => state.settings.theme)
   const sound = useAppSelector(state => state.settings.sound)
   const dispatch = useAppDispatch()
   const [interpolation, timing] = animate(500, [1, 0, 1])
+  const icon = ("volume" +
+    (sound ? "-high" : "-low")) as keyof typeof MaterialCommunityIcons.glyphMap
 
   function handlePress() {
     setTimeout(() => dispatch(toggleSound()), 250)
@@ -19,9 +20,9 @@ export default function SoundButton() {
   }
 
   return (
-    <Pressable onPress={handlePress} style={[buttonStyle, { margin: 0 }]}>
+    <Pressable onPress={handlePress} style={[styles.headerButton, { margin: 0 }]}>
       <Animated.View style={{ opacity: interpolation }}>
-        <Octicons name={sound ? "unmute" : "mute"} size={24} color={color} />
+        <MaterialCommunityIcons color="white" name={icon} size={24} />
       </Animated.View>
     </Pressable>
   )

@@ -1,12 +1,10 @@
 import { useState } from "react"
 import { Animated, Pressable, StyleSheet, View } from "react-native"
-import { Ionicons } from "@expo/vector-icons"
-import { useAppSelector } from "~/Store"
-import { buttonStyle } from "./Header"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import animate from "~/Animations"
+import styles from "~/Styles"
 
 export default function ThemeButton() {
-  const { buttonSymbolColor: color } = useAppSelector(state => state.settings.theme)
   const [isOpen, setIsOpen] = useState(false)
   const [opacity, opacityTiming, opacityReverse] = animate(250, [1, 0])
   const [maxWidth, maxWidthTiming, maxWidthReverse] = animate(250, ["0%", "100%"])
@@ -41,9 +39,9 @@ export default function ThemeButton() {
       />
     </Animated.View>
   ) : (
-    <Pressable style={buttonStyle} onPress={handlePressIcon}>
+    <Pressable style={styles.headerButton} onPress={handlePressIcon}>
       <Animated.View style={{ opacity }}>
-        <Ionicons name="color-palette-outline" size={24} color={color} />
+        <MaterialCommunityIcons color="white" name="palette" size={24} />
       </Animated.View>
     </Pressable>
   )
