@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { Animated, Modal, Platform, Pressable, Text, View } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { GlythType } from "~/Components/Logo"
 import animate from "~/Animations"
 import styles from "~/Styles"
 
 export default function ExportButton() {
   const [opacity, timing, reverse] = animate(250, [1, 0])
   const [modal, setModal] = useState(false)
-  const icon = ((Platform.OS === "ios" ? "export" : "share") +
-    "-variant") as keyof typeof MaterialCommunityIcons.glyphMap
+  const icon = ((Platform.OS === "ios" ? "export" : "share") + "-variant") as GlythType
 
   function handlePress() {
     if (!modal) {

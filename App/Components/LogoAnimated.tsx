@@ -1,29 +1,44 @@
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
-import animate from "~/Animations"
+import { GlythType } from "./Logo"
 import LogoIcon, { LogoIconProps } from "./LogoIcon"
+import animate from "~/Animations"
 
 export default function LogoAnimated(props: LogoIconProps) {
-  const [prevName, setPrevName] = useState(props.name)
+  const [curName, setCurName] = useState<GlythType>("checkbox-blank")
   const [rotateY, rotateYTiming] = animate(1000, ["0deg", "180deg"])
-  const [scaleX, scaleXTiming] = animate(1000, [1, -1])
+  const [scaleX, scaleXTiming, _, scaleXVal] = animate(1000, [1, -1])
 
   useEffect(() => {
-    setTimeout(() => {
-      setPrevName(props.name)
-    }, 500)
-
     Animated.parallel([rotateYTiming, scaleXTiming]).start(({ finished }) => {
       if (finished) {
         rotateYTiming.reset()
         scaleXTiming.reset()
       }
     })
+
+    const setNameHalfWay = scaleXVal.addListener(({ value }) => {
+      console.log(value)
+      if (value > 0.5) {
+        setCurName(props.name)
+        scaleXVal.removeListener(setNameHalfWay)
+      }
+    })
+
+    return () => {
+      rotateYTiming.stop()
+      scaleXTiming.stop()
+      scaleXVal.removeListener(setNameHalfWay)
+    }
   }, [props.name])
 
   return (
-    <Animated.View style={{ margin: -6, transform: [{ rotateY }, { scaleX }] }}>
-      <LogoIcon {...props} name={prevName} />
+    <Animated.View
+      style={{
+        margin: -6,
+        transform: [{ rotateY }, { scaleX }],
+      }}>
+      <LogoIcon {...props} name={curName} />
     </Animated.View>
   )
 }

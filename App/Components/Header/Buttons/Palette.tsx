@@ -1,18 +1,34 @@
-import { useState } from "react"
-import { Animated, Pressable, StyleSheet, View } from "react-native"
+import { useEffect, useState } from "react"
+import { Animated, Pressable, StyleSheet } from "react-native"
+import { useAppDispatch, useAppSelector } from "~/Store"
+import { setTheme } from "~/Store/Settings"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import animate from "~/Animations"
 import styles from "~/Styles"
+import themes from "~/Themes"
 
 export default function ThemeButton() {
   const [isOpen, setIsOpen] = useState(false)
+  const dispatch = useAppDispatch()
+  const theme = useAppSelector(state => state.settings.theme)
   const [opacity, opacityTiming, opacityReverse] = animate(250, [1, 0])
   const [maxWidth, maxWidthTiming, maxWidthReverse] = animate(250, ["0%", "100%"])
 
-  function handlePressColor(TODO: any) {
+  function PressableColor({ color }: { color: keyof typeof themes }) {
+    return (
+      <Pressable
+        style={[paletteStyle.button, { backgroundColor: color, marginLeft: 16 }]}
+        onPress={() => handlePressColor(color)}>
+        {theme === color && <MaterialCommunityIcons color="white" name="check" size={20} />}
+      </Pressable>
+    )
+  }
+
+  function handlePressColor(color: keyof typeof themes) {
     Animated.parallel([maxWidthReverse, opacityTiming]).start(() => {
-      setIsOpen(false)
+      dispatch(setTheme(color))
       opacityReverse.start()
+      setIsOpen(false)
     })
   }
 
@@ -23,20 +39,17 @@ export default function ThemeButton() {
     })
   }
 
+  useEffect(() => {
+    if (!isOpen) return
+    const timeout = setTimeout(() => handlePressColor(theme), 5000)
+    return () => clearTimeout(timeout)
+  }, [isOpen])
+
   return isOpen ? (
     <Animated.View style={[paletteStyle.container, { maxWidth, opacity }]}>
-      <Pressable
-        style={[paletteStyle.button, { backgroundColor: "orange", marginLeft: 4 }]}
-        onPress={() => handlePressColor(1)}
-      />
-      <Pressable
-        style={[paletteStyle.button, { backgroundColor: "green" }]}
-        onPress={() => handlePressColor(2)}
-      />
-      <Pressable
-        style={[paletteStyle.button, { backgroundColor: "grey" }]}
-        onPress={() => handlePressColor(3)}
-      />
+      {Object.keys(themes).map(color => (
+        <PressableColor color={color as keyof typeof themes} key={color} />
+      ))}
     </Animated.View>
   ) : (
     <Pressable style={styles.headerButton} onPress={handlePressIcon}>
@@ -50,18 +63,15 @@ export default function ThemeButton() {
 const paletteStyle = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center",
-    borderColor: "black",
-    borderRadius: 16,
-    borderWidth: 1,
     marginRight: 16,
     overflow: "hidden",
   },
   button: {
-    borderRadius: 10,
-    height: 20,
-    width: 20,
-    marginRight: 4,
+    borderColor: "white",
+    borderRadius: 12,
+    borderWidth: 1,
+    height: 22,
+    width: 22,
   },
 })
 

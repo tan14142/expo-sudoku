@@ -5,6 +5,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import LogoAnimated from "./LogoAnimated"
 import themes from "~/Themes"
 
+export type GlythType = keyof typeof MaterialCommunityIcons.glyphMap
+
 export default function Logo() {
   const theme = useAppSelector(state => state.settings.theme)
   const items = [
@@ -16,26 +18,22 @@ export default function Logo() {
     "pencil-box",
     "play-box",
     ...Array.from({ length: 9 }, (_, i) => `numeric-${i + 1}-box`),
-  ] as (keyof typeof MaterialCommunityIcons.glyphMap)[]
-  const [picks, setPicks] = useState(Array(9).fill(0))
-  const lastRef = useRef(-2)
+  ] as GlythType[]
+  const [picks, setPicks] = useState(getInits())
+  const lastRef = useRef(-1)
+
+  function getInits() {
+    const init = Array.from({ length: items.length - 1 }, (_, i) => i + 1)
+
+    while (init.length > 9) {
+      init.splice((Math.random() * init.length - 1) | (0 + 1), 1)
+    }
+
+    return init
+  }
 
   useEffect(() => {
-    if (lastRef.current === -2) {
-      setTimeout(() => {
-        const init = Array.from({ length: items.length - 1 }, (_, i) => i + 1)
-
-        while (init.length > 9) {
-          init.splice((Math.random() * init.length - 1) | (0 + 1), 1)
-        }
-
-        setPicks(init)
-      }, 500)
-
-      lastRef.current = -1
-      return
-    }
-    setTimeout(
+    const timeout = setTimeout(
       () => {
         let pick: number
 
@@ -58,6 +56,8 @@ export default function Logo() {
       },
       lastRef.current === -1 ? 1200 : 600,
     )
+
+    // return () => clearTimeout(timeout)
   }, [picks])
 
   return (

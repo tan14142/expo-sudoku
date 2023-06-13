@@ -25,6 +25,8 @@ export default () => {
   }
 
   function renderTab() {
+    if (!isFocused) return null
+
     switch (tab) {
       case "Home":
         return <Home />

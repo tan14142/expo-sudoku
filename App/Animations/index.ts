@@ -5,6 +5,7 @@ type Return = [
   Animated.AnimatedInterpolation<number>,
   Animated.CompositeAnimation,
   Animated.CompositeAnimation,
+  Animated.Value,
 ]
 
 export default function animate(duration: number, outputRange: number[] | string[]): Return {
@@ -27,5 +28,5 @@ export default function animate(duration: number, outputRange: number[] | string
     useNativeDriver: true,
   })
 
-  return [animate, timing, reverse]
+  return [animate, timing, reverse, val]
 }

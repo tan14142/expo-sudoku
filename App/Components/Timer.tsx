@@ -22,12 +22,12 @@ export default function Timer() {
   }
 
   useEffect(() => {
-    // if (status = "running") {
-    //   const timeout = setTimeout(() => {
-    //     dispatch(setTimer(time + 1))
-    //   }, 1000)
-    //   return () => clearTimeout(timeout)
-    // }
+    if (status === "running") {
+      const timeout = setTimeout(() => {
+        dispatch(setTimer(time + 1))
+      }, 1000)
+      return () => clearTimeout(timeout)
+    }
   }, [status, time])
 
   if (!displayTimer) {

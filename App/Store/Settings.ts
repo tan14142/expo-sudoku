@@ -1,5 +1,5 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
-import { createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import themes from "../Themes"
 
 const settingsSlice = createSlice({
@@ -21,6 +21,9 @@ const settingsSlice = createSlice({
     vibration: true,
   },
   reducers: {
+    setTheme(settings, { payload }: PayloadAction<keyof typeof themes>) {
+      settings.theme = payload
+    },
     toggleDisplayAnimations(settings) {
       settings.displayAnimations = !settings.displayAnimations
     },
@@ -67,9 +70,6 @@ const settingsSlice = createSlice({
     toggleSound(settings) {
       settings.sound = !settings.sound
     },
-    toggleTheme(settings) {
-      settings.theme = themes.light // Todo
-    },
     toggleVibration(settings) {
       settings.vibration = !settings.vibration
     },
@@ -77,6 +77,7 @@ const settingsSlice = createSlice({
 })
 
 export const {
+  setTheme,
   toggleDisplayAnimations,
   toggleDisplayHinter,
   toggleDisplayTimer,
@@ -89,7 +90,6 @@ export const {
   toggleRemoveNotesAutomatically,
   toggleScreenAlwaysOn,
   toggleSound,
-  toggleTheme,
   toggleVibration,
 } = settingsSlice.actions
 export default settingsSlice.reducer

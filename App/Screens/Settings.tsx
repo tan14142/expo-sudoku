@@ -127,7 +127,7 @@ export default function Settings() {
             Vibration
           </Text>
           <Text selectable={false} style={styles.description}>
-            Vibrate feedback TODO
+            Vibrate on mistake
           </Text>
         </View>
         <Switch value={vibration} onValueChange={() => handleClick(vibration, toggleVibration)} />

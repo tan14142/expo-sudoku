@@ -33,6 +33,10 @@ export default function CellAnimated({ index }: CellProps) {
           scaleXTiming.reset()
         }
       })
+      return () => {
+        rotateYTiming.stop()
+        scaleXTiming.stop()
+      }
     }
   }, [rowFilled, columnFilled, regionFilled])
 
