@@ -1,13 +1,16 @@
-import { Dimensions, Pressable, StyleSheet, Text, Vibration } from "react-native"
+import { StyleSheet, Vibration } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { pushLinks, pushSelection, removeLinkedNotes, setNote, setNum } from "~/Store/Game"
+import PressableAnimated from "./Animated"
+import styles from "~/Styles"
+import TextPoppins from "../TextPoppins"
 import useSound from "~/Hooks/useSound"
 
-interface NumberPadButtonProps {
+interface PressableNumberProps {
   value: number
 }
 
-export default function NumberPadButton({ value }: NumberPadButtonProps) {
+export default function PressableNumber({ value }: PressableNumberProps) {
   const dispatch = useAppDispatch()
   const selection = useAppSelector(state => state.game.selection)
   const num = useAppSelector(state => state.game.board[selection]?.num)
@@ -20,6 +23,7 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
   const lowlightInvalidInput = useAppSelector(state => state.settings.lowlightInvalidInput)
   const lowlightSolvedNumbers = useAppSelector(state => state.settings.lowlightSolvedNumbers)
   const removeNotesAutomatically = useAppSelector(state => state.settings.removeNotesAutomatically)
+  const theme = useAppSelector(state => state.settings.theme)
   const vibration = useAppSelector(state => state.settings.vibration)
   const isWhitelisted = lowlightInvalidInput ? whitelist : !solved
   const playSound = useSound()
@@ -61,43 +65,31 @@ export default function NumberPadButton({ value }: NumberPadButtonProps) {
   }
 
   return (
-    <Pressable
-      style={[styles.button, isBlacklisted && styles.faded, notesEnabled && styles.greyed]}
+    <PressableAnimated
+      style={[
+        { backgroundColor: theme.s },
+        styles.pressableRound,
+        isBlacklisted && style.blacklisted,
+        solved && style.solved,
+        notesEnabled && style.notesEnabled,
+      ]}
       onPress={() => handlePress()}
       onLongPress={() => handlePress(true)}>
-      <Text selectable={false} style={styles.text}>
+      <TextPoppins selectable={false} style={{ color: theme.sf, fontSize: 24 }}>
         {value}
-      </Text>
-    </Pressable>
+      </TextPoppins>
+    </PressableAnimated>
   )
 }
 
-const width = Dimensions.get("window").width * 0.1
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#307DF6",
-    borderRadius: width / 4,
-    height: width,
-    width,
-
-    elevation: 16,
-    shadowColor: "#D7E1F4",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowRadius: 16,
-  },
-  faded: {
+const style = StyleSheet.create({
+  blacklisted: {
     opacity: 0.5,
   },
-  greyed: {
-    backgroundColor: "#888888",
+  solved: {
+    opacity: 0.1,
   },
-  text: {
-    color: "white",
+  notesEnabled: {
+    backgroundColor: "#888888",
   },
 })

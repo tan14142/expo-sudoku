@@ -1,11 +1,10 @@
 import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { setSelection } from "~/Store/Game"
-import { CellProps } from "./Cell"
-import Notes from "~/Components/Notes"
+import Notes from "./Notes"
 import useSound from "~/Hooks/useSound"
 
-export default function Cell({ index }: CellProps) {
+export default function CellContent({ index }: CellType) {
   const dispatch = useAppDispatch()
   const num = useAppSelector(state => state.game.board[index].num)
   const init = useAppSelector(state => state.game.board[index].init)
@@ -15,19 +14,20 @@ export default function Cell({ index }: CellProps) {
   const highlightLinkedCells = useAppSelector(state => state.settings.highlightLinkedCells)
   const highlightMatchingCells = useAppSelector(state => state.settings.highlightMatchingCells)
   const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
+  const theme = useAppSelector(state => state.settings.theme)
   const playSound = useSound()
 
   function getPressableStyle() {
     const pressableStyles: ViewStyle[] = [styles.pressable]
 
     if (status === "selected") {
-      pressableStyles.push(styles.pressableSelected)
+      pressableStyles.push({ backgroundColor: theme.s })
     } else if (status === "mistake") {
-      pressableStyles.push(styles.pressableHighlightMistake)
+      pressableStyles.push({ backgroundColor: theme.e })
     } else if (highlightMatchingCells && status === "matching") {
-      pressableStyles.push(styles.pressableHighlightMatching)
+      pressableStyles.push({ backgroundColor: theme.t })
     } else if (highlightLinkedCells && status === "linked") {
-      pressableStyles.push(styles.pressableHighlightLinked)
+      pressableStyles.push({ backgroundColor: theme.q })
     }
 
     return pressableStyles
@@ -74,20 +74,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  pressableSelected: {
-    borderColor: "#307DF6",
-    borderRadius: 4,
-    borderWidth: 1,
-    margin: 1,
-  },
   pressableHighlightLinked: {
     backgroundColor: "rgba(48, 125, 246, 0.1)",
   },
   pressableHighlightMatching: {
     backgroundColor: "rgba(48, 125, 246, 0.2)",
-  },
-  pressableHighlightMistake: {
-    backgroundColor: "lightpink",
   },
   text: {
     fontSize: 24,

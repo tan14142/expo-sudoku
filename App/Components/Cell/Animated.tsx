@@ -1,13 +1,12 @@
 import { useEffect } from "react"
 import { Animated, StyleSheet } from "react-native"
 import { useAppSelector } from "~/Store"
-import { CellProps } from "./Cell"
 import { getColumn, getRegion, getRow } from "~/Utils"
-import CellButton from "./CellButton"
+import CellButton from "./Content"
 import animate from "~/Animations"
 import shakeX from "~/Animations/shakeX"
 
-export default function CellAnimated({ index }: CellProps) {
+export default function CellAnimated({ index }: CellType) {
   const rowFilled = useAppSelector(state => state.game.filled.rows[getRow(index)])
   const columnFilled = useAppSelector(state => state.game.filled.columns[getColumn(index)])
   const regionFilled = useAppSelector(state => state.game.filled.regions[getRegion(index)])

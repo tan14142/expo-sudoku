@@ -1,4 +1,4 @@
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native"
+import { Modal, Pressable, StyleSheet, View } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { useNavigation } from "@react-navigation/native"
 import { reset, setBoard } from "~/Store/Game"
@@ -6,7 +6,6 @@ import Overlay from "./Overlay"
 import TextPoppins from "~/Components/TextPoppins"
 import generate from "~/Utils/generate"
 import styles from "~/Styles"
-import themes from "~/Themes"
 
 interface NewGameProps {
   visible: boolean
@@ -40,34 +39,26 @@ export default function NewGame({ visible, setVisible }: NewGameProps) {
           setVisible(!visible)
         }}>
         <Overlay setVisible={setVisible}>
-          <View style={[style.container, styles.dropShadow]}>
+          <View style={[style.container, styles.dropShadow, { backgroundColor: theme.pb }]}>
             <Pressable
               onPress={() => handleNewGame(60, "Easy")}
-              style={[style.pressable, { borderBottomColor: themes[theme].c0 }]}>
-              <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-                Easy
-              </TextPoppins>
+              style={[style.pressable, { borderBottomColor: theme.p }]}>
+              <TextPoppins style={[style.pressableText, { color: theme.p }]}>Easy</TextPoppins>
             </Pressable>
             <Pressable
               onPress={() => handleNewGame(35, "Medium")}
-              style={[style.pressable, { borderBottomColor: themes[theme].c0 }]}>
-              <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-                Medium
-              </TextPoppins>
+              style={[style.pressable, { borderBottomColor: theme.p }]}>
+              <TextPoppins style={[style.pressableText, { color: theme.p }]}>Medium</TextPoppins>
             </Pressable>
             <Pressable
               onPress={() => handleNewGame(30, "Hard")}
-              style={[style.pressable, { borderBottomColor: themes[theme].c0 }]}>
-              <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-                Hard
-              </TextPoppins>
+              style={[style.pressable, { borderBottomColor: theme.p }]}>
+              <TextPoppins style={[style.pressableText, { color: theme.p }]}>Hard</TextPoppins>
             </Pressable>
             <Pressable
               onPress={() => handleNewGame(25, "Expert")}
               style={[style.pressable, { borderWidth: 0 }]}>
-              <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-                Expert
-              </TextPoppins>
+              <TextPoppins style={[style.pressableText, { color: theme.p }]}>Expert</TextPoppins>
             </Pressable>
           </View>
         </Overlay>
@@ -78,7 +69,6 @@ export default function NewGame({ visible, setVisible }: NewGameProps) {
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     borderRadius: 20,
     alignItems: "center",
   },

@@ -18,7 +18,6 @@ export default function LogoAnimated(props: LogoIconProps) {
     })
 
     const setNameHalfWay = scaleXVal.addListener(({ value }) => {
-      console.log(value)
       if (value > 0.5) {
         setCurName(props.name)
         scaleXVal.removeListener(setNameHalfWay)

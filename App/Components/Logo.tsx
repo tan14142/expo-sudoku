@@ -3,7 +3,6 @@ import { Dimensions, StyleSheet, View } from "react-native"
 import { useAppSelector } from "~/Store"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import LogoAnimated from "./LogoAnimated"
-import themes from "~/Themes"
 
 export type GlythType = keyof typeof MaterialCommunityIcons.glyphMap
 
@@ -57,7 +56,7 @@ export default function Logo() {
       lastRef.current === -1 ? 1200 : 600,
     )
 
-    // return () => clearTimeout(timeout)
+    return () => clearTimeout(timeout)
   }, [picks])
 
   return (
@@ -65,7 +64,7 @@ export default function Logo() {
       {Array(9)
         .fill(null)
         .map((_, i) => (
-          <LogoAnimated key={i} color={themes[theme].c0} name={items[picks[i]]} size={logoSize} />
+          <LogoAnimated key={i} color={theme.p} name={items[picks[i]]} size={logoSize} />
         ))}
     </View>
   )

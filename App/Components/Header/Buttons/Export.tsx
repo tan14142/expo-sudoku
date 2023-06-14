@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { Animated, Modal, Platform, Pressable, Text, View } from "react-native"
+import { Animated, Modal, Platform, Pressable, View } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { GlythType } from "~/Components/Logo"
 import animate from "~/Animations"
 import styles from "~/Styles"
+import TextPoppins from "~/Components/TextPoppins"
 
 export default function ExportButton() {
   const [opacity, timing, reverse] = animate(250, [1, 0])
@@ -39,15 +40,14 @@ export default function ExportButton() {
         <View>
           <View>
             <Pressable onPress={handlePressShareInit}>
-              <Text>Share Init</Text>
+              <TextPoppins>Share Init</TextPoppins>
             </Pressable>
             <Pressable onPress={handlePressShareState}>
-              <Text>Share State</Text>
+              <TextPoppins>Share State</TextPoppins>
             </Pressable>
           </View>
         </View>
       </Modal>
-
       <Animated.View style={{ opacity }}>
         <MaterialCommunityIcons color="white" name={icon} size={24} />
       </Animated.View>

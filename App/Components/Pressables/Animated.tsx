@@ -2,33 +2,36 @@ import { ReactNode } from "react"
 import { Animated, Pressable, ViewProps } from "react-native"
 import animate from "~/Animations"
 import styles from "~/Styles"
+import useSound, { SoundsType } from "~/Hooks/useSound"
 
 interface PressableAnimatedProps {
   children: ReactNode
-  onPress: () => void
+  evelation?: number
+  sound?: string
   style: Animated.AnimatedProps<ViewProps>["style"]
+  onPress: () => void
+  onLongPress?: () => void
 }
 
-export default function PressableAnimated({ children, onPress, style }: PressableAnimatedProps) {
-  const [elevation, timingElevation, reverseElevation] = animate(100, [
-    styles.dropShadow.elevation,
-    0,
-  ])
-  const [shadowRadius, timingShadowRadius, reverseRadius] = animate(100, [
-    styles.dropShadow.shadowRadius,
-    0,
-  ])
-  const [width, timingWidth, reverseWidth] = animate(100, [styles.dropShadow.shadowOffset.width, 0])
-  const [translateY, timingTranslateY, reverseTranslateY] = animate(100, [
-    0,
-    styles.dropShadow.elevation / 2,
-  ])
+export default function PressableAnimated({
+  children,
+  evelation = 1,
+  sound = "tick",
+  style,
+  onPress,
+  onLongPress,
+}: PressableAnimatedProps) {
+  const [elevation, timingElevation, reverseElevation] = animate(100, [evelation, 0])
+  const [shadowRadius, timingShadowRadius, reverseRadius] = animate(100, [evelation * 2, 0])
+  const [width, timingWidth, reverseWidth] = animate(100, [evelation, 0])
+  const [translateY, timingTranslateY, reverseTranslateY] = animate(100, [0, evelation / 2])
+  const playSound = useSound()
 
-  function handlePress() {
+  function handlePress(handler: () => void) {
     Animated.parallel([timingElevation, timingShadowRadius, timingWidth, timingTranslateY]).start(
       ({ finished }) => {
         if (finished) {
-          onPress!()
+          handler()
           Animated.parallel([
             reverseElevation,
             reverseRadius,
@@ -38,6 +41,8 @@ export default function PressableAnimated({ children, onPress, style }: Pressabl
         }
       },
     )
+
+    playSound(sound as SoundsType)
   }
 
   return (
@@ -52,7 +57,8 @@ export default function PressableAnimated({ children, onPress, style }: Pressabl
         },
       ]}>
       <Pressable
-        onPress={handlePress}
+        onPress={() => handlePress(onPress)}
+        onLongPress={() => onLongPress && handlePress(onLongPress)}
         style={[
           styles.center,
           {

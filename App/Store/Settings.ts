@@ -1,12 +1,15 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import themes from "../Themes"
+import themes, { ThemeType } from "~/Themes"
 
 const settingsSlice = createSlice({
   name: "settings",
   initialState: {
     displayAnimations: true,
     displayHinter: true,
+    hints: 3,
+    displayMistakes: true,
+    mistakes: 3,
     displaySolver: true,
     displayTimer: true,
     highlightLinkedCells: true,
@@ -17,11 +20,17 @@ const settingsSlice = createSlice({
     removeNotesAutomatically: true,
     screenAlwaysOn: true,
     sound: true,
-    theme: "green" as keyof typeof themes,
+    theme: themes.green,
     vibration: true,
   },
   reducers: {
-    setTheme(settings, { payload }: PayloadAction<keyof typeof themes>) {
+    setHints(settings, { payload }: PayloadAction<number>) {
+      settings.hints = payload
+    },
+    setMistakes(settings, { payload }: PayloadAction<number>) {
+      settings.mistakes = payload
+    },
+    setTheme(settings, { payload }: PayloadAction<ThemeType>) {
       settings.theme = payload
     },
     toggleDisplayAnimations(settings) {
@@ -29,6 +38,9 @@ const settingsSlice = createSlice({
     },
     toggleDisplayHinter(settings) {
       settings.displayHinter = !settings.displayHinter
+    },
+    toggleDisplayMistakes(settings) {
+      settings.displayMistakes = !settings.displayMistakes
     },
     toggleDisplaySolver(settings) {
       settings.displaySolver = !settings.displaySolver
@@ -77,9 +89,12 @@ const settingsSlice = createSlice({
 })
 
 export const {
+  setHints,
+  setMistakes,
   setTheme,
   toggleDisplayAnimations,
   toggleDisplayHinter,
+  toggleDisplayMistakes,
   toggleDisplayTimer,
   toggleDisplaySolver,
   toggleHighlightLinkedCells,

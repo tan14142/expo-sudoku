@@ -1,11 +1,12 @@
 import { Dimensions, StyleSheet, View } from "react-native"
 import { useIsFocused } from "@react-navigation/native"
 import { useAppSelector } from "~/Store"
+import { checkLostOrWon } from "~/Utils"
 import GameHeader from "~/Components/GameHeader"
 import Board from "~/Components/Board"
 import FeaturePad from "~/Components/FeaturePad"
 import NumberPad from "~/Components/NumberPad"
-import { checkLostOrWon } from "~/Utils"
+import styles from "~/Styles"
 import useSound from "~/Hooks/useSound"
 
 export default function Game() {
@@ -18,19 +19,24 @@ export default function Game() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.padding, style.container]}>
       <GameHeader />
-      <Board />
+      <Board size={boardSize} />
       <FeaturePad />
       <NumberPad />
     </View>
   )
 }
 
-const styles = StyleSheet.create({
+const { height, width } = Dimensions.get("window")
+const boardSize =
+  ((height / width >= 16 / 9 ? width : (height / 16) * 9) - styles.padding.padding * 2) | 0
+
+const style = StyleSheet.create({
   container: {
+    flex: 1,
     alignSelf: "center",
-    width: Dimensions.get("window").width * 0.9 + 8,
+    justifyContent: "flex-end",
   },
 })
 

@@ -1,25 +1,36 @@
 import { StyleSheet, View, Text } from "react-native"
 import { useAppSelector } from "~/Store"
+import Timer from "~/Components/Timer"
 
 export default function GameHeader() {
   const difficulty = useAppSelector(state => state.game.difficulty)
 
   return (
     <View style={styles.container}>
-      <Text selectable={false} style={styles.text}>
-        {difficulty}
-      </Text>
+      <View style={styles.column}>
+        <View style={{ flex: 1 }}>
+          <Text selectable={false} style={styles.text}>
+            {difficulty}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}></View>
+        <View style={{ flex: 1, alignItems: "flex-end" }}>
+          <Timer />
+        </View>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: "flex-end",
+    padding: 10,
+  },
+  column: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    height: 48,
-    paddingHorizontal: 4,
   },
   text: {
     fontSize: 24,

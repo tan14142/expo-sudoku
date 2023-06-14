@@ -9,7 +9,7 @@ import styles from "~/Styles"
 export default function SoundButton() {
   const sound = useAppSelector(state => state.settings.sound)
   const dispatch = useAppDispatch()
-  const [interpolation, timing] = animate(500, [1, 0, 1])
+  const [opacity, timing] = animate(500, [1, 0, 1])
   const icon = ("volume" + (sound ? "-high" : "-low")) as GlythType
 
   function handlePress() {
@@ -21,7 +21,7 @@ export default function SoundButton() {
 
   return (
     <Pressable onPress={handlePress} style={[styles.headerButton, { margin: 0 }]}>
-      <Animated.View style={{ opacity: interpolation }}>
+      <Animated.View style={{ opacity }}>
         <MaterialCommunityIcons color="white" name={icon} size={24} />
       </Animated.View>
     </Pressable>

@@ -5,7 +5,7 @@ import { setTheme } from "~/Store/Settings"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import animate from "~/Animations"
 import styles from "~/Styles"
-import themes from "~/Themes"
+import themes, { ThemeType } from "~/Themes"
 
 export default function ThemeButton() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,19 +14,19 @@ export default function ThemeButton() {
   const [opacity, opacityTiming, opacityReverse] = animate(250, [1, 0])
   const [maxWidth, maxWidthTiming, maxWidthReverse] = animate(250, ["0%", "100%"])
 
-  function PressableColor({ color }: { color: keyof typeof themes }) {
+  function PressableColor({ selected }: { selected: ThemeType }) {
     return (
       <Pressable
-        style={[paletteStyle.button, { backgroundColor: color, marginLeft: 16 }]}
-        onPress={() => handlePressColor(color)}>
-        {theme === color && <MaterialCommunityIcons color="white" name="check" size={20} />}
+        style={[paletteStyle.button, { backgroundColor: selected.p, marginRight: 20 }]}
+        onPress={() => handlePressColor(selected)}>
+        {theme.p === selected.p && <MaterialCommunityIcons color="white" name="check" size={20} />}
       </Pressable>
     )
   }
 
-  function handlePressColor(color: keyof typeof themes) {
+  function handlePressColor(theme: ThemeType) {
     Animated.parallel([maxWidthReverse, opacityTiming]).start(() => {
-      dispatch(setTheme(color))
+      dispatch(setTheme(theme))
       opacityReverse.start()
       setIsOpen(false)
     })
@@ -47,8 +47,8 @@ export default function ThemeButton() {
 
   return isOpen ? (
     <Animated.View style={[paletteStyle.container, { maxWidth, opacity }]}>
-      {Object.keys(themes).map(color => (
-        <PressableColor color={color as keyof typeof themes} key={color} />
+      {Object.values(themes).map(value => (
+        <PressableColor selected={value} key={value.p} />
       ))}
     </Animated.View>
   ) : (
@@ -63,7 +63,6 @@ export default function ThemeButton() {
 const paletteStyle = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginRight: 16,
     overflow: "hidden",
   },
   button: {
@@ -74,5 +73,3 @@ const paletteStyle = StyleSheet.create({
     width: 22,
   },
 })
-
-// TODO: themes

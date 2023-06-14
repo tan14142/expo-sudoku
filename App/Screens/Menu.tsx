@@ -10,7 +10,6 @@ import Stats from "~/Components/Tabs/Stats"
 import TextPoppins from "~/Components/TextPoppins"
 import useSound from "~/Hooks/useSound"
 import styles from "~/Styles"
-import themes from "~/Themes"
 
 type TabsType = "Home" | "Battle" | "Trials" | "Custom" | "Stats"
 
@@ -20,12 +19,10 @@ export default () => {
   const isFocused = useIsFocused()
   const playSound = useSound()
 
-  if (isFocused) {
-    playSound("navigate")
-  }
-
   function renderTab() {
     if (!isFocused) return null
+
+    playSound("navigate")
 
     switch (tab) {
       case "Home":
@@ -40,46 +37,38 @@ export default () => {
   }
 
   return (
-    <View style={style.container}>
+    <View style={[styles.center, styles.padding, { flex: 1 }]}>
       {renderTab()}
-      <View style={[style.footer]}>
+      <View style={style.footer}>
         <Pressable
           onPress={() => setTab("Home")}
           style={[style.pressable, styles.center, { opacity: tab === "Home" ? 1 : 0.25 }]}>
-          <MaterialCommunityIcons name="grid" size={24} color={themes[theme].c0} />
-          <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>Home</TextPoppins>
+          <MaterialCommunityIcons name="grid" size={24} color={theme.p} />
+          <TextPoppins style={[style.pressableText, { color: theme.p }]}>Home</TextPoppins>
         </Pressable>
         <Pressable
           onPress={() => setTab("Battle")}
           style={[style.pressable, styles.center, { opacity: tab === "Battle" ? 1 : 0.25 }]}>
-          <MaterialCommunityIcons name="sword-cross" size={24} color={themes[theme].c0} />
-          <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-            Battle
-          </TextPoppins>
+          <MaterialCommunityIcons name="sword-cross" size={24} color={theme.p} />
+          <TextPoppins style={[style.pressableText, { color: theme.p }]}>Battle</TextPoppins>
         </Pressable>
         <Pressable
           onPress={() => setTab("Trials")}
           style={[style.pressable, styles.center, { opacity: tab === "Trials" ? 1 : 0.25 }]}>
-          <MaterialCommunityIcons name="shield-sword" size={24} color={themes[theme].c0} />
-          <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-            Trials
-          </TextPoppins>
+          <MaterialCommunityIcons name="shield-sword" size={24} color={theme.p} />
+          <TextPoppins style={[style.pressableText, { color: theme.p }]}>Trials</TextPoppins>
         </Pressable>
         <Pressable
           onPress={() => setTab("Custom")}
           style={[style.pressable, styles.center, { opacity: tab === "Custom" ? 1 : 0.25 }]}>
-          <MaterialCommunityIcons name="pencil-ruler" size={24} color={themes[theme].c0} />
-          <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-            Custom
-          </TextPoppins>
+          <MaterialCommunityIcons name="pencil-ruler" size={24} color={theme.p} />
+          <TextPoppins style={[style.pressableText, { color: theme.p }]}>Custom</TextPoppins>
         </Pressable>
         <Pressable
           onPress={() => setTab("Stats")}
           style={[style.pressable, styles.center, { opacity: tab === "Stats" ? 1 : 0.25 }]}>
-          <MaterialCommunityIcons name="chart-box" size={24} color={themes[theme].c0} />
-          <TextPoppins style={[style.pressableText, { color: themes[theme].c0 }]}>
-            Stats
-          </TextPoppins>
+          <MaterialCommunityIcons name="chart-box" size={24} color={theme.p} />
+          <TextPoppins style={[style.pressableText, { color: theme.p }]}>Stats</TextPoppins>
         </Pressable>
       </View>
     </View>
@@ -87,21 +76,19 @@ export default () => {
 }
 
 const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
   footer: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
     width: "100%",
   },
   pressable: {
-    padding: 8,
+    paddingHorizontal: 10,
   },
   pressableText: {
     fontSize: 12,
     textAlign: "center",
   },
 })
+
+// TODO: prefetch, add tabs content

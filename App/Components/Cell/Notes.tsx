@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View } from "react-native"
 import { useAppSelector } from "~/Store"
-import { CellProps } from "./Cell"
+import TextPoppins from "../TextPoppins"
 
-export default function Notes({ index }: CellProps) {
+export default function CellNotes({ index }: CellType) {
   const notes = useAppSelector(state => state.game.board[index].notes)
 
   return (
     <View style={styles.container}>
       {notes.slice(1).map((v, i) => (
-        <Text selectable={false} key={i} style={[styles.text, !v && styles.opaque]}>
+        <TextPoppins key={i} style={[styles.text, !v && styles.opaque]}>
           {i + 1}
-        </Text>
+        </TextPoppins>
       ))}
     </View>
   )
@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
     height: "33%",
     lineHeight: 16,
     textAlign: "center",
-    fontSize: 8,
+    fontSize: 10,
   },
 })

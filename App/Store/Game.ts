@@ -81,6 +81,7 @@ const gameSlice = createSlice({
           solution: payload.solution[i],
         }
       })
+      game.difficulty = payload.difficulty
     },
     setNote(game, { payload }: PayloadAction<number>) {
       game.board[game.selection].num = 0
@@ -203,7 +204,7 @@ const gameSlice = createSlice({
           return acc
         }, Array(10).fill(0))
         .map((count, i) => (i ? count === 9 : false))
-      game.status = initialState.status
+      game.status = "running"
       game.time = initialState.time
       game.whitelist = initialState.whitelist
     },

@@ -1,10 +1,13 @@
-import { ScrollView, StyleSheet, Switch, Text, View } from "react-native"
+import { ScrollView, StyleSheet, Switch, View } from "react-native"
 import { useIsFocused } from "@react-navigation/native"
 import { AnyAction } from "redux"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import {
+  setHints,
+  setMistakes,
   toggleDisplayAnimations,
   toggleDisplayHinter,
+  toggleDisplayMistakes,
   toggleDisplaySolver,
   toggleDisplayTimer,
   toggleHighlightLinkedCells,
@@ -16,7 +19,10 @@ import {
   toggleScreenAlwaysOn,
   toggleVibration,
 } from "~/Store/Settings"
+import NumberInput from "~/Components/NumberInput"
+import TextPoppins from "~/Components/TextPoppins"
 import useSound from "~/Hooks/useSound"
+import { useEffect } from "react"
 
 export default function Settings() {
   const isFocused = useIsFocused()
@@ -24,6 +30,9 @@ export default function Settings() {
   const {
     displayAnimations,
     displayHinter,
+    hints,
+    displayMistakes,
+    mistakes,
     displaySolver,
     displayTimer,
     highlightLinkedCells,
@@ -42,23 +51,19 @@ export default function Settings() {
     dispatch(toggler())
   }
 
-  if (isFocused) {
-    playSound("navigate")
-  }
+  useEffect(() => {
+    if (isFocused) {
+      playSound("navigate")
+    }
+  }, [isFocused])
 
   return (
     <ScrollView style={styles.container}>
-      <Text selectable={false} style={styles.header}>
-        Game
-      </Text>
+      <TextPoppins style={styles.header}>Game</TextPoppins>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Display animations
-          </Text>
-          <Text selectable={false} style={styles.description}>
-            Display animations on the board
-          </Text>
+          <TextPoppins style={styles.label}>Display animations</TextPoppins>
+          <TextPoppins style={styles.description}>Display animations on the board</TextPoppins>
         </View>
         <Switch
           value={displayAnimations}
@@ -67,12 +72,8 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Display hinter
-          </Text>
-          <Text selectable={false} style={styles.description}>
-            Display the hint button
-          </Text>
+          <TextPoppins style={styles.label}>Display hinter</TextPoppins>
+          <TextPoppins style={styles.description}>Display the hint button</TextPoppins>
         </View>
         <Switch
           value={displayHinter}
@@ -81,12 +82,44 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Display solver
-          </Text>
-          <Text selectable={false} style={styles.description}>
-            Display the solve button
-          </Text>
+          <TextPoppins style={styles.label}>Limit hints</TextPoppins>
+          <TextPoppins style={styles.description}>Limit the number of hints per game</TextPoppins>
+        </View>
+        <NumberInput
+          disabled={!displayHinter}
+          value={hints}
+          decrement={() => hints && dispatch(setHints(hints - 1))}
+          increment={() => hints < 3 && dispatch(setHints(hints + 1))}
+        />
+      </View>
+      <View style={styles.row}>
+        <View>
+          <TextPoppins style={styles.label}>Display mistakes</TextPoppins>
+          <TextPoppins style={styles.description}>
+            Display the number of mistakes per game
+          </TextPoppins>
+        </View>
+        <Switch
+          value={displayMistakes}
+          onValueChange={() => handleClick(displayMistakes, toggleDisplayMistakes)}
+        />
+      </View>
+      <View style={styles.row}>
+        <View>
+          <TextPoppins style={styles.label}>Limit hints</TextPoppins>
+          <TextPoppins style={styles.description}>Limit the number of hints per game</TextPoppins>
+        </View>
+        <NumberInput
+          disabled={!displayMistakes}
+          value={mistakes}
+          decrement={() => mistakes && dispatch(setMistakes(mistakes - 1))}
+          increment={() => mistakes < 3 && dispatch(setMistakes(mistakes + 1))}
+        />
+      </View>
+      <View style={styles.row}>
+        <View>
+          <TextPoppins style={styles.label}>Display solver</TextPoppins>
+          <TextPoppins style={styles.description}>Display the solve button</TextPoppins>
         </View>
         <Switch
           value={displaySolver}
@@ -95,12 +128,10 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Display timer
-          </Text>
-          <Text selectable={false} style={styles.description}>
+          <TextPoppins style={styles.label}>Display timer</TextPoppins>
+          <TextPoppins style={styles.description}>
             Display the pause button and elapsed time
-          </Text>
+          </TextPoppins>
         </View>
         <Switch
           value={displayTimer}
@@ -109,12 +140,8 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Screen always on
-          </Text>
-          <Text selectable={false} style={styles.description}>
-            Keep the screen always on
-          </Text>
+          <TextPoppins style={styles.label}>Screen always on</TextPoppins>
+          <TextPoppins style={styles.description}>Keep the screen always on</TextPoppins>
         </View>
         <Switch
           value={screenAlwaysOn}
@@ -123,26 +150,18 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Vibration
-          </Text>
-          <Text selectable={false} style={styles.description}>
-            Vibrate on mistake
-          </Text>
+          <TextPoppins style={styles.label}>Vibration</TextPoppins>
+          <TextPoppins style={styles.description}>Vibrate on mistake</TextPoppins>
         </View>
         <Switch value={vibration} onValueChange={() => handleClick(vibration, toggleVibration)} />
       </View>
-      <Text selectable={false} style={styles.header}>
-        Board
-      </Text>
+      <TextPoppins style={styles.header}>Board</TextPoppins>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Highlight linked cells
-          </Text>
-          <Text selectable={false} style={styles.description}>
+          <TextPoppins style={styles.label}>Highlight linked cells</TextPoppins>
+          <TextPoppins style={styles.description}>
             Highlight all cells in the same column, row and region
-          </Text>
+          </TextPoppins>
         </View>
         <Switch
           value={highlightLinkedCells}
@@ -151,12 +170,10 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Highlight matching numbers
-          </Text>
-          <Text selectable={false} style={styles.description}>
+          <TextPoppins style={styles.label}>Highlight matching numbers</TextPoppins>
+          <TextPoppins style={styles.description}>
             Highlight matching numbers in the other regions
-          </Text>
+          </TextPoppins>
         </View>
         <Switch
           value={highlightMatchingCells}
@@ -165,12 +182,8 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Highlight mistakes
-          </Text>
-          <Text selectable={false} style={styles.description}>
-            Highlight mistakes immediately
-          </Text>
+          <TextPoppins style={styles.label}>Highlight mistakes</TextPoppins>
+          <TextPoppins style={styles.description}>Highlight mistakes immediately</TextPoppins>
         </View>
         <Switch
           value={highlightMistake}
@@ -179,12 +192,10 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Lowlight invalid number inputs
-          </Text>
-          <Text selectable={false} style={styles.description}>
+          <TextPoppins style={styles.label}>Lowlight invalid number inputs</TextPoppins>
+          <TextPoppins style={styles.description}>
             Fade out input if there is a match in linked cells
-          </Text>
+          </TextPoppins>
         </View>
         <Switch
           value={lowlightInvalidInput}
@@ -193,12 +204,10 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Lowlight solved numbers
-          </Text>
-          <Text selectable={false} style={styles.description}>
+          <TextPoppins style={styles.label}>Lowlight solved numbers</TextPoppins>
+          <TextPoppins style={styles.description}>
             Fade out input if the number is solved
-          </Text>
+          </TextPoppins>
         </View>
         <Switch
           disabled={lowlightInvalidInput}
@@ -208,12 +217,10 @@ export default function Settings() {
       </View>
       <View style={styles.row}>
         <View>
-          <Text selectable={false} style={styles.label}>
-            Remove notes automatically
-          </Text>
-          <Text selectable={false} style={styles.description}>
+          <TextPoppins style={styles.label}>Remove notes automatically</TextPoppins>
+          <TextPoppins style={styles.description}>
             Remove notes from linked cells on number input
-          </Text>
+          </TextPoppins>
         </View>
         <Switch
           value={removeNotesAutomatically}
@@ -222,34 +229,32 @@ export default function Settings() {
           }
         />
       </View>
-      <Text selectable={false} style={styles.header}>
-        More
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      <TextPoppins style={styles.header}>More</TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         About
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      </TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         Privacy Policy
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      </TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         Terms of Service
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      </TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         Contact Us
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      </TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         Reset All
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      </TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         How to Play
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      </TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         Rate App
-      </Text>
-      <Text selectable={false} onPress={() => console.log(123)} style={styles.label}>
+      </TextPoppins>
+      <TextPoppins onPress={() => console.log(123)} style={styles.label}>
         Share App
-      </Text>
-      <Text selectable={false}>Version</Text>
+      </TextPoppins>
+      <TextPoppins>Version</TextPoppins>
     </ScrollView>
   )
 }
@@ -263,7 +268,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "700",
     marginVertical: 10,
   },
   row: {

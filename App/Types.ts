@@ -1,0 +1,3 @@
+type CellType = {
+  index: number
+}
