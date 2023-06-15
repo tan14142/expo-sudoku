@@ -38,7 +38,7 @@ export default function Home() {
           style={[
             styles.dropShadow,
             style.pressable,
-            { backgroundColor: theme.p, marginBottom: 80 },
+            { backgroundColor: theme.p, marginBottom: 32 },
           ]}>
           <TextPoppins style={[style.pressableText, { color: theme.pf }]}>New Game</TextPoppins>
         </PressableAnimated>
@@ -59,7 +59,7 @@ const style = StyleSheet.create({
     borderRadius: 24,
     height: 64,
     width: 300,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   pressableText: {
     fontSize: 24,

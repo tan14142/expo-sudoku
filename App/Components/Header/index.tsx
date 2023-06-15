@@ -1,6 +1,7 @@
-import { StyleSheet, View } from "react-native"
+import { StatusBar, StyleSheet, View } from "react-native"
 import { NavigationContainerRefWithCurrent } from "@react-navigation/native"
 import { useAppSelector } from "~/Store"
+import { SafeAreaView } from "react-native-safe-area-context"
 import BackButton from "./Buttons/Back"
 import GearButton from "./Buttons/Gear"
 import PaletteButton from "./Buttons/Palette"
@@ -15,7 +16,8 @@ export default function Header(
   const routeName = navRef.getCurrentRoute()!.name
 
   return (
-    <View style={[styles.padding, { backgroundColor: theme.p, flexDirection: "row" }]}>
+    <SafeAreaView style={[styles.padding, { backgroundColor: theme.p, flexDirection: "row" }]}>
+      <StatusBar barStyle="light-content" />
       <View style={style.column}>
         {routeName !== "Menu" && <BackButton {...navRef} />}
         {routeName !== "Settings" && <GearButton {...navRef} />}
@@ -25,7 +27,7 @@ export default function Header(
         <PaletteButton />
         <MuteButton />
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

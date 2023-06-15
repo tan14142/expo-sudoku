@@ -57,7 +57,7 @@ export default function NewGame({ visible, setVisible }: NewGameProps) {
             </Pressable>
             <Pressable
               onPress={() => handleNewGame(25, "Expert")}
-              style={[style.pressable, { borderWidth: 0 }]}>
+              style={[style.pressable, { borderBottomWidth: 0 }]}>
               <TextPoppins style={[style.pressableText, { color: theme.p }]}>Expert</TextPoppins>
             </Pressable>
           </View>

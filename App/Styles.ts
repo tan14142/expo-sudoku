@@ -17,11 +17,11 @@ export default StyleSheet.create({
   headerButton: {
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 20,
+    marginRight: 12,
     width: 24,
   },
   padding: {
-    padding: 20,
+    padding: 12,
   },
   pressableRound: {
     borderRadius: 24,

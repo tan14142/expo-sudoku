@@ -20,7 +20,7 @@ export default function SoundButton() {
   }
 
   return (
-    <Pressable onPress={handlePress} style={[styles.headerButton, { margin: 0 }]}>
+    <Pressable onPress={handlePress} style={[styles.headerButton, { marginRight: 0 }]}>
       <Animated.View style={{ opacity }}>
         <MaterialCommunityIcons color="white" name={icon} size={24} />
       </Animated.View>

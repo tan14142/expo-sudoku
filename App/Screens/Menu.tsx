@@ -37,7 +37,7 @@ export default () => {
   }
 
   return (
-    <View style={[styles.center, styles.padding, { flex: 1 }]}>
+    <View style={[styles.center, styles.padding, style.container]}>
       {renderTab()}
       <View style={style.footer}>
         <Pressable
@@ -76,10 +76,14 @@ export default () => {
 }
 
 const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
   footer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     width: "100%",
   },
   pressable: {

@@ -12,7 +12,7 @@ export default function ThemeButton() {
   const dispatch = useAppDispatch()
   const theme = useAppSelector(state => state.settings.theme)
   const [opacity, opacityTiming, opacityReverse] = animate(250, [1, 0])
-  const [maxWidth, maxWidthTiming, maxWidthReverse] = animate(250, ["0%", "100%"])
+  const [scaleX, scaleXTiming, scaleXReverse] = animate(250, [0, 1])
 
   function PressableColor({ selected }: { selected: themes.Theme }) {
     return (
@@ -25,7 +25,7 @@ export default function ThemeButton() {
   }
 
   function handlePressColor(theme: themes.Theme) {
-    Animated.parallel([maxWidthReverse, opacityTiming]).start(() => {
+    Animated.parallel([scaleXReverse, opacityTiming]).start(() => {
       dispatch(setTheme(theme))
       opacityReverse.start()
       setIsOpen(false)
@@ -34,7 +34,7 @@ export default function ThemeButton() {
 
   function handlePressIcon() {
     opacityTiming.start(() => {
-      Animated.parallel([maxWidthTiming, opacityReverse]).start()
+      Animated.parallel([scaleXTiming, opacityReverse]).start()
       setIsOpen(true)
     })
   }
@@ -46,7 +46,7 @@ export default function ThemeButton() {
   }, [isOpen])
 
   return isOpen ? (
-    <Animated.View style={[paletteStyle.container, { maxWidth, opacity }]}>
+    <Animated.View style={[paletteStyle.container, { scaleX, opacity }]}>
       {Object.values(themes).map(value => (
         <PressableColor selected={value} key={value.p} />
       ))}
