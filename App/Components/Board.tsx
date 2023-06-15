@@ -67,7 +67,7 @@ export default function Board({ size }: BoardProps) {
     </View>
   )
 }
-
+// TODO: check cell - 0.9
 const style = StyleSheet.create({
   board: {
     flexDirection: "row",

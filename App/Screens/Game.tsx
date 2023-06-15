@@ -19,20 +19,24 @@ export default function Game() {
   }
 
   return (
-    <View style={[styles.padding, style.container]}>
+    <View style={[styles.center, styles.padding, style.container, { width: width + 24 }]}>
       <GameHeader />
-      <Board size={boardSize} />
-      <FeaturePad size={featurePadSize} />
-      <NumberPad size={numberPadSize} />
+      <Board size={width} />
+      <FeaturePad size={responsiveSize} />
+      <NumberPad size={responsiveSize} />
     </View>
   )
 }
 
-const { height, width } = Dimensions.get("window")
-const boardSize =
-  ((height / width >= 16 / 9 ? width : (height / 16) * 9) - styles.padding.padding * 2) | 0
-const featurePadSize = boardSize / 4
-const numberPadSize = boardSize / 5
+const { height, width: screenWidth } = Dimensions.get("window")
+const width = ((height / screenWidth >= 2 ? screenWidth : height / 2) - styles.padding.padding * 2) | 0
+const padHeight = 240
+const pressableSize = 48
+const responsivePadHeight = (width / 5) * 3.5
+const responsiveSize =
+  responsivePadHeight > padHeight
+    ? pressableSize
+    : (responsivePadHeight * pressableSize) / padHeight
 
 const style = StyleSheet.create({
   container: {

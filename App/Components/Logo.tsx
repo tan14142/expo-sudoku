@@ -69,15 +69,17 @@ export default function Logo() {
 }
 
 const { width, height } = Dimensions.get("window")
-const containerSize = Math.min(width, height) / 2
-const logoSize = Math.min(width, height) / 6
+const availableHeight = (height - 24 - 12 - 42 - 12) / 3 - 20
+const maxSize = Math.min(width, height) / 2
+const containerSize = availableHeight > maxSize ? maxSize : availableHeight
+const logoSize = containerSize / 2.5
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginVertical: 96,
+    height: containerSize,
     width: containerSize,
   },
 })

@@ -83,7 +83,7 @@ const style = StyleSheet.create({
   footer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     width: "100%",
   },
   pressable: {

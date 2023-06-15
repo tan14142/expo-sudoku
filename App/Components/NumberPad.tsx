@@ -14,16 +14,16 @@ export default function NumberPad({ size }: NumberPadProps) {
         {Array(5)
           .fill(true)
           .map((_, i) => (
-            <PressableNumber key={i} value={i + 1} />
+            <PressableNumber key={i} size={size} value={i + 1} />
           ))}
       </View>
       <View style={styles.row}>
         {Array(4)
           .fill(true)
           .map((_, i) => (
-            <PressableNumber key={i} value={i + 6} />
+            <PressableNumber key={i} size={size} value={i + 6} />
           ))}
-        <PressableNote />
+        <PressableNote size={size} />
       </View>
     </>
   )

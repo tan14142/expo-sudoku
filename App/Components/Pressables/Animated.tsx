@@ -6,6 +6,7 @@ import useSound, { Sounds } from "~/Hooks/useSound"
 
 interface PressableAnimatedProps {
   children: ReactNode
+  disabled?: boolean
   evelation?: number
   sound?: string
   style: Animated.AnimatedProps<ViewProps>["style"]
@@ -15,6 +16,7 @@ interface PressableAnimatedProps {
 
 export default function PressableAnimated({
   children,
+  disabled = false,
   evelation = 1,
   sound = "tick",
   style,
@@ -57,6 +59,7 @@ export default function PressableAnimated({
         },
       ]}>
       <Pressable
+        disabled={disabled}
         onPress={() => handlePress(onPress)}
         onLongPress={() => onLongPress && handlePress(onLongPress)}
         style={[

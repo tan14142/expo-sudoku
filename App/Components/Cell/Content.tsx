@@ -5,7 +5,7 @@ import { CellProps } from "~/Types"
 import Notes from "./Notes"
 import useSound from "~/Hooks/useSound"
 
-export default function CellContent({ index }: CellProps) {
+export default function CellContent({ index, size }: CellProps) {
   const dispatch = useAppDispatch()
   const num = useAppSelector(state => state.game.board[index].num)
   const init = useAppSelector(state => state.game.board[index].init)
@@ -63,7 +63,7 @@ export default function CellContent({ index }: CellProps) {
           {num}
         </Text>
       ) : (
-        <Notes index={index} />
+        <Notes index={index} size={size} />
       )}
     </Pressable>
   )
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   textCorrect: {
-    color: "#307DF6",
+    color: "black",
   },
   textMistake: {
     color: "red",
@@ -95,3 +95,4 @@ const styles = StyleSheet.create({
     color: "black",
   },
 })
+// TODO: colors, responsiveness

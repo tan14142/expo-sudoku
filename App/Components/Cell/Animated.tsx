@@ -7,7 +7,7 @@ import CellButton from "./Content"
 import animate from "~/Animations"
 import shakeX from "~/Animations/shakeX"
 
-export default function CellAnimated({ index }: CellProps) {
+export default function CellAnimated({ index, size }: CellProps) {
   const rowFilled = useAppSelector(state => state.game.filled.rows[getRow(index)])
   const columnFilled = useAppSelector(state => state.game.filled.columns[getColumn(index)])
   const regionFilled = useAppSelector(state => state.game.filled.regions[getRegion(index)])
@@ -43,7 +43,7 @@ export default function CellAnimated({ index }: CellProps) {
   return (
     <Animated.View
       style={[styles.container, { transform: [{ rotateY }, { scaleX }, { translateX }] }]}>
-      <CellButton index={index} />
+      <CellButton index={index} size={size} />
     </Animated.View>
   )
 }

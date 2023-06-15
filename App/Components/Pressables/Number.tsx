@@ -7,10 +7,11 @@ import TextPoppins from "../TextPoppins"
 import useSound from "~/Hooks/useSound"
 
 interface PressableNumberProps {
+  size: number
   value: number
 }
 
-export default function PressableNumber({ value }: PressableNumberProps) {
+export default function PressableNumber({ size, value }: PressableNumberProps) {
   const dispatch = useAppDispatch()
   const selection = useAppSelector(state => state.game.selection)
   const num = useAppSelector(state => state.game.board[selection]?.num)
@@ -67,7 +68,7 @@ export default function PressableNumber({ value }: PressableNumberProps) {
   return (
     <PressableAnimated
       style={[
-        { backgroundColor: theme.s },
+        { backgroundColor: theme.s, height: size, width: size },
         styles.pressableRound,
         isBlacklisted && style.blacklisted,
         solved && style.solved,
@@ -75,7 +76,7 @@ export default function PressableNumber({ value }: PressableNumberProps) {
       ]}
       onPress={() => handlePress()}
       onLongPress={() => handlePress(true)}>
-      <TextPoppins style={{ color: theme.sf, fontSize: 24 }}>{value}</TextPoppins>
+      <TextPoppins style={{ color: theme.sf, fontSize: (size * 24) / 48 }}>{value}</TextPoppins>
     </PressableAnimated>
   )
 }

@@ -25,13 +25,12 @@ export default StyleSheet.create({
   },
   pressableRound: {
     borderRadius: 24,
-    height: 48,
-    width: 48,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    width: "100%",
   },
 })

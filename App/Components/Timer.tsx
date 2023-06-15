@@ -1,8 +1,8 @@
 import { useEffect } from "react"
-import { Pressable, StyleSheet, View, Text } from "react-native"
+import { Pressable } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { setStatus, setTimer } from "~/Store/Game"
-import { Feather } from "@expo/vector-icons"
+import TextPoppins from "./TextPoppins"
 
 export default function Timer() {
   const dispatch = useAppDispatch()
@@ -35,30 +35,8 @@ export default function Timer() {
   }
 
   return (
-    <Pressable style={styles.container} onPress={toggle}>
-      <View style={styles.iconWrapper}>
-        <Feather name={status === "running" ? "pause" : "play"} size={26} />
-      </View>
-      <Text selectable={false} style={styles.text}>
-        {convertTime(time)}
-      </Text>
+    <Pressable onPress={toggle}>
+      <TextPoppins style={{ fontSize: 12 }}>{convertTime(time)}</TextPoppins>
     </Pressable>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-  },
-  iconWrapper: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: 32,
-  },
-  text: {
-    fontFamily: "monospace",
-    fontSize: 24,
-    fontWeight: "500",
-  },
-})

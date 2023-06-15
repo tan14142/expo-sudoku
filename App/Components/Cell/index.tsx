@@ -1,10 +1,9 @@
 import { View, ViewStyle } from "react-native"
 import { useAppSelector } from "~/Store"
-import { BoardProps } from "~/Components/Board"
 import { CellProps } from "~/Types"
 import CellAnimated from "./Animated"
 
-export default function Cell({ index, size }: BoardProps & CellProps) {
+export default function Cell({ index, size }: CellProps) {
   const theme = useAppSelector(state => state.settings.theme)
 
   function getCellStyles(index: number) {
@@ -53,7 +52,8 @@ export default function Cell({ index, size }: BoardProps & CellProps) {
 
   return (
     <View style={getCellStyles(index)}>
-      <CellAnimated index={index} />
+      <CellAnimated index={index} size={size} />
     </View>
   )
 }
+// TODO: check grid off on Android

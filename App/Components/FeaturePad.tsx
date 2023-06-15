@@ -43,15 +43,30 @@ export default function FeaturePad({ size }: FeaturePadProps) {
   }
 
   return (
-    <View style={[styles.row, { marginTop: 20 }]}>
-      <PressableFeature name={"undo-variant" as Glyth} text="undo" handler={handleUndo} />
-      <PressableFeature name={"eraser" as Glyth} text="clear" handler={handleClear} />
-      <PressableFeature name={"restore" as Glyth} text="reset" handler={handleReset} />
+    <View style={[styles.row, { marginTop: 16, marginBottom: 8 }]}>
+      <PressableFeature
+        name={"undo-variant" as Glyth}
+        size={size}
+        text="undo"
+        handler={handleUndo}
+      />
+      <PressableFeature name={"eraser" as Glyth} size={size} text="clear" handler={handleClear} />
+      <PressableFeature name={"restore" as Glyth} size={size} text="reset" handler={handleReset} />
       {displaySolver && (
-        <PressableFeature name={"magic-staff" as Glyth} text="solve" handler={handleSolve} />
+        <PressableFeature
+          name={"magic-staff" as Glyth}
+          size={size}
+          text="solve"
+          handler={handleSolve}
+        />
       )}
       {displayHinter && (
-        <PressableFeature name={"lightbulb" as Glyth} text="hint" handler={handleHint} />
+        <PressableFeature
+          name={"lightbulb" as Glyth}
+          size={size}
+          text="hint"
+          handler={handleHint}
+        />
       )}
     </View>
   )

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Pressable, StyleSheet, View } from "react-native"
+import { Dimensions, StyleSheet, View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { useAppSelector } from "~/Store"
 import NewGame from "~/Modals/NewGame"
@@ -17,35 +17,38 @@ export default function Home() {
   return (
     <>
       <NewGame visible={modalVisible} setVisible={setModalVisible} />
-      <View style={[styles.center, { flex: 1 }]}>
+      <View style={[styles.center, { flex: 2, transform: [{ scale }] }]}>
         <TextPoppins style={[style.header, { color: theme.p }]}>SUDOKU</TextPoppins>
       </View>
-      <View style={[styles.center, { flex: 1 }]}>
+      <View style={[styles.center, { flex: 3 }]}>
         <Logo />
       </View>
-      <View style={[{ flex: 1, justifyContent: "flex-end" }]}>
-        {status === "running" && (
-          <PressableAnimated
-            evelation={4}
-            onPress={() => navigate("Game")}
-            style={[styles.dropShadow, style.pressable, { backgroundColor: theme.p }]}>
-            <TextPoppins style={[style.pressableText, { color: theme.pf }]}>Continue</TextPoppins>
-          </PressableAnimated>
-        )}
+      <View style={[styles.center, { flex: 3, transform: [{ scale }] }]}>
         <PressableAnimated
+          disabled={status !== "running"}
           evelation={4}
-          onPress={() => setModalVisible(true)}
+          onPress={() => navigate("Game")}
           style={[
             styles.dropShadow,
             style.pressable,
-            { backgroundColor: theme.p, marginBottom: 32 },
+            { backgroundColor: theme.p, opacity: +(status === "running") },
           ]}>
+          <TextPoppins style={[style.pressableText, { color: theme.pf }]}>Continue</TextPoppins>
+        </PressableAnimated>
+        <PressableAnimated
+          evelation={4}
+          onPress={() => setModalVisible(true)}
+          style={[styles.dropShadow, style.pressable, { backgroundColor: theme.p }]}>
           <TextPoppins style={[style.pressableText, { color: theme.pf }]}>New Game</TextPoppins>
         </PressableAnimated>
       </View>
     </>
   )
 }
+
+const { height } = Dimensions.get("window")
+const availableHeight = (height - 24 - 12 - 42 - 12) / 3 - 40
+const scale = availableHeight > 180 ? 1 : availableHeight / 180
 
 const style = StyleSheet.create({
   header: {
