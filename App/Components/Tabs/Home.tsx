@@ -63,6 +63,6 @@ const style = StyleSheet.create({
   },
   pressableText: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: "700",
   },
 })

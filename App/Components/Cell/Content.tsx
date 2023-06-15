@@ -1,10 +1,11 @@
 import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { setSelection } from "~/Store/Game"
+import { CellProps } from "~/Types"
 import Notes from "./Notes"
 import useSound from "~/Hooks/useSound"
 
-export default function CellContent({ index }: CellType) {
+export default function CellContent({ index }: CellProps) {
   const dispatch = useAppDispatch()
   const num = useAppSelector(state => state.game.board[index].num)
   const init = useAppSelector(state => state.game.board[index].init)

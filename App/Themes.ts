@@ -1,5 +1,5 @@
-const dark = {
-  p: "#476A6F",
+export const dark = {
+  p: "black",
   pb: "#f2f2f2",
   pf: "#fff",
   s: "#519E8A",
@@ -13,7 +13,7 @@ const dark = {
   ef: "red",
 }
 
-const green = {
+export const green = {
   p: "#476a6f",
   pb: "#f2f2f2",
   pf: "#fff",
@@ -29,8 +29,8 @@ const green = {
   ef: "red",
 }
 
-const orange = {
-  p: "#476A6F",
+export const orange = {
+  p: "orange",
   pb: "#f2f2f2",
   pf: "#fff",
   s: "#519E8A",
@@ -44,11 +44,4 @@ const orange = {
   ef: "red",
 }
 
-const themes = {
-  dark,
-  green,
-  orange,
-}
-
-export type ThemeType = (typeof themes)[keyof typeof themes]
-export default themes
+export type Theme = typeof dark

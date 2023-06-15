@@ -1,28 +1,11 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import themes, { ThemeType } from "~/Themes"
+import { settings as initialState } from "~/Store/initialState"
+import { Theme } from "~/Themes"
 
 const settingsSlice = createSlice({
   name: "settings",
-  initialState: {
-    displayAnimations: true,
-    displayHinter: true,
-    hints: 3,
-    displayMistakes: true,
-    mistakes: 3,
-    displaySolver: true,
-    displayTimer: true,
-    highlightLinkedCells: true,
-    highlightMatchingCells: true,
-    highlightMistake: true,
-    lowlightInvalidInput: true,
-    lowlightSolvedNumbers: true,
-    removeNotesAutomatically: true,
-    screenAlwaysOn: true,
-    sound: true,
-    theme: themes.green,
-    vibration: true,
-  },
+  initialState,
   reducers: {
     setHints(settings, { payload }: PayloadAction<number>) {
       settings.hints = payload
@@ -30,7 +13,7 @@ const settingsSlice = createSlice({
     setMistakes(settings, { payload }: PayloadAction<number>) {
       settings.mistakes = payload
     },
-    setTheme(settings, { payload }: PayloadAction<ThemeType>) {
+    setTheme(settings, { payload }: PayloadAction<Theme>) {
       settings.theme = payload
     },
     toggleDisplayAnimations(settings) {

@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import { useAppSelector } from "~/Store"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { Glyth } from "~/Types"
 import LogoAnimated from "./LogoAnimated"
-
-export type GlythType = keyof typeof MaterialCommunityIcons.glyphMap
 
 export default function Logo() {
   const theme = useAppSelector(state => state.settings.theme)
@@ -17,7 +15,7 @@ export default function Logo() {
     "pencil-box",
     "play-box",
     ...Array.from({ length: 9 }, (_, i) => `numeric-${i + 1}-box`),
-  ] as GlythType[]
+  ] as Glyth[]
   const [picks, setPicks] = useState(getInits())
   const lastRef = useRef(-1)
 

@@ -1,13 +1,10 @@
-import { StyleSheet, View, ViewStyle } from "react-native"
+import { View, ViewStyle } from "react-native"
 import { useAppSelector } from "~/Store"
 import { BoardProps } from "~/Components/Board"
+import { CellProps } from "~/Types"
 import CellAnimated from "./Animated"
 
-export interface CellProps extends CellType {
-  size: number
-}
-
-export default function Cell({ index, size }: BoardProps & CellType) {
+export default function Cell({ index, size }: BoardProps & CellProps) {
   const theme = useAppSelector(state => state.settings.theme)
 
   function getCellStyles(index: number) {

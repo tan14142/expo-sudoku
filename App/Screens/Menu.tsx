@@ -11,10 +11,10 @@ import TextPoppins from "~/Components/TextPoppins"
 import useSound from "~/Hooks/useSound"
 import styles from "~/Styles"
 
-type TabsType = "Home" | "Battle" | "Trials" | "Custom" | "Stats"
+type Tabs = "Home" | "Battle" | "Trials" | "Custom" | "Stats"
 
 export default () => {
-  const [tab, setTab] = useState<TabsType>("Home")
+  const [tab, setTab] = useState<Tabs>("Home")
   const theme = useAppSelector(state => state.settings.theme)
   const isFocused = useIsFocused()
   const playSound = useSound()

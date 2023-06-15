@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Animated, Modal, Platform, Pressable, View } from "react-native"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { GlythType } from "~/Components/Logo"
+import { Glyth } from "~/Types"
 import animate from "~/Animations"
 import styles from "~/Styles"
 import TextPoppins from "~/Components/TextPoppins"
@@ -9,7 +9,7 @@ import TextPoppins from "~/Components/TextPoppins"
 export default function ExportButton() {
   const [opacity, timing, reverse] = animate(250, [1, 0])
   const [modal, setModal] = useState(false)
-  const icon = ((Platform.OS === "ios" ? "export" : "share") + "-variant") as GlythType
+  const icon = ((Platform.OS === "ios" ? "export" : "share") + "-variant") as Glyth
 
   function handlePress() {
     if (!modal) {

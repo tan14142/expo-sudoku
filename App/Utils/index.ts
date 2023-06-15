@@ -1,4 +1,4 @@
-import { GameType } from "~/Store/Game"
+import { GameSlice } from "~/Store/Game"
 
 const rows = Array.from({ length: 9 }, (_, r) => Array.from({ length: 9 }, (_, c) => r * 9 + c))
 const columns = Array.from({ length: 9 }, (_, r) => Array.from({ length: 9 }, (_, c) => r + c * 9))
@@ -18,15 +18,15 @@ export const links = Array.from({ length: 81 }, (_, i) => {
   return set
 })
 
-export function checkRowFilled(game: GameType, row: number) {
+export function checkRowFilled(game: GameSlice, row: number) {
   return rows[row].every(i => game.board[i].num === game.board[i].solution)
 }
 
-export function checkColumnFilled(game: GameType, column: number) {
+export function checkColumnFilled(game: GameSlice, column: number) {
   return columns[column].every(i => game.board[i].num === game.board[i].solution)
 }
 
-export function checkRegionFilled(game: GameType, region: number) {
+export function checkRegionFilled(game: GameSlice, region: number) {
   return regions[region].every(i => game.board[i].num === game.board[i].solution)
 }
 
@@ -34,7 +34,7 @@ export function checkLostOrWon<EqualityFn>(_: string, nextState: string) {
   return !(nextState === "lost" || nextState === "won")
 }
 
-export function checkWon(game: GameType) {
+export function checkWon(game: GameSlice) {
   return game.board.every(({ num, solution }) => num === solution)
 }
 
@@ -85,12 +85,12 @@ function hasDuplicateInTriplet(nums: number[]) {
   return lengthBefore > lengthAfter
 }
 
-export function setSolved(game: GameType, value: number) {
+export function setSolved(game: GameSlice, value: number) {
   if (!value) return
   game.solved[value] = game.board.reduce((acc, { num }) => acc + +(num === value), 0) === 9
 }
 
-export function setCellStatus(game: GameType, setMistakes = true) {
+export function setCellStatus(game: GameSlice, setMistakes = true) {
   game.board.forEach(({ num }, i) => {
     if (links[game.selection].has(i)) {
       game.board[i].status = "linked"
@@ -104,7 +104,7 @@ export function setCellStatus(game: GameType, setMistakes = true) {
   game.board[game.selection].status = "selected"
 }
 
-function setStatusMistakes(game: GameType) {
+function setStatusMistakes(game: GameSlice) {
   for (const i in rows) {
     if (hasDuplicateInTriplet(rows[i].map(index => game.board[index].num))) {
       rows[i].forEach(index => (game.board[index].status = "mistake"))
@@ -138,7 +138,7 @@ function setStatusMistakes(game: GameType) {
   }
 }
 
-export function setWhitelist(game: GameType) {
+export function setWhitelist(game: GameSlice) {
   const index = game.selection
 
   if (game.board[index].init) {

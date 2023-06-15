@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
-import { GlythType } from "./Logo"
+import { Glyth } from "~/Types"
 import LogoIcon, { LogoIconProps } from "./LogoIcon"
 import animate from "~/Animations"
 
 export default function LogoAnimated(props: LogoIconProps) {
-  const [curName, setCurName] = useState<GlythType>("checkbox-blank")
+  const [curName, setCurName] = useState<Glyth>("checkbox-blank")
   const [rotateY, rotateYTiming] = animate(1000, ["0deg", "180deg"])
   const [scaleX, scaleXTiming, _, scaleXVal] = animate(1000, [1, -1])
 

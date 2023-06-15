@@ -2,7 +2,7 @@ import { View } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
 import { pushSelection, setStatus, clear, hint, reset, solve, undo } from "~/Store/Game"
 import { checkSelection } from "~/Utils"
-import { GlythType } from "./Logo"
+import { Glyth } from "~/Types"
 import PressableFeature from "./Pressables/Feature"
 import styles from "~/Styles"
 
@@ -40,14 +40,14 @@ export default function FeaturePad() {
 
   return (
     <View style={[styles.row, { marginTop: 20 }]}>
-      <PressableFeature name={"undo-variant" as GlythType} text="undo" handler={handleUndo} />
-      <PressableFeature name={"eraser" as GlythType} text="clear" handler={handleClear} />
-      <PressableFeature name={"restore" as GlythType} text="reset" handler={handleReset} />
+      <PressableFeature name={"undo-variant" as Glyth} text="undo" handler={handleUndo} />
+      <PressableFeature name={"eraser" as Glyth} text="clear" handler={handleClear} />
+      <PressableFeature name={"restore" as Glyth} text="reset" handler={handleReset} />
       {displaySolver && (
-        <PressableFeature name={"magic-staff" as GlythType} text="solve" handler={handleSolve} />
+        <PressableFeature name={"magic-staff" as Glyth} text="solve" handler={handleSolve} />
       )}
       {displayHinter && (
-        <PressableFeature name={"lightbulb" as GlythType} text="hint" handler={handleHint} />
+        <PressableFeature name={"lightbulb" as Glyth} text="hint" handler={handleHint} />
       )}
     </View>
   )

@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 import { Animated, Pressable, ViewProps } from "react-native"
 import animate from "~/Animations"
 import styles from "~/Styles"
-import useSound, { SoundsType } from "~/Hooks/useSound"
+import useSound, { Sounds } from "~/Hooks/useSound"
 
 interface PressableAnimatedProps {
   children: ReactNode
@@ -42,7 +42,7 @@ export default function PressableAnimated({
       },
     )
 
-    playSound(sound as SoundsType)
+    playSound(sound as Sounds)
   }
 
   return (

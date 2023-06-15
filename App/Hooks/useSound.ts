@@ -37,7 +37,7 @@ const sounds = {
   undo,
 }
 
-export type SoundsType = keyof typeof sounds
+export type Sounds = keyof typeof sounds
 
 export default function useSound() {
   const enabled = useAppSelector(state => state.settings.sound)
@@ -51,7 +51,7 @@ export default function useSound() {
       : undefined
   }, [])
 
-  return async (key: SoundsType) => {
+  return async (key: Sounds) => {
     if (enabled) {
       sound = (await Audio.Sound.createAsync(sounds[key])).sound
       sound.playAsync()

@@ -13,47 +13,13 @@ import {
   setCellStatus,
   setWhitelist,
 } from "~/Utils"
+import { game as initialState } from "~/Store/initialState"
+import { GameEvent } from "~/Types"
 
-type BoardPayloadType = {
+type BoardPayload = {
   difficulty: string
   puzzle: number[]
   solution: number[]
-}
-
-export type EventType = {
-  index: number
-  notes: boolean[]
-  num: number
-}
-
-const board = Array.from({ length: 81 }, () => ({
-  init: false,
-  notes: Array<boolean>(10).fill(false),
-  num: 0,
-  status: "",
-  solution: 0,
-}))
-
-const initialState = {
-  board,
-  events: [] as EventType[][],
-  difficulty: "",
-  filled: {
-    rows: Array<boolean>(9).fill(false),
-    columns: Array<boolean>(9).fill(false),
-    regions: Array<boolean>(9).fill(false),
-  },
-  mistakes: {
-    rows: Array<number>(9).fill(0),
-    columns: Array<number>(9).fill(0),
-    regions: Array<number>(9).fill(0),
-  },
-  notesEnabled: false,
-  selection: NaN,
-  solved: Array<boolean>(10).fill(false),
-  status: "init",
-  time: 0,
-  whitelist: Array<boolean>(10).fill(false),
 }
 
 const gameSlice = createSlice({
@@ -71,7 +37,7 @@ const gameSlice = createSlice({
     pushSelection(game) {
       game.events.push([getEvent(game, game.selection)])
     },
-    setBoard(game, { payload }: PayloadAction<BoardPayloadType>) {
+    setBoard(game, { payload }: PayloadAction<BoardPayload>) {
       game.board = game.board.map((_, i) => {
         return {
           init: !!payload.puzzle[i],
@@ -230,7 +196,7 @@ const gameSlice = createSlice({
 
 let notesWrite = false
 
-function getEvent({ board }: GameType, index: number): EventType {
+function getEvent({ board }: GameSlice, index: number): GameEvent {
   return {
     index,
     notes: board[index].notes.slice(),
@@ -259,4 +225,4 @@ export const {
   undo,
 } = gameSlice.actions
 export default gameSlice.reducer
-export type GameType = typeof initialState
+export type GameSlice = typeof initialState

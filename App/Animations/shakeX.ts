@@ -1,9 +1,9 @@
 import { useRef } from "react"
 import { Animated } from "react-native"
 
-type ShakeXType = [Animated.AnimatedInterpolation<number>, () => void]
+type ShakeX = [Animated.AnimatedInterpolation<number>, () => void]
 
-export default function shakeX(): ShakeXType {
+export default function shakeX(): ShakeX {
   const translation = useRef(new Animated.Value(0)).current
 
   const trigger = () => {

@@ -75,9 +75,7 @@ export default function PressableNumber({ value }: PressableNumberProps) {
       ]}
       onPress={() => handlePress()}
       onLongPress={() => handlePress(true)}>
-      <TextPoppins selectable={false} style={{ color: theme.sf, fontSize: 24 }}>
-        {value}
-      </TextPoppins>
+      <TextPoppins style={{ color: theme.sf, fontSize: 24 }}>{value}</TextPoppins>
     </PressableAnimated>
   )
 }

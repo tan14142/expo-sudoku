@@ -5,7 +5,7 @@ import { setTheme } from "~/Store/Settings"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import animate from "~/Animations"
 import styles from "~/Styles"
-import themes, { ThemeType } from "~/Themes"
+import * as themes from "~/Themes"
 
 export default function ThemeButton() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,7 +14,7 @@ export default function ThemeButton() {
   const [opacity, opacityTiming, opacityReverse] = animate(250, [1, 0])
   const [maxWidth, maxWidthTiming, maxWidthReverse] = animate(250, ["0%", "100%"])
 
-  function PressableColor({ selected }: { selected: ThemeType }) {
+  function PressableColor({ selected }: { selected: themes.Theme }) {
     return (
       <Pressable
         style={[paletteStyle.button, { backgroundColor: selected.p, marginRight: 20 }]}
@@ -24,7 +24,7 @@ export default function ThemeButton() {
     )
   }
 
-  function handlePressColor(theme: ThemeType) {
+  function handlePressColor(theme: themes.Theme) {
     Animated.parallel([maxWidthReverse, opacityTiming]).start(() => {
       dispatch(setTheme(theme))
       opacityReverse.start()

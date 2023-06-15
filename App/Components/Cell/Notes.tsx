@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { useAppSelector } from "~/Store"
+import { CellProps } from "~/Types"
 import TextPoppins from "../TextPoppins"
 
-export default function CellNotes({ index }: CellType) {
+export default function CellNotes({ index }: CellProps) {
   const notes = useAppSelector(state => state.game.board[index].notes)
 
   return (

@@ -1,13 +1,13 @@
 import { View } from "react-native"
 import { useAppSelector } from "~/Store"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { GlythType } from "../Logo"
+import { Glyth } from "~/Types"
 import PressableAnimated from "./Animated"
 import styles from "~/Styles"
 import TextPoppins from "../TextPoppins"
 
 interface PressableFeatureProps {
-  name: GlythType
+  name: Glyth
   text: string
   handler: () => void
 }

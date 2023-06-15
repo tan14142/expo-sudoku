@@ -64,6 +64,7 @@ const style = StyleSheet.create({
     backgroundColor: "grey",
     borderRadius: 20,
     overflow: "hidden",
+    height: 20,
     width: 48,
   },
   overlay: {
