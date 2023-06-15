@@ -57,7 +57,7 @@ export default function Board({ size }: BoardProps) {
       style={[
         style.board,
         styles.dropShadow,
-        { backgroundColor: theme.pb, borderColor: theme.p, height: size },
+        { backgroundColor: theme.pb, borderColor: theme.p, height: size, width: size },
       ]}>
       {Array(81)
         .fill(true)

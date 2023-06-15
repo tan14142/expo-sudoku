@@ -74,8 +74,15 @@ const gameSlice = createSlice({
       game.board[payload].notes[num] = notesWrite
     },
     setNotesSwipeStart(game, { payload }: PayloadAction<number>) {
-      const { num } = game.board[game.selection]
-      notesWrite = !game.board[payload].notes[num]
+      try {
+        const { num } = game.board[game.selection]
+        notesWrite = !game.board[payload].notes[num]
+      }
+      catch (e) {
+        // TODO: fix me
+        console.log(e)
+        console.log(game.selection, game.board[game.selection])
+      }
     },
     setNotesEnabled(game, { payload }: PayloadAction<boolean>) {
       game.notesEnabled = payload

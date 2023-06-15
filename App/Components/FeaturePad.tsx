@@ -6,7 +6,11 @@ import { Glyth } from "~/Types"
 import PressableFeature from "./Pressables/Feature"
 import styles from "~/Styles"
 
-export default function FeaturePad() {
+interface FeaturePadProps {
+  size: number
+}
+
+export default function FeaturePad({ size }: FeaturePadProps) {
   const dispatch = useAppDispatch()
   const selection = useAppSelector(state => state.game.selection, checkSelection)
   const displayHinter = useAppSelector(state => state.settings.displayHinter)

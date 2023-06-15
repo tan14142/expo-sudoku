@@ -22,8 +22,8 @@ export default function Game() {
     <View style={[styles.padding, style.container]}>
       <GameHeader />
       <Board size={boardSize} />
-      <FeaturePad />
-      <NumberPad />
+      <FeaturePad size={featurePadSize} />
+      <NumberPad size={numberPadSize} />
     </View>
   )
 }
@@ -31,6 +31,8 @@ export default function Game() {
 const { height, width } = Dimensions.get("window")
 const boardSize =
   ((height / width >= 16 / 9 ? width : (height / 16) * 9) - styles.padding.padding * 2) | 0
+const featurePadSize = boardSize / 4
+const numberPadSize = boardSize / 5
 
 const style = StyleSheet.create({
   container: {

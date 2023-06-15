@@ -3,7 +3,11 @@ import PressableNumber from "./Pressables/Number"
 import PressableNote from "./Pressables/Note"
 import styles from "~/Styles"
 
-export default function NumberPad() {
+interface NumberPadProps {
+  size: number
+}
+
+export default function NumberPad({ size }: NumberPadProps) {
   return (
     <>
       <View style={styles.row}>
