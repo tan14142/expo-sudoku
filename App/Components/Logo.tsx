@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
-import { useAppSelector } from "~/Store"
 import { Glyth } from "~/Types"
 import LogoAnimated from "./LogoAnimated"
 
 export default function Logo() {
-  const theme = useAppSelector(state => state.settings.theme)
   const items = [
     "checkbox-blank",
     "checkbox-marked",
@@ -62,17 +60,17 @@ export default function Logo() {
       {Array(9)
         .fill(null)
         .map((_, i) => (
-          <LogoAnimated key={i} color={theme.p} name={items[picks[i]]} size={logoSize} />
+          <LogoAnimated key={i} name={items[picks[i]]} size={logoSize} />
         ))}
     </View>
   )
 }
 
 const { width, height } = Dimensions.get("window")
-const availableHeight = (height - 24 - 12 - 42 - 12) / 3 - 20
+const availableHeight = (height - 24 - 12 - 42 - 12) / 3
 const maxSize = Math.min(width, height) / 2
 const containerSize = availableHeight > maxSize ? maxSize : availableHeight
-const logoSize = containerSize / 2.5
+const logoSize = (containerSize / 3) | 0
 
 const styles = StyleSheet.create({
   container: {

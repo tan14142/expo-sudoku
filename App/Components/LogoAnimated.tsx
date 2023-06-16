@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
+import { useAppSelector } from "~/Store"
 import { Glyth } from "~/Types"
-import LogoIcon, { LogoIconProps } from "./LogoIcon"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import animate from "~/Animations"
 
-export default function LogoAnimated(props: LogoIconProps) {
+interface LogoAnimatedProps {
+  name: Glyth
+  size: number
+}
+
+export default function LogoAnimated({ name, size }: LogoAnimatedProps) {
   const [curName, setCurName] = useState<Glyth>("checkbox-blank")
+  const theme = useAppSelector(state => state.settings.theme)
   const [rotateY, rotateYTiming] = animate(1000, ["0deg", "180deg"])
   const [scaleX, scaleXTiming, _, scaleXVal] = animate(1000, [1, -1])
 
@@ -19,7 +26,7 @@ export default function LogoAnimated(props: LogoIconProps) {
 
     const setNameHalfWay = scaleXVal.addListener(({ value }) => {
       if (value > 0.5) {
-        setCurName(props.name)
+        setCurName(name)
         scaleXVal.removeListener(setNameHalfWay)
       }
     })
@@ -29,15 +36,16 @@ export default function LogoAnimated(props: LogoIconProps) {
       scaleXTiming.stop()
       scaleXVal.removeListener(setNameHalfWay)
     }
-  }, [props.name])
+  }, [name])
 
   return (
     <Animated.View
       style={{
-        margin: -6,
-        transform: [{ rotateY }, { scaleX }],
+        height: size,
+        width: size,
+        transform: [{ rotateY }, { scale: 1.25 }, { scaleX }],
       }}>
-      <LogoIcon {...props} name={curName} />
+      <MaterialCommunityIcons color={theme.p} name={curName} size={size} />
     </Animated.View>
   )
 }
