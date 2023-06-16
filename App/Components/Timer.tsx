@@ -4,7 +4,11 @@ import { useAppDispatch, useAppSelector } from "~/Store"
 import { setStatus, setTimer } from "~/Store/Game"
 import TextPoppins from "./TextPoppins"
 
-export default function Timer() {
+interface TimerProps {
+  fontSize: number
+}
+
+export default function Timer({ fontSize }: TimerProps) {
   const dispatch = useAppDispatch()
   const status = useAppSelector(state => state.game.status)
   const time = useAppSelector(state => state.game.time)
@@ -36,7 +40,8 @@ export default function Timer() {
 
   return (
     <Pressable onPress={toggle}>
-      <TextPoppins style={{ fontSize: 12 }}>{convertTime(time)}</TextPoppins>
+      <TextPoppins style={{ fontSize }}>{convertTime(time)}</TextPoppins>
     </Pressable>
   )
 }
+// TODO: add button in head to toggle timer

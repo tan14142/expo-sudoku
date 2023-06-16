@@ -9,7 +9,7 @@ import ShareButton from "./Buttons/Export"
 import MuteButton from "./Buttons/Mute"
 import styles from "~/Styles"
 
-export default function Header(
+export default function Head(
   navRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>,
 ) {
   const theme = useAppSelector(state => state.settings.theme)

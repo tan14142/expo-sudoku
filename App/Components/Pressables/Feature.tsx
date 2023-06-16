@@ -8,13 +8,14 @@ import TextPoppins from "../TextPoppins"
 
 interface PressableFeatureProps {
   name: Glyth
-  size: number
   text: string
+  width: number
   handler: () => void
 }
 
-export default function PressableFeature({ name, size, text, handler }: PressableFeatureProps) {
+export default function PressableFeature({ name, text, width, handler }: PressableFeatureProps) {
   const theme = useAppSelector(state => state.settings.theme)
+  const fontSize = (width * 12) / 48
 
   return (
     <View
@@ -23,14 +24,14 @@ export default function PressableFeature({ name, size, text, handler }: Pressabl
       }}>
       <PressableAnimated
         evelation={2}
-        style={[styles.pressableRound, { backgroundColor: theme.t, height: size, width: size }]}
+        style={[styles.pressableRound, { backgroundColor: theme.t, height: width, width }]}
         onPress={handler}>
-        <MaterialCommunityIcons name={name} size={(size * 32) / 48} color={theme.tf} />
+        <MaterialCommunityIcons name={name} size={fontSize} color={theme.tf} />
       </PressableAnimated>
       <TextPoppins
         style={{
           color: theme.p,
-          fontSize: (size * 12) / 48,
+          fontSize,
           marginTop: 4,
         }}>
         {text}

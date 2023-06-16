@@ -6,14 +6,15 @@ import styles from "~/Styles"
 import useSound from "~/Hooks/useSound"
 
 interface PressableNoteProps {
-  size: number
+  width: number
 }
 
-export default function PressableNote({ size }: PressableNoteProps) {
+export default function PressableNote({ width }: PressableNoteProps) {
   const dispatch = useAppDispatch()
   const notesEnabled = useAppSelector(state => state.game.notesEnabled)
   const theme = useAppSelector(state => state.settings.theme)
   const playSound = useSound()
+  const opacity = notesEnabled ? 1 : 0.5
 
   function handleNotes() {
     dispatch(setNotesEnabled(!notesEnabled))
@@ -23,12 +24,9 @@ export default function PressableNote({ size }: PressableNoteProps) {
   return (
     <PressableAnimated
       evelation={2}
-      style={[
-        styles.pressableRound,
-        { backgroundColor: theme.s, opacity: notesEnabled ? 1 : 0.5, height: size, width: size },
-      ]}
+      style={[styles.pressableRound, { backgroundColor: theme.s, opacity, height: width, width }]}
       onPress={handleNotes}>
-      <MaterialCommunityIcons name="pencil-outline" size={(size * 32) / 48} color={theme.sf} />
+      <MaterialCommunityIcons name="pencil-outline" size={(width * 32) / 48} color={theme.sf} />
     </PressableAnimated>
   )
 }

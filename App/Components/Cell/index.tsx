@@ -1,59 +1,101 @@
-import { View, ViewStyle } from "react-native"
-import { useAppSelector } from "~/Store"
+import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native"
+import { useAppDispatch, useAppSelector } from "~/Store"
+import { setSelection } from "~/Store/Game"
 import { CellProps } from "~/Types"
 import CellAnimated from "./Animated"
+import CellNotes from "./Notes"
+import useSound from "~/Hooks/useSound"
 
-export default function Cell({ index, size }: CellProps) {
+export default function CellContent({ index, width }: CellProps) {
+  const dispatch = useAppDispatch()
+  const num = useAppSelector(state => state.game.board[index].num)
+  const init = useAppSelector(state => state.game.board[index].init)
+  const status = useAppSelector(state => state.game.board[index].status)
+  const solution = useAppSelector(state => state.game.board[index].solution)
+  const notesEnabled = useAppSelector(state => state.game.notesEnabled)
+  const highlightLinkedCells = useAppSelector(state => state.settings.highlightLinkedCells)
+  const highlightMatchingCells = useAppSelector(state => state.settings.highlightMatchingCells)
+  const highlightMistake = useAppSelector(state => state.settings.highlightMistake)
   const theme = useAppSelector(state => state.settings.theme)
+  const playSound = useSound()
 
-  function getCellStyles(index: number) {
-    const cellStyles: ViewStyle[] = [
-      { borderColor: theme.p, borderWidth: 1, height: size, width: size },
-    ]
+  function getPressableStyle() {
+    const pressableStyles: ViewStyle[] = [styles.pressable]
 
-    if ((index > 26 && index < 36) || (index > 53 && index < 63)) {
-      cellStyles.push({
-        borderTopWidth: 3,
-      })
+    if (status === "selected") {
+      pressableStyles.push({ backgroundColor: theme.s })
+    } else if (status === "mistake") {
+      pressableStyles.push({ backgroundColor: theme.e })
+    } else if (highlightMatchingCells && status === "matching") {
+      pressableStyles.push({ backgroundColor: theme.t })
+    } else if (highlightLinkedCells && status === "linked") {
+      pressableStyles.push({ backgroundColor: theme.q })
     }
 
-    if (index % 9 !== 0 && index % 3 === 0) {
-      cellStyles.push({
-        borderLeftWidth: 3,
-      })
+    return pressableStyles
+  }
+
+  function getTextStyle() {
+    const textStyles: TextStyle[] = [styles.text]
+
+    if (init) {
+      textStyles.push(styles.textInit)
+    } else if (
+      num &&
+      ((highlightMistake && num !== solution) || (!highlightMistake && status === "mistake"))
+    ) {
+      textStyles.push(styles.textMistake)
+    } else {
+      textStyles.push(styles.textCorrect)
     }
 
-    if (index < 9) {
-      cellStyles.push({
-        borderTopWidth: 0,
-      })
-    }
+    return textStyles
+  }
 
-    if (index % 9 === 8) {
-      cellStyles.push({
-        borderRightWidth: 0,
-      })
-    }
-
-    if (index > 71) {
-      cellStyles.push({
-        borderBottomWidth: 0,
-      })
-    }
-
-    if (index % 9 === 0) {
-      cellStyles.push({
-        borderLeftWidth: 0,
-      })
-    }
-
-    return cellStyles
+  function handlePress() {
+    playSound(notesEnabled ? "pencil1" : "pen1")
+    dispatch(setSelection(index))
   }
 
   return (
-    <View style={getCellStyles(index)}>
-      <CellAnimated index={index} size={size} />
-    </View>
+    <CellAnimated index={index} width={width}>
+      <Pressable onPress={handlePress} style={getPressableStyle()}>
+        {num ? (
+          <Text selectable={false} style={getTextStyle()}>
+            {num}
+          </Text>
+        ) : (
+          <CellNotes index={index} width={width} />
+        )}
+      </Pressable>
+    </CellAnimated>
   )
 }
-// TODO: check grid off on Android
+
+const styles = StyleSheet.create({
+  pressable: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  pressableHighlightLinked: {
+    backgroundColor: "rgba(48, 125, 246, 0.1)",
+  },
+  pressableHighlightMatching: {
+    backgroundColor: "rgba(48, 125, 246, 0.2)",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  textCorrect: {
+    color: "black",
+  },
+  textMistake: {
+    color: "red",
+  },
+  textInit: {
+    color: "black",
+  },
+})
+// TODO: colors, responsiveness

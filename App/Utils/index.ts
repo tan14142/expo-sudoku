@@ -34,12 +34,12 @@ export function checkLostOrWon<EqualityFn>(_: string, nextState: string) {
   return !(nextState === "lost" || nextState === "won")
 }
 
-export function checkWon(game: GameSlice) {
-  return game.board.every(({ num, solution }) => num === solution)
+export function checkPaused<EqualityFn>(prevState: string, nextState: string) {
+  return prevState !== "paused" || nextState !== "paused"
 }
 
-export function checkSelection<EqualityFn>(prevState: number, nextState: number) {
-  return !(isNaN(prevState) || isNaN(nextState))
+export function checkWon(game: GameSlice) {
+  return game.board.every(({ num, solution }) => num === solution)
 }
 
 export function getRow(index: number) {

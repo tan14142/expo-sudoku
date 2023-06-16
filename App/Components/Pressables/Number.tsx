@@ -7,11 +7,11 @@ import TextPoppins from "../TextPoppins"
 import useSound from "~/Hooks/useSound"
 
 interface PressableNumberProps {
-  size: number
   value: number
+  width: number
 }
 
-export default function PressableNumber({ size, value }: PressableNumberProps) {
+export default function PressableNumber({ value, width }: PressableNumberProps) {
   const dispatch = useAppDispatch()
   const selection = useAppSelector(state => state.game.selection)
   const num = useAppSelector(state => state.game.board[selection]?.num)
@@ -28,6 +28,7 @@ export default function PressableNumber({ size, value }: PressableNumberProps) {
   const vibration = useAppSelector(state => state.settings.vibration)
   const isWhitelisted = lowlightInvalidInput ? whitelist : !solved
   const playSound = useSound()
+  const fontSize = (width * 24) / 48
 
   const isBlacklisted = (() => {
     if (init) {
@@ -68,7 +69,7 @@ export default function PressableNumber({ size, value }: PressableNumberProps) {
   return (
     <PressableAnimated
       style={[
-        { backgroundColor: theme.s, height: size, width: size },
+        { backgroundColor: theme.s, height: width, width },
         styles.pressableRound,
         isBlacklisted && style.blacklisted,
         solved && style.solved,
@@ -76,7 +77,7 @@ export default function PressableNumber({ size, value }: PressableNumberProps) {
       ]}
       onPress={() => handlePress()}
       onLongPress={() => handlePress(true)}>
-      <TextPoppins style={{ color: theme.sf, fontSize: (size * 24) / 48 }}>{value}</TextPoppins>
+      <TextPoppins style={{ color: theme.sf, fontSize }}>{value}</TextPoppins>
     </PressableAnimated>
   )
 }

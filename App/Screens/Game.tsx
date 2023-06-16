@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet, View } from "react-native"
 import { useIsFocused } from "@react-navigation/native"
 import { useAppSelector } from "~/Store"
 import { checkLostOrWon } from "~/Utils"
-import GameHeader from "~/Components/GameHeader"
+import Header from "~/Components/Header"
 import Board from "~/Components/Board"
 import FeaturePad from "~/Components/FeaturePad"
 import NumberPad from "~/Components/NumberPad"
@@ -20,10 +20,10 @@ export default function Game() {
 
   return (
     <View style={[styles.center, styles.padding, style.container, { width: width + 24 }]}>
-      <GameHeader />
-      <Board size={width} />
-      <FeaturePad size={responsiveSize} />
-      <NumberPad size={responsiveSize} />
+      <Header width={width} />
+      <Board width={width} />
+      <FeaturePad width={responsiveSize} />
+      <NumberPad width={responsiveSize} />
     </View>
   )
 }

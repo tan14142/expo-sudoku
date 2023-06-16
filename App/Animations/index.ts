@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { Animated } from "react-native"
+import { Animated, Platform } from "react-native"
 
 type Return = [
   Animated.AnimatedInterpolation<number>,
@@ -19,13 +19,13 @@ export default function animate(duration: number, outputRange: number[] | string
   const timing = Animated.timing(val, {
     toValue: outputRange.length - 1,
     duration,
-    useNativeDriver: true,
+    useNativeDriver: Platform.OS !== "web",
   })
 
   const reverse = Animated.timing(val, {
     toValue: 0,
     duration,
-    useNativeDriver: true,
+    useNativeDriver: Platform.OS !== "web",
   })
 
   return [animate, timing, reverse, val]

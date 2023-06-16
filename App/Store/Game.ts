@@ -35,6 +35,8 @@ const gameSlice = createSlice({
       })
     },
     pushSelection(game) {
+      if (isNaN(game.selection)) return
+
       game.events.push([getEvent(game, game.selection)])
     },
     setBoard(game, { payload }: PayloadAction<BoardPayload>) {
@@ -74,14 +76,15 @@ const gameSlice = createSlice({
       game.board[payload].notes[num] = notesWrite
     },
     setNotesSwipeStart(game, { payload }: PayloadAction<number>) {
+      if (isNaN(game.selection)) return
+
       try {
+        // TODO: remove this
         const { num } = game.board[game.selection]
         notesWrite = !game.board[payload].notes[num]
-      }
-      catch (e) {
-        // TODO: fix me
-        console.log(e)
-        console.log(game.selection, game.board[game.selection])
+        pushBoard()
+      } catch (e) {
+        game.selection = NaN
       }
     },
     setNotesEnabled(game, { payload }: PayloadAction<boolean>) {
@@ -140,16 +143,17 @@ const gameSlice = createSlice({
     },
     clear(game) {
       // TODO check events on multiple clear
+      if (isNaN(game.selection)) return
+
       gameSlice.caseReducers.setNum(game, {
         payload: 0,
         type: "game/setNum",
       })
+
       game.board[game.selection].notes = Array(10).fill(false)
     },
     hint(game) {
-      if (game.board[game.selection].init) {
-        return
-      }
+      if (isNaN(game.selection) || game.board[game.selection].init) return
 
       gameSlice.caseReducers.setNum(game, {
         payload: game.board[game.selection].solution,

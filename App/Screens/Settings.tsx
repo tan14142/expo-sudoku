@@ -160,7 +160,7 @@ export default function Settings() {
         <View>
           <TextPoppins style={styles.label}>Highlight linked cells</TextPoppins>
           <TextPoppins style={styles.description}>
-            Highlight all cells in the same column, row and region
+            Highlight cells in the same column, row and region
           </TextPoppins>
         </View>
         <Switch
@@ -258,7 +258,7 @@ export default function Settings() {
     </ScrollView>
   )
 }
-
+// TODO: split into header
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -287,4 +287,4 @@ const styles = StyleSheet.create({
   },
 })
 
-// TODO: Make more settings look like blocks with padding
+// TODO: Make more settings look like blocks with padding, hide difficulty

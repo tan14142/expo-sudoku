@@ -11,9 +11,36 @@
   <component name="ChangeListManager">
     <list default="true" id="a13ee5fa-fffc-475d-86cc-be87e2b19736" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Components/Logo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Logo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Components/LogoAnimated.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/LogoAnimated.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Components/LogoIcon.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Animations/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/App/Animations/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Animations/shakeX.ts" beforeDir="false" afterPath="$PROJECT_DIR$/App/Animations/shakeX.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Board.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Board.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Cell/Animated.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Cell/Animated.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Cell/Content.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Cell/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Cell/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/FeaturePad.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/FeaturePad.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/GameHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Header/Buttons/Back.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Head/Buttons/Back.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Header/Buttons/Export.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Head/Buttons/Export.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Header/Buttons/Gear.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Head/Buttons/Gear.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Header/Buttons/Mute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Head/Buttons/Mute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Header/Buttons/Palette.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Head/Buttons/Palette.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Head/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Logo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Logo/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/LogoAnimated.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Logo/Animated.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/NumberPad.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/NumberPad.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Pressables/Feature.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Pressables/Feature.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Pressables/Note.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Pressables/Note.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Pressables/Number.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Pressables/Number.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Components/Timer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Components/Timer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Hooks/useSound.ts" beforeDir="false" afterPath="$PROJECT_DIR$/App/Hooks/useSound.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Navigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Navigator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Screens/Game.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Screens/Game.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Screens/Settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App/Screens/Settings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Store/Game.ts" beforeDir="false" afterPath="$PROJECT_DIR$/App/Store/Game.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/App/Types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/App/Utils/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,18 +61,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ResourceManagerPrefKey.ResourceType": "DRAWABLE",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "C:/Users/anhnt16/Code/expo-sudoku",
-    "run.code.analysis.last.selected.profile": "pProject Default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ResourceManagerPrefKey.ResourceType&quot;: &quot;DRAWABLE&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/anhnt16/Code/expo-sudoku&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import { Glyth } from "~/Types"
-import LogoAnimated from "./LogoAnimated"
+import LogoAnimated from "./Animated"
 
 export default function Logo() {
   const items = [

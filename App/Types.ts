@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 export type CellProps = {
   index: number
-  size: number
+  width: number
 }
 
 export type GameEvent = {

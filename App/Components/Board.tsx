@@ -1,35 +1,32 @@
-import { GestureResponderEvent, StyleSheet, View } from "react-native"
+import { GestureResponderEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { useAppDispatch, useAppSelector } from "~/Store"
-import { pushBoard, setNotesSwipe, setNotesSwipeStart } from "~/Store/Game"
-import { checkSelection } from "~/Utils"
+import { setNotesSwipe, setNotesSwipeStart } from "~/Store/Game"
+import { checkPaused } from "~/Utils"
 import Cell from "./Cell"
 import styles from "~/Styles"
 
 export interface BoardProps {
-  size: number
+  width: number
 }
 
-export default function Board({ size }: BoardProps) {
+export default function Board({ width }: BoardProps) {
   const dispatch = useAppDispatch()
-  const selection = useAppSelector(state => state.game.selection, checkSelection)
+  const isPaused = useAppSelector(state => state.game.status, checkPaused) === "paused"
   const theme = useAppSelector(state => state.settings.theme)
-  const cell = size / 9
+  const boardWidth = width - 8
+  const cellWidth = boardWidth / 9
   let startX = 0
   let startY = 0
 
   const calculateCell = (x: number, y: number): number => {
-    const row = Math.floor(y / cell)
-    const col = Math.floor(x / cell)
+    const row = Math.floor(y / cellWidth)
+    const col = Math.floor(x / cellWidth)
     return row * 9 + col
   }
 
   function handleStart(event: GestureResponderEvent) {
-    if (isNaN(selection)) {
-      return false
-    }
     startX = event.nativeEvent.locationX
     startY = event.nativeEvent.locationY
-    dispatch(pushBoard())
     dispatch(setNotesSwipeStart(calculateCell(startX, startY)))
     return true
   }
@@ -37,17 +34,46 @@ export default function Board({ size }: BoardProps) {
   function handleMove(event: GestureResponderEvent) {
     const { locationX: x, locationY: y } = event.nativeEvent
 
-    if (x <= 0 || x >= size || y <= 0 || y >= size) {
+    if (x <= 0 || x >= boardWidth || y <= 0 || y >= boardWidth) {
       return
     }
 
     const dx = Math.abs(x - startX)
     const dy = Math.abs(y - startY)
-    const tapThreshold = 10
+    const tapThreshold = 4
 
     if (dx > tapThreshold || dy > tapThreshold) {
       dispatch(setNotesSwipe(calculateCell(x, y)))
     }
+  }
+
+  function LineBold({ style }: { style: ViewStyle }) {
+    return (
+      <View
+        style={[
+          style,
+          {
+            backgroundColor: theme.p,
+            position: "absolute",
+          },
+        ]}
+      />
+    )
+  }
+
+  function LineThin({ style }: { style: ViewStyle }) {
+    return (
+      <View
+        style={[
+          style,
+          {
+            // TODO: change color
+            backgroundColor: theme.p,
+            position: "absolute",
+          },
+        ]}
+      />
+    )
   }
 
   return (
@@ -57,17 +83,33 @@ export default function Board({ size }: BoardProps) {
       style={[
         style.board,
         styles.dropShadow,
-        { backgroundColor: theme.pb, borderColor: theme.p, height: size, width: size },
+        { backgroundColor: theme.pb, borderColor: theme.p, height: width, width },
       ]}>
-      {Array(81)
-        .fill(true)
-        .map((_, i) => (
-          <Cell key={i} index={i} size={cell - 0.9} />
-        ))}
+      {isPaused
+        ? null
+        : Array(81) // TODO: overlay
+            .fill(true)
+            .map((_, i) => <Cell key={i} index={i} width={cellWidth} />)}
+      <LineThin style={{ height: boardWidth, width: 1, left: cellWidth }} />
+      <LineThin style={{ height: boardWidth, width: 1, left: cellWidth * 2 }} />
+      <LineThin style={{ height: boardWidth, width: 1, left: cellWidth * 4 }} />
+      <LineThin style={{ height: boardWidth, width: 1, left: cellWidth * 5 }} />
+      <LineThin style={{ height: boardWidth, width: 1, left: cellWidth * 7 }} />
+      <LineThin style={{ height: boardWidth, width: 1, left: cellWidth * 8 }} />
+      <LineThin style={{ height: 1, width: boardWidth, top: cellWidth }} />
+      <LineThin style={{ height: 1, width: boardWidth, top: cellWidth * 2 }} />
+      <LineThin style={{ height: 1, width: boardWidth, top: cellWidth * 4 }} />
+      <LineThin style={{ height: 1, width: boardWidth, top: cellWidth * 5 }} />
+      <LineThin style={{ height: 1, width: boardWidth, top: cellWidth * 7 }} />
+      <LineThin style={{ height: 1, width: boardWidth, top: cellWidth * 8 }} />
+      <LineBold style={{ height: boardWidth, width: 2, left: cellWidth * 3 - 1 }} />
+      <LineBold style={{ height: boardWidth, width: 2, left: cellWidth * 6 - 1 }} />
+      <LineBold style={{ height: 2, width: boardWidth, top: cellWidth * 3 - 1 }} />
+      <LineBold style={{ height: 2, width: boardWidth, top: cellWidth * 6 - 1 }} />
     </View>
   )
 }
-// TODO: check cell - 0.9
+
 const style = StyleSheet.create({
   board: {
     flexDirection: "row",
@@ -77,4 +119,4 @@ const style = StyleSheet.create({
     overflow: "hidden",
   },
 })
-// TODO: make square cells for swipe smaller, check why button cell sometimes is selected after swiping
+// TODO: check if threshhold 4 is ok, check why button cellWidth sometimes is selected after swiping

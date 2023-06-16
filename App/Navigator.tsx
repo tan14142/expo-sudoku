@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Game from "~/Screens/Game"
 import Menu from "~/Screens/Menu"
 import Settings from "~/Screens/Settings"
-import Header from "./Components/Header"
+import Head from "./Components/Head"
 
 type RootStackParamList = {
   Game: undefined
@@ -29,7 +29,7 @@ export default () => {
       <Stack.Navigator
         screenOptions={{
           animation: "fade",
-          header: () => isReady && <Header {...navRef} />,
+          header: () => isReady && <Head {...navRef} />,
         }}>
         <Stack.Screen component={Menu} name="Menu" />
         <Stack.Screen component={Game} name="Game" />

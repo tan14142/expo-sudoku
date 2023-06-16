@@ -1,3 +1,4 @@
+import { Platform, Text } from "react-native"
 import { Provider } from "react-redux"
 import { persistor, store } from "~/Store"
 import { PersistGate } from "redux-persist/integration/react"
@@ -16,10 +17,20 @@ export default function App() {
     Poppins800: require("./assets/fonts/poppins/800.ttf"),
     Poppins900: require("./assets/fonts/poppins/900.ttf"),
   })
-
+  
   if (!loaded) {
-    return null
+    return <Text>TODO: Splash Screen"</Text>
   }
+
+  ;((backup, blacklist) => {
+    if (Platform.OS !== "web") return
+
+    console.warn = function (...args) {
+      if (blacklist.includes(args[0])) return
+      console.log(args)
+      backup.apply(console, args)
+    }
+  })(console.warn, ["selectable prop is deprecated. Use styles.userSelect."])
 
   return (
     <Provider store={store}>
